@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import { createServiceClient } from '@/lib/supabase';
 
 /**
  * POST /api/products/upload
- * Handles local file upload for product images.
- * Validates file type and size, then stores it in the local public/uploads directory.
+ * Handles file upload for product images.
+ * Primary: Uploads to Supabase Cloud Storage (Bucket: 'product-images') if service keys are configured.
+ * Fallback: Stores locally in public/uploads directory (for offline local development).
  */
 export async function POST(req: Request) {
   try {
@@ -37,16 +39,74 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Secure target directory configuration inside public/uploads
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadsDir, { recursive: true });
-
     // Generate unique name to prevent collisions
     const ext = path.extname(file.name) || '.jpg';
     const uniqueName = `prod_${Date.now()}_${Math.random().toString(36).substring(2, 9)}${ext}`;
-    const filePath = path.join(uploadsDir, uniqueName);
 
-    // Save file locally
+    // Check if Supabase Service Role Key is available to use cloud storage
+    const hasSupabaseSecrets = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (hasSupabaseSecrets) {
+      console.log('[Upload API] Supabase secrets configured. Initiating Cloud Storage upload...');
+      const supabase = createServiceClient();
+      
+      // Upload the file to Supabase Storage bucket 'product-images'
+      let uploadResult = await supabase.storage
+        .from('product-images')
+        .upload(uniqueName, buffer, {
+          contentType: file.type,
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      // If upload fails due to missing bucket (e.g. first-time setup), try to create it programmatically
+      if (uploadResult.error && (uploadResult.error.message.includes('Bucket not found') || (uploadResult.error as any).status === 404)) {
+        console.log('[Upload API] Bucket "product-images" not found. Creating bucket programmatically...');
+        const { error: createError } = await supabase.storage.createBucket('product-images', {
+          public: true,
+          fileSizeLimit: maxBytes,
+          allowedMimeTypes: validMimeTypes
+        });
+
+        if (!createError) {
+          console.log('[Upload API] Bucket "product-images" created successfully. Retrying upload...');
+          uploadResult = await supabase.storage
+            .from('product-images')
+            .upload(uniqueName, buffer, {
+              contentType: file.type,
+              cacheControl: '3600',
+              upsert: false
+            });
+        } else {
+          console.error('[Upload API] Failed to create Supabase storage bucket:', createError);
+          throw new Error('Supabase Storage bucket "product-images" could not be created. Please create it manually in your Supabase Console.');
+        }
+      }
+
+      if (uploadResult.error) {
+        console.error('[Upload API] Supabase upload failed:', uploadResult.error);
+        throw new Error(`Cloud storage upload failed: ${uploadResult.error.message}`);
+      }
+
+      // Retrieve the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(uniqueName);
+
+      console.log(`[Upload API] Cloud upload success! Public URL: ${publicUrl}`);
+
+      return NextResponse.json({
+        success: true,
+        url: publicUrl,
+      });
+    }
+
+    // Local Fallback (for offline local development only)
+    console.log('[Upload API] Supabase service role key missing. Falling back to local disk storage...');
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    await mkdir(uploadsDir, { recursive: true });
+
+    const filePath = path.join(uploadsDir, uniqueName);
     await writeFile(filePath, buffer);
 
     const relativeUrl = `/uploads/${uniqueName}`;
@@ -63,3 +123,4 @@ export async function POST(req: Request) {
     );
   }
 }
+
