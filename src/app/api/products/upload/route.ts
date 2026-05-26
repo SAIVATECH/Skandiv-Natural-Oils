@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
-import { createServiceClient } from '@/lib/supabase';
+import { createServiceClient, isValidJwt, sanitizeUrl } from '@/lib/supabase';
 
 /**
  * POST /api/products/upload
@@ -43,11 +43,13 @@ export async function POST(req: Request) {
     const ext = path.extname(file.name) || '.jpg';
     const uniqueName = `prod_${Date.now()}_${Math.random().toString(36).substring(2, 9)}${ext}`;
 
-    // Check if Supabase Service Role Key is available to use cloud storage
-    const hasSupabaseSecrets = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+    // Check if Supabase Service Role Key is available and valid to use cloud storage
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const hasValidSupabaseSecrets = !!sanitizeUrl(supabaseUrl) && isValidJwt(serviceRoleKey);
 
-    if (hasSupabaseSecrets) {
-      console.log('[Upload API] Supabase secrets configured. Initiating Cloud Storage upload...');
+    if (hasValidSupabaseSecrets) {
+      console.log('[Upload API] Valid Supabase secrets configured. Initiating Cloud Storage upload...');
       const supabase = createServiceClient();
       
       // Upload the file to Supabase Storage bucket 'product-images'
@@ -101,13 +103,26 @@ export async function POST(req: Request) {
       });
     }
 
+    // Serverless (Vercel) Environment Guard:
+    // If we are on Vercel but do not have valid Supabase keys configured, we MUST throw an error
+    // because local disk storage is read-only in serverless functions and will crash with EROFS.
+    if (process.env.VERCEL === '1') {
+      console.error('[Upload API] Supabase service role key is missing or invalid in serverless environment.');
+      throw new Error(
+        'Supabase Cloud Storage is not correctly configured. ' +
+        'In production (Vercel), you must configure NEXT_PUBLIC_SUPABASE_URL and a valid, non-placeholder SUPABASE_SERVICE_ROLE_KEY (starts with "eyJ"). ' +
+        'Local file storage fallback is not supported in serverless functions (Read-Only File System).'
+      );
+    }
+
     // Local Fallback (for offline local development only)
-    console.log('[Upload API] Supabase service role key missing. Falling back to local disk storage...');
+    console.log('[Upload API] Supabase credentials missing or invalid. Falling back to local disk storage for development...');
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
     await mkdir(uploadsDir, { recursive: true });
 
     const filePath = path.join(uploadsDir, uniqueName);
     await writeFile(filePath, buffer);
+
 
     const relativeUrl = `/uploads/${uniqueName}`;
 
