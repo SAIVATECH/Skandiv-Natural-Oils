@@ -109,3 +109,13 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
 }
+
+model MessageLog {
+  id        String   @id
+  sender    String
+  phone     String
+  text      String
+  timestamp DateTime @default(now())
+
+  @@map("message_logs")
+}

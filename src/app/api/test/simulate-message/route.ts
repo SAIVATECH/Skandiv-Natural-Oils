@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { handleWhatsAppMessage } from '@/services/whatsapp-state';
-import { simulatorLogs } from '@/lib/simulator-store';
+import { getSimulatorLogs } from '@/lib/simulator-store';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(req: Request) {
@@ -21,8 +21,9 @@ export async function GET(req: Request) {
       userState = user?.state || null;
     }
 
+    const logs = await getSimulatorLogs(phone || undefined);
     return NextResponse.json({
-      logs: simulatorLogs,
+      logs: logs,
       state: userState
     }, { status: 200 });
   } catch (error: any) {
@@ -54,9 +55,10 @@ export async function POST(req: Request) {
       include: { state: true }
     });
 
+    const logs = await getSimulatorLogs(phone || undefined);
     return NextResponse.json({
       success: true,
-      logs: simulatorLogs,
+      logs: logs,
       state: user?.state || null
     }, { status: 200 });
   } catch (error: any) {
@@ -87,6 +89,7 @@ export async function DELETE(req: Request) {
     if (user) {
       await prisma.conversationState.deleteMany({ where: { userId: user.id } });
       await prisma.order.deleteMany({ where: { userId: user.id } });
+      await (prisma as any).messageLog.deleteMany({ where: { phone: cleanPhone } });
       
       // Create a fresh clean starting state
       await prisma.conversationState.create({
@@ -96,13 +99,14 @@ export async function DELETE(req: Request) {
         }
       });
       
-      console.log(`[Simulator API] Cleaned up state and orders for test customer +${cleanPhone}`);
+      console.log(`[Simulator API] Cleaned up state, message logs, and orders for test customer +${cleanPhone}`);
     }
 
+    const logs = await getSimulatorLogs(phone || undefined);
     return NextResponse.json({
       success: true,
       message: 'State machine reset successfully.',
-      logs: simulatorLogs
+      logs: logs
     }, { status: 200 });
   } catch (error: any) {
     console.error('[Simulator API DELETE Error]:', error);
