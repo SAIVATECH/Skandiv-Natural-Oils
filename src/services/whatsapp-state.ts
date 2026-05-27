@@ -82,6 +82,10 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
         await handleStepSelectQuantity(user, state, text);
         break;
 
+      case 'CART_VIEW':
+        await handleStepCartView(user, state, text);
+        break;
+
       case 'GET_ADDRESS':
         await handleStepGetAddress(user, state, bodyText);
         break;
@@ -210,7 +214,7 @@ async function handleStepSelectProduct(user: any, state: any, input: string) {
 
 /**
  * STEP 3: SELECT_QUANTITY
- * Parses quantity, verifies stock levels, generates pending Order and OrderItems, and asks for confirmation.
+ * Parses quantity, verifies stock levels, generates or appends to a pending Order and OrderItems, and displays the cart preview.
  */
 async function handleStepSelectQuantity(user: any, state: any, input: string) {
   if (!state.selectedProductId) {
@@ -244,49 +248,257 @@ async function handleStepSelectQuantity(user: any, state: any, input: string) {
     return;
   }
 
-  // Calculate order total
-  const totalAmount = Number(product.price) * quantity;
+  let finalOrderId = state.pendingOrderId;
 
-  // Create pending order (with blank shippingAddress initially)
-  const pendingOrder = await prisma.order.create({
+  if (!finalOrderId) {
+    // 1. Create a brand new pending order for the customer
+    const totalAmount = Number(product.price) * quantity;
+    const pendingOrder = await prisma.order.create({
+      data: {
+        userId: user.id,
+        totalAmount: totalAmount,
+        paymentStatus: 'PENDING',
+        orderStatus: 'PENDING',
+        shippingAddress: '',
+        items: {
+          create: {
+            productId: product.id,
+            quantity: quantity,
+            price: product.price,
+          },
+        },
+      },
+    });
+    finalOrderId = pendingOrder.id;
+  } else {
+    // 2. Append item to existing pending order
+    const order = await prisma.order.findUnique({
+      where: { id: finalOrderId },
+      include: { items: true },
+    });
+
+    if (!order) {
+      // Fail-safe: if order was deleted in sandbox, create a new one
+      const totalAmount = Number(product.price) * quantity;
+      const pendingOrder = await prisma.order.create({
+        data: {
+          userId: user.id,
+          totalAmount: totalAmount,
+          paymentStatus: 'PENDING',
+          orderStatus: 'PENDING',
+          shippingAddress: '',
+          items: {
+            create: {
+              productId: product.id,
+              quantity: quantity,
+              price: product.price,
+            },
+          },
+        },
+      });
+      finalOrderId = pendingOrder.id;
+    } else {
+      // Check if product is already in the cart
+      const existingItem = order.items.find(item => item.productId === product.id);
+
+      if (existingItem) {
+        // Increment quantity in existing item, verifying stock bounds
+        const combinedQty = existingItem.quantity + quantity;
+        if (combinedQty > product.stock) {
+          await sendWhatsAppMessage(
+            user.whatsappNumber,
+            `You already have *${existingItem.quantity}* units of *${product.name}* in your cart. ` +
+            `Adding *${quantity}* more would exceed our available stock limit of *${product.stock}*! 🚫\n\n` +
+            `Please specify a smaller quantity to add:`
+          );
+          return;
+        }
+
+        await prisma.orderItem.update({
+          where: { id: existingItem.id },
+          data: { quantity: combinedQty },
+        });
+      } else {
+        // Create new item in cart
+        await prisma.orderItem.create({
+          data: {
+            orderId: order.id,
+            productId: product.id,
+            quantity: quantity,
+            price: product.price,
+          },
+        });
+      }
+
+      // Recalculate total order amount across all items
+      const updatedItems = await prisma.orderItem.findMany({
+        where: { orderId: order.id },
+      });
+      const newTotal = updatedItems.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { totalAmount: newTotal },
+      });
+    }
+  }
+
+  // Update State: clear temp product/qty selection so the catalog is clean for further adds
+  await prisma.conversationState.update({
+    where: { id: state.id },
     data: {
-      userId: user.id,
-      totalAmount: totalAmount,
-      paymentStatus: 'PENDING',
-      orderStatus: 'PENDING',
-      shippingAddress: '',
+      quantity: null,
+      selectedProductId: null,
+      pendingOrderId: finalOrderId,
+      currentStep: 'CART_VIEW',
+    },
+  });
+
+  // Display cart preview message to customer
+  await sendCartPreviewMessage(user, finalOrderId);
+}
+
+/**
+ * Helper function to send the itemized Cart Preview summary
+ */
+async function sendCartPreviewMessage(user: any, orderId: string) {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: {
       items: {
-        create: {
-          productId: product.id,
-          quantity: quantity,
-          price: product.price,
+        include: {
+          product: true,
         },
       },
     },
   });
 
-  // Update State to GET_ADDRESS
-  await prisma.conversationState.update({
-    where: { id: state.id },
-    data: {
-      quantity: quantity,
-      pendingOrderId: pendingOrder.id,
-      currentStep: 'GET_ADDRESS',
-    },
+  if (!order || order.items.length === 0) {
+    await sendWhatsAppMessage(user.whatsappNumber, "Your shopping cart is currently empty. Reply *HI* to explore our premium products!");
+    return;
+  }
+
+  let cartMsg = `🛒 *YOUR SHOPPING CART*\n`;
+  cartMsg += `----------------------------------\n`;
+  order.items.forEach((item: any) => {
+    cartMsg += `- *${item.quantity} x ${item.product.name}*\n  (₹${Number(item.price).toLocaleString('en-IN')} each)\n`;
   });
+  cartMsg += `----------------------------------\n`;
+  cartMsg += `💰 *Subtotal:* ₹${Number(order.totalAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}\n\n`;
+  cartMsg += `Would you like to add another premium product or proceed to delivery checkout? Select an option below:`;
 
-  const addressPrompt = `Great choice! *${quantity}* unit(s) of *${product.name}* reserved. 📦\n\n` +
-    `🚚 Please reply with your **complete Shipping Address** (including Street, City, State, and Pincode) so we can calculate shipping and prepare delivery:`;
+  await sendWhatsAppMessage(user.whatsappNumber, cartMsg, {
+    type: 'button',
+    buttons: [
+      { id: 'add_more', title: '🛍️ Add More' },
+      { id: 'checkout', title: '🚚 Checkout' },
+      { id: 'empty_cart', title: '❌ Empty Cart' }
+    ]
+  });
+}
 
-  await sendWhatsAppMessage(user.whatsappNumber, addressPrompt);
+/**
+ * STEP 3.5 [NEW]: CART_VIEW
+ * Processes the customer's choice to Add More products, Checkout, or Empty Cart.
+ */
+async function handleStepCartView(user: any, state: any, input: string) {
+  if (!state.pendingOrderId) {
+    await prisma.conversationState.update({
+      where: { id: state.id },
+      data: { currentStep: 'START' },
+    });
+    await sendWhatsAppMessage(user.whatsappNumber, "Checkout session timed out. Reply *HI* to restart.");
+    return;
+  }
+
+  const normalizedInput = input.trim().toLowerCase();
+
+  // 1. Add More Products
+  if (normalizedInput === 'add_more' || normalizedInput === 'add more' || normalizedInput.includes('add')) {
+    await prisma.conversationState.update({
+      where: { id: state.id },
+      data: {
+        currentStep: 'SELECT_PRODUCT',
+        selectedProductId: null,
+        quantity: null,
+      },
+    });
+
+    const products = await prisma.product.findMany({
+      where: { isActive: true },
+      orderBy: { category: 'asc' },
+    });
+
+    const catalogPrompt = `Choose another premium product from our catalog below to add to your cart:`;
+    await sendWhatsAppMessage(user.whatsappNumber, catalogPrompt, {
+      type: 'list',
+      buttonText: '🛍️ View Products',
+      sections: [
+        {
+          title: 'Premium Catalog',
+          rows: products.map((prod: any) => ({
+            id: prod.slug,
+            title: prod.name.substring(0, 24),
+            description: `${prod.stock === 0 ? '🚫 OUT OF STOCK' : `₹${Number(prod.price).toLocaleString('en-IN')}`} - ${prod.description.substring(0, 42)}...`
+          }))
+        }
+      ]
+    });
+    return;
+  }
+
+  // 2. Proceed to Delivery Address
+  if (normalizedInput === 'checkout' || normalizedInput.includes('check') || normalizedInput.includes('delivery')) {
+    await prisma.conversationState.update({
+      where: { id: state.id },
+      data: { currentStep: 'GET_ADDRESS' },
+    });
+
+    const addressPrompt = `🚚 Excellent! Please reply with your **complete Shipping Address** (including Street, City, State, and Pincode) so we can prepare delivery:`;
+    await sendWhatsAppMessage(user.whatsappNumber, addressPrompt);
+    return;
+  }
+
+  // 3. Clear/Empty Cart
+  if (normalizedInput === 'empty_cart' || normalizedInput === 'empty' || normalizedInput.includes('empty') || normalizedInput.includes('clear')) {
+    // Void the pending order
+    await prisma.order.update({
+      where: { id: state.pendingOrderId },
+      data: { orderStatus: 'CANCELLED' },
+    });
+
+    // Reset state variables completely
+    await prisma.conversationState.update({
+      where: { id: state.id },
+      data: {
+        currentStep: 'START',
+        selectedProductId: null,
+        quantity: null,
+        pendingOrderId: null,
+      },
+    });
+
+    await sendWhatsAppMessage(user.whatsappNumber, "Your shopping cart has been cleared successfully! 🚫\n\nReply 'HI' to start a new order.");
+    return;
+  }
+
+  // Fail-safe prompt if input didn't match buttons
+  await sendWhatsAppMessage(user.whatsappNumber, "Please select one of the cart actions below:", {
+    type: 'button',
+    buttons: [
+      { id: 'add_more', title: '🛍️ Add More' },
+      { id: 'checkout', title: '🚚 Checkout' },
+      { id: 'empty_cart', title: '❌ Empty Cart' }
+    ]
+  });
 }
 
 /**
  * STEP 4: GET_ADDRESS
- * Captures customer's raw shipping address, updates the pending order, and presents order summary.
+ * Captures customer's raw shipping address, updates the pending order, and presents an itemized invoice summary of the entire cart.
  */
 async function handleStepGetAddress(user: any, state: any, input: string) {
-  if (!state.pendingOrderId || !state.selectedProductId || !state.quantity) {
+  if (!state.pendingOrderId) {
     await prisma.conversationState.update({
       where: { id: state.id },
       data: { currentStep: 'START' },
@@ -308,7 +520,7 @@ async function handleStepGetAddress(user: any, state: any, input: string) {
   // Update the pending order with the shipping address
   await prisma.order.update({
     where: { id: state.pendingOrderId },
-    data: { shippingAddress: shippingAddress } as any, // Cast as any if local Prisma Types are not refreshed in compile engine
+    data: { shippingAddress: shippingAddress } as any, // Cast defensively for compiler compatibility
   });
 
   // Transition state to CONFIRM_ORDER
@@ -317,30 +529,37 @@ async function handleStepGetAddress(user: any, state: any, input: string) {
     data: { currentStep: 'CONFIRM_ORDER' },
   });
 
-  // Fetch product and pending order details to construct the Invoice Summary
-  const product = await prisma.product.findUnique({
-    where: { id: state.selectedProductId },
+  // Fetch full pending order details with items to construct the dynamic Invoice Summary
+  const order = await prisma.order.findUnique({
+    where: { id: state.pendingOrderId },
+    include: {
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
   });
 
-  if (!product) {
-    await sendWhatsAppMessage(user.whatsappNumber, "The selected product is no longer available. Reply *HI* to restart.");
+  if (!order || order.items.length === 0) {
+    await sendWhatsAppMessage(user.whatsappNumber, "Something went wrong retrieving order details. Reply *HI* to restart.");
     return;
   }
 
-  const totalAmount = Number(product.price) * state.quantity;
-
-  const summaryMsg = `📝 *ORDER SUMMARY*\n` +
-    `----------------------------------\n` +
-    `📦 *Item:* ${product.name}\n` +
-    `🔢 *Quantity:* ${state.quantity}\n` +
-    `💰 *Total Amount:* ₹${totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}\n` +
-    `🚚 *Deliver To:* ${shippingAddress}\n` +
-    `----------------------------------\n\n` +
-    `Do you wish to confirm and proceed to payment? Choose an option below:`;
+  let summaryMsg = `📝 *INVOICE SUMMARY*\n`;
+  summaryMsg += `----------------------------------\n`;
+  order.items.forEach((item: any) => {
+    summaryMsg += `- *${item.quantity} x ${item.product.name}*\n  (₹${Number(item.price).toLocaleString('en-IN')} each)\n`;
+  });
+  summaryMsg += `----------------------------------\n`;
+  summaryMsg += `💰 *Total Amount:* ₹${Number(order.totalAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}\n`;
+  summaryMsg += `🚚 *Deliver To:* ${shippingAddress}\n`;
+  summaryMsg += `----------------------------------\n\n`;
+  summaryMsg += `Do you wish to confirm and proceed to payment? Choose an option below:`;
 
   await sendWhatsAppMessage(user.whatsappNumber, summaryMsg, {
     type: 'button',
-    imageUrl: product.imageUrl || undefined,
+    imageUrl: order.items[0]?.product.imageUrl || undefined,
     buttons: [
       { id: 'confirm', title: '✅ Confirm' },
       { id: 'cancel', title: '❌ Cancel' }
@@ -350,11 +569,10 @@ async function handleStepGetAddress(user: any, state: any, input: string) {
 
 /**
  * STEP 5: CONFIRM_ORDER
- * Generates Razorpay payment link and sends it, moving status to AWAITING_PAYMENT.
+ * Generates Razorpay payment link based on the total cart amount and sends it, moving state to AWAITING_PAYMENT.
  */
 async function handleStepConfirmOrder(user: any, state: any, input: string) {
-  if (!state.pendingOrderId || !state.selectedProductId || !state.quantity) {
-    // State error fail-safe
+  if (!state.pendingOrderId) {
     await prisma.conversationState.update({
       where: { id: state.id },
       data: { currentStep: 'START' },
@@ -370,7 +588,7 @@ async function handleStepConfirmOrder(user: any, state: any, input: string) {
       data: { orderStatus: 'CANCELLED' },
     });
 
-    // Reset conversation state
+    // Reset conversation state completely
     await prisma.conversationState.update({
       where: { id: state.id },
       data: {
@@ -400,21 +618,17 @@ async function handleStepConfirmOrder(user: any, state: any, input: string) {
     return;
   }
 
-  // Fetch product and pending order details
-  const product = await prisma.product.findUnique({
-    where: { id: state.selectedProductId },
-  });
-
+  // Fetch pending order details
   const order = await prisma.order.findUnique({
     where: { id: state.pendingOrderId },
   });
 
-  if (!product || !order) {
+  if (!order) {
     await sendWhatsAppMessage(user.whatsappNumber, "Something went wrong retrieving order details. Reply *HI* to restart.");
     return;
   }
 
-  // Generate dynamic Razorpay Payment Link
+  // Generate dynamic Razorpay Payment Link based on complete Cart Total
   const paymentLink = await createPaymentLink(
     order.id,
     Number(order.totalAmount),
@@ -450,7 +664,7 @@ async function handleStepConfirmOrder(user: any, state: any, input: string) {
 }
 
 /**
- * STEP 5: AWAITING_PAYMENT
+ * STEP 6: AWAITING_PAYMENT
  * Customer has a payment link active. Gently reminds them or handles cancellations.
  */
 async function handleStepAwaitingPayment(user: any, state: any) {
@@ -498,3 +712,4 @@ async function handleStepAwaitingPayment(user: any, state: any) {
     ]
   });
 }
+
