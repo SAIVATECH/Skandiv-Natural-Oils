@@ -71,14 +71,18 @@ export default function SimulatorPage() {
     }
   }, [phone]);
 
-  // Poll for logs every 2 seconds to pick up webhook alerts automatically
+  // Poll for logs every 4 seconds to pick up webhook alerts automatically (optimized for tab focus)
   useEffect(() => {
     fetchData(true);
     let interval: NodeJS.Timeout;
+
+    const handlePoll = () => {
+      if (document.hidden) return; // Pause polling when tab is inactive to conserve connection pool slots
+      fetchData(false);
+    };
+
     if (polling) {
-      interval = setInterval(() => {
-        fetchData(false);
-      }, 2000);
+      interval = setInterval(handlePoll, 4000);
     }
     return () => {
       if (interval) clearInterval(interval);
