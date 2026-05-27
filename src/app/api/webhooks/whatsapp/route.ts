@@ -117,11 +117,13 @@ export async function POST(req: Request) {
       return new NextResponse('OK', { status: 200 });
     }
 
-    // Process the message via the state machine asynchronously to prevent timeouts.
-    // Meta expects webhooks to return a 200 status code within 3 seconds.
-    handleWhatsAppMessage(from, textBody).catch((err) => {
-      console.error('[Meta Webhook Async Error] State machine failed asynchronously:', err);
-    });
+    // Await state machine execution to ensure database queries complete and connections
+    // are cleanly released before Vercel suspends the serverless execution context.
+    try {
+      await handleWhatsAppMessage(from, textBody);
+    } catch (err) {
+      console.error('[Meta Webhook Error] State machine failed:', err);
+    }
 
     return new NextResponse('EVENT_RECEIVED', { status: 200 });
   } catch (error) {
