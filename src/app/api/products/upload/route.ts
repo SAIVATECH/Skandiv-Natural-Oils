@@ -18,11 +18,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Secure Image Validation: Allow JPEG, PNG, WEBP, and GIF only
-    const validMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    // Secure Image Validation: Only allow JPEG and PNG (Meta WhatsApp Business API does not support WEBP or GIF)
+    const validMimeTypes = ['image/jpeg', 'image/png'];
     if (!validMimeTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file format. Only JPEG, PNG, WEBP, and GIF are allowed.' },
+        { error: 'Invalid file format. Only JPEG and PNG are allowed due to WhatsApp API compatibility.' },
         { status: 400 }
       );
     }

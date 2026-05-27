@@ -570,7 +570,7 @@ export default function AdminProductsPage() {
                                 <p className="text-[10px] font-extrabold text-white leading-normal">
                                   Drag & drop or <span className="text-emerald-400 underline">click to upload</span>
                                 </p>
-                                <p className="text-[8px] text-slate-500 mt-0.5">JPEG, PNG, WEBP or GIF (max 5MB)</p>
+                                <p className="text-[8px] text-slate-500 mt-0.5">JPEG or PNG only (max 5MB)</p>
                               </div>
                             </div>
                           )}
