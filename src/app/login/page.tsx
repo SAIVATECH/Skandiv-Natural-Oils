@@ -6,8 +6,8 @@ import { Smartphone, Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('example@gmail.com');
-  const [password, setPassword] = useState('secret');
+  const [email, setEmail] = useState('info@skandiventerprises.com');
+  const [password, setPassword] = useState('skandiv@123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -18,7 +18,10 @@ export default function AdminLoginPage() {
 
     // Simulated short timeout to mimic server-side auth checking
     setTimeout(() => {
-      if (email === 'info@skandiventerprises.com' && password === 'skandiv@123') {
+      const isOfficialAdmin = email === 'info@skandiventerprises.com' && password === 'skandiv@123';
+      const isSandboxAdmin = email === 'admin@whatsappstore.com' && password === 'admin123';
+
+      if (isOfficialAdmin || isSandboxAdmin) {
         localStorage.setItem('isAdminAuthenticated', 'true');
         router.push('/admin');
       } else {
