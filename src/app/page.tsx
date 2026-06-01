@@ -202,7 +202,7 @@ export default async function HomeStorefront() {
           <div className="text-center space-y-3">
             <h3 className="text-2xl sm:text-3xl font-black text-white">How Conversational Checkout Works</h3>
             <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
-              We've automated shopping to reside right inside your favorite chat app. Buy in less than a minute.
+              We have automated shopping to reside right inside your favorite chat app. Buy in less than a minute.
             </p>
           </div>
 
@@ -287,7 +287,7 @@ export default async function HomeStorefront() {
           <div className="bg-rose-950/30 border border-rose-900/40 text-rose-300 p-6 rounded-3xl max-w-2xl mx-auto text-center space-y-3">
             <h4 className="font-bold text-lg">⚠️ Database Connection Issue</h4>
             <p className="text-xs leading-normal">
-              We couldn't connect to our live catalog database right now. Please reload the page or click below to chat with our team on WhatsApp immediately:
+              We could not connect to our live catalog database right now. Please reload the page or click below to chat with our team on WhatsApp immediately:
             </p>
             <a
               href={whatsappSupportUrl}
