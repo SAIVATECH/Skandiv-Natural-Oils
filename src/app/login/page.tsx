@@ -50,14 +50,21 @@ export default function AdminLoginPage() {
       
       <div className="max-w-md w-full relative z-10 space-y-6">
         
-        {/* Logo and Brand Heading */}
-        <div className="text-center space-y-3">
-          <div className="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-emerald-500/30 mx-auto animate-pulse-slow">
-            <Smartphone className="w-8 h-8 text-slate-950 stroke-[2.5]" />
+        {/* Brand Logo and Title */}
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden border border-slate-850 p-0.5 shadow-2xl flex items-center justify-center hover:rotate-3 transition-transform duration-300">
+            <img 
+              src="/logo.jpg" 
+              alt="Skandiv Natural Oils Logo" 
+              className="w-full h-full object-cover rounded-xl"
+            />
           </div>
-          <div className="space-y-1">
-            <h1 className="text-3xl font-black text-white tracking-tight">WABA Automations</h1>
-            <p className="text-slate-400 text-xs tracking-wider uppercase font-semibold">Store Administration Portal</p>
+          <div className="text-center space-y-0.5">
+            <h1 className="text-2xl font-black tracking-tight text-white flex items-center justify-center space-x-1.5 leading-none">
+              <span className="bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent">SKANDÍV</span>
+            </h1>
+            <p className="text-[10px] text-amber-500 font-bold tracking-widest uppercase leading-none">Natural Oils</p>
+            <p className="text-slate-400 text-[10px] uppercase font-semibold tracking-wider pt-2 leading-none">Store Administration Portal</p>
           </div>
         </div>
 
