@@ -16,6 +16,11 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "SKANDÍV - Premium Organic Cold-Pressed Oils",
   description: "Experience the authentic purity of traditional wood-pressed organic oils. Sealed fresh, unrefined, and delivered via our automated WhatsApp shopping assistant.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/logo.jpg",
+  },
 };
 
 export default function RootLayout({
