@@ -493,7 +493,8 @@ export default async function HomeStorefront() {
         </div>
 
         <p className="text-slate-500 max-w-md mx-auto leading-normal">
-          © 2026 Skandiv Natural Oils. Handcrafted organic cold-pressed wellness extracts. Powered by Next.js & Meta WABA API.
+          © 2026 Skandiv Natural Oils. Handcrafted organic cold-pressed wellness extracts. Designed by<Link href="https://saivatech.in" className="text-emerald-400 font-semibold hover:text-emerald-300 transition-colors ml-1" target="_blank" rel="noopener noreferrer">
+          Saivatech</Link>.
         </p>
 
         {/* Subtle Administration Access for Developers */}
