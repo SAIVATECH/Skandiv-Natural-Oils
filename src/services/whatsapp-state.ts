@@ -68,6 +68,43 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
       state.currentStep = 'START';
     }
 
+    // Global intercept for landing page "Buy Now" clicks (e.g. "buy_500ml-coconut-oil")
+    if (text.startsWith('buy_')) {
+      const targetSlug = text.replace(/^buy_/i, '').trim();
+      const targetProduct = await prisma.product.findFirst({
+        where: {
+          slug: targetSlug,
+          isActive: true,
+          stock: { gt: 0 }
+        }
+      });
+
+      if (targetProduct) {
+        state = await prisma.conversationState.update({
+          where: { userId: user.id },
+          data: {
+            currentStep: 'SELECT_QUANTITY',
+            selectedProductId: targetProduct.id,
+            quantity: null,
+            pendingOrderId: null, // Clear active order state so they start a fresh purchase
+          },
+        });
+
+        const selectQtyMsg = `You selected *${targetProduct.name}* (₹${Number(targetProduct.price).toLocaleString('en-IN')} each). Great choice! 👍\n\nHow many units would you like to buy? Choose from the options below, or reply with your desired quantity (1-${targetProduct.stock}):`;
+
+        await sendWhatsAppMessage(user.whatsappNumber, selectQtyMsg, {
+          type: 'button',
+          imageUrl: targetProduct.imageUrl || undefined,
+          buttons: [
+            { id: '1', title: 'Buy 1 Unit' },
+            { id: '2', title: 'Buy 2 Units' },
+            { id: '3', title: 'Buy 3 Units' }
+          ]
+        });
+        return;
+      }
+    }
+
     // 3. Process Conversation Step
     switch (state.currentStep) {
       case 'START':
