@@ -510,7 +510,7 @@ export default async function HomeStorefront() {
           
           <span className="text-slate-800">|</span>
           
-          <Link
+          {/* <Link
             href="/admin/simulator"
             className="hover:text-indigo-400 transition-colors flex items-center space-x-1"
           >
@@ -526,7 +526,7 @@ export default async function HomeStorefront() {
           >
             <ExternalLink className="w-3 h-3 text-amber-500" />
             <span>Sandbox checkout</span>
-          </Link>
+          </Link> */}
         </div>
       </footer>
 
