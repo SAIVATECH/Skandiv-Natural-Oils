@@ -6,29 +6,39 @@ import { Smartphone, Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('info@skandiventerprises.com');
-  const [password, setPassword] = useState('skandiv@123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Simulated short timeout to mimic server-side auth checking
-    setTimeout(() => {
-      const isOfficialAdmin = email === 'info@skandiventerprises.com' && password === 'skandiv@123';
-      const isSandboxAdmin = email === 'admin@whatsappstore.com' && password === 'admin123';
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      if (isOfficialAdmin || isSandboxAdmin) {
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         localStorage.setItem('isAdminAuthenticated', 'true');
         router.push('/admin');
       } else {
-        setError('Invalid admin credentials. Please try again.');
+        setError(data.error || 'Invalid admin credentials. Please try again.');
         setLoading(false);
       }
-    }, 1000);
+    } catch (err) {
+      console.error('Login authentication error:', err);
+      setError('A connection error occurred. Please check your network and try again.');
+      setLoading(false);
+    }
   };
 
   return (
