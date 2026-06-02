@@ -48,18 +48,18 @@ export default function AdminLoginPage() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
       
-      <div className="max-w-md w-full relative z-10 space-y-6 perspective-1000 preserve-3d">
+      <div className="max-w-md w-full relative z-10 space-y-6">
         
         {/* Brand Logo and Title */}
-        <div className="flex flex-col items-center justify-center space-y-3 animate-float-3d preserve-3d">
-          <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden border border-slate-850 p-0.5 shadow-2xl flex items-center justify-center hover:rotate-3 transition-transform duration-300 translate-z-20">
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden border border-slate-850 p-0.5 shadow-2xl flex items-center justify-center float-3d">
             <img 
               src="/logo.jpg" 
               alt="Skandiv Natural Oils Logo" 
               className="w-full h-full object-cover rounded-xl"
             />
           </div>
-          <div className="text-center space-y-0.5 translate-z-10">
+          <div className="text-center space-y-0.5">
             <h1 className="text-2xl font-black tracking-tight text-slate-100 flex items-center justify-center space-x-1.5 leading-none">
               <span className="font-serif bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent">SKANDÍV</span>
             </h1>
@@ -69,15 +69,15 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Login Form Container */}
-        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-850 rounded-3xl p-8 shadow-2xl space-y-6 card-3d">
-          <div className="space-y-1 border-b border-slate-850 pb-4 preserve-3d">
-            <h2 className="text-xl font-bold text-slate-100 font-serif translate-z-10">Sign In</h2>
-            <p className="text-slate-500 text-xs translate-z-10">Enter your store administrator account detail below</p>
+        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-850 rounded-3xl p-8 shadow-2xl space-y-6 card-3d preserve-3d perspective-1000">
+          <div className="space-y-1 border-b border-slate-850 pb-4">
+            <h2 className="text-xl font-bold text-slate-100 font-serif">Sign In</h2>
+            <p className="text-slate-500 text-xs">Enter your store administrator account detail below</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4 preserve-3d">
+          <form onSubmit={handleLogin} className="space-y-4">
             {/* Email Field */}
-            <div className="space-y-2 translate-z-10">
+            <div className="space-y-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
@@ -95,7 +95,7 @@ export default function AdminLoginPage() {
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2 translate-z-10">
+            <div className="space-y-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
@@ -113,7 +113,7 @@ export default function AdminLoginPage() {
             </div>
 
             {error && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs px-4 py-3 rounded-xl text-center font-bold translate-z-10">
+              <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs px-4 py-3 rounded-xl text-center font-bold">
                 {error}
               </div>
             )}
@@ -122,7 +122,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 text-slate-100 font-extrabold rounded-2xl flex items-center justify-center space-x-2 transition-all shadow-lg shadow-amber-500/15 hover:shadow-amber-500/25 active:scale-[0.98] translate-z-20"
+              className="w-full h-12 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 text-slate-100 font-extrabold rounded-2xl flex items-center justify-center space-x-2 transition-all shadow-lg shadow-amber-500/15 hover:shadow-amber-500/25 active:scale-[0.98]"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin text-slate-100" />
