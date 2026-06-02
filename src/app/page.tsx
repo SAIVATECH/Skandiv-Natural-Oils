@@ -139,12 +139,12 @@ export default async function HomeStorefront() {
         </div>
 
         {/* Feature Visual Brand card */}
-        <div className="lg:col-span-5 relative flex justify-center">
-          <div className="w-full max-w-md bg-slate-900/40 border border-slate-850 p-8 rounded-[36px] shadow-2xl relative overflow-hidden backdrop-blur-sm">
+        <div className="lg:col-span-5 relative flex justify-center perspective-1000 preserve-3d">
+          <div className="w-full max-w-md bg-slate-900/40 border border-slate-850 p-8 rounded-[36px] shadow-2xl relative overflow-hidden backdrop-blur-sm card-3d">
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-[40px] rounded-full pointer-events-none" />
             
-            <div className="flex flex-col space-y-6">
-              <div className="w-20 h-20 bg-white rounded-3xl p-1 border border-slate-850 shadow-xl self-center">
+            <div className="flex flex-col space-y-6 preserve-3d">
+              <div className="w-20 h-20 bg-white rounded-3xl p-1 border border-slate-850 shadow-xl self-center animate-float-3d translate-z-20">
                 <img 
                   src="/logo.jpg" 
                   alt="Skandiv Organic Logo" 
@@ -152,7 +152,7 @@ export default async function HomeStorefront() {
                 />
               </div>
 
-              <div className="text-center space-y-1.5">
+              <div className="text-center space-y-1.5 translate-z-10">
                 <h4 className="text-xl font-extrabold text-slate-100">Skandiv Pure Guarantee</h4>
                 <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
                   Every batch is freshly extracted under stringent organic quality protocols. Bottled raw and unrefined.
@@ -206,13 +206,13 @@ export default async function HomeStorefront() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto perspective-1000 preserve-3d">
             {/* Step 1 */}
-            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
+            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4 card-3d">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20 translate-z-20">
                 01
               </div>
-              <div className="space-y-1 flex-1">
+              <div className="space-y-1 flex-1 translate-z-10">
                 <h4 className="font-bold text-slate-100 text-sm">Select Product</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   Explore our premium oil items below and click **Buy via WhatsApp** on your favorite selection.
@@ -221,11 +221,11 @@ export default async function HomeStorefront() {
             </div>
 
             {/* Step 2 */}
-            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
+            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4 card-3d">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20 translate-z-20">
                 02
               </div>
-              <div className="space-y-1 flex-1">
+              <div className="space-y-1 flex-1 translate-z-10">
                 <h4 className="font-bold text-slate-100 text-sm">Send Quantity</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   WhatsApp will open with a pre-filled buy code. Click send, and the bot will instantly reply asking for the quantity!
@@ -234,11 +234,11 @@ export default async function HomeStorefront() {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
+            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4 card-3d">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20 translate-z-20">
                 03
               </div>
-              <div className="space-y-1 flex-1">
+              <div className="space-y-1 flex-1 translate-z-10">
                 <h4 className="font-bold text-slate-100 text-sm">Submit Address</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   Add more items or click checkout. Send your delivery address. The bot will render an itemized Invoice Summary.
@@ -247,11 +247,11 @@ export default async function HomeStorefront() {
             </div>
 
             {/* Step 4 */}
-            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
+            <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4 card-3d">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20 translate-z-20">
                 04
               </div>
-              <div className="space-y-1 flex-1">
+              <div className="space-y-1 flex-1 translate-z-10">
                 <h4 className="font-bold text-slate-100 text-sm">Pay & Track</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   Confirm the order to receive your secure Razorpay payment link. Pay safely to unlock live WhatsApp package tracking.
@@ -320,7 +320,7 @@ export default async function HomeStorefront() {
         )}
 
         {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000 preserve-3d">
           {products.map((product) => {
             const isOutOfStock = product.stock <= 0;
             const clickToBuyUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`buy_${product.slug}`)}`;
@@ -328,10 +328,10 @@ export default async function HomeStorefront() {
             return (
               <div 
                 key={product.id}
-                className="group bg-slate-900/40 hover:bg-slate-900/70 border border-slate-900 hover:border-emerald-500/20 rounded-[32px] p-5 shadow-2xl flex flex-col space-y-4 transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-sm"
+                className="group bg-slate-900/40 hover:bg-slate-900/70 border border-slate-900 rounded-[32px] p-5 shadow-2xl flex flex-col space-y-4 transition-all duration-300 backdrop-blur-sm card-3d"
               >
                 {/* Premium Product Image Container */}
-                <div className="w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-900 relative shadow-inner">
+                <div className="w-full aspect-[4/3] bg-slate-950 rounded-2xl overflow-hidden border border-slate-900 relative shadow-inner translate-z-10 preserve-3d">
                   {product.imageUrl ? (
                     <img 
                       src={product.imageUrl} 
@@ -346,7 +346,7 @@ export default async function HomeStorefront() {
                   )}
 
                   {/* Stock Status Badge */}
-                  <div className="absolute top-3.5 right-3.5 z-10">
+                  <div className="absolute top-3.5 right-3.5 z-10 translate-z-20">
                     {isOutOfStock ? (
                       <span className="bg-rose-950/80 border border-rose-950 text-rose-400 text-[10px] font-extrabold px-3 py-1 rounded-full backdrop-blur-sm uppercase tracking-wide">
                         🚫 Out of Stock
@@ -363,14 +363,14 @@ export default async function HomeStorefront() {
                   </div>
 
                   {/* Category Indicator Tag */}
-                  <div className="absolute bottom-3.5 left-3.5 z-10 bg-slate-950/90 border border-slate-850 px-3 py-1 rounded-xl text-[9px] font-bold text-slate-300 backdrop-blur-sm tracking-wider uppercase">
+                  <div className="absolute bottom-3.5 left-3.5 z-10 bg-slate-950/90 border border-slate-850 px-3 py-1 rounded-xl text-[9px] font-bold text-slate-300 backdrop-blur-sm tracking-wider uppercase translate-z-20">
                     {product.category || 'Premium Oil'}
                   </div>
                 </div>
 
                 {/* Product Meta details */}
-                <div className="flex-1 flex flex-col space-y-3.5">
-                  <div className="space-y-1">
+                <div className="flex-1 flex flex-col space-y-3.5 preserve-3d">
+                  <div className="space-y-1 translate-z-10">
                     <div className="flex items-center space-x-1.5 text-xs text-amber-500 font-extrabold">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
@@ -379,12 +379,12 @@ export default async function HomeStorefront() {
                       </div>
                       <span className="font-semibold text-slate-400 text-[10px]">(5.0 / 48 Reviews)</span>
                     </div>
-                    <h4 className="font-serif text-lg font-black text-slate-100 group-hover:text-primary transition-colors line-clamp-1">{product.name}</h4>
+                    <h4 className="font-serif text-lg font-black text-slate-100 group-hover:text-primary transition-colors line-clamp-1 translate-z-10">{product.name}</h4>
                     <p className="text-xs text-slate-400 leading-normal line-clamp-2 min-h-[36px]">{product.description}</p>
                   </div>
 
                   {/* Key product trust checkboxes */}
-                  <div className="grid grid-cols-2 gap-1.5 text-[10px] text-slate-400 font-medium py-2 border-y border-slate-900/60">
+                  <div className="grid grid-cols-2 gap-1.5 text-[10px] text-slate-400 font-medium py-2 border-y border-slate-900/60 translate-z-10">
                     <div className="flex items-center space-x-1">
                       <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
                       <span>Mara Chekku Press</span>
@@ -404,8 +404,8 @@ export default async function HomeStorefront() {
                   </div>
 
                   {/* Pricing and Action row */}
-                  <div className="flex items-center justify-between pt-1">
-                    <div className="space-y-0.5">
+                  <div className="flex items-center justify-between pt-1 preserve-3d">
+                    <div className="space-y-0.5 translate-z-10">
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">Price per bottle</span>
                       <p className="text-xl font-black text-slate-100">
                         ₹{Number(product.price).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
@@ -415,7 +415,7 @@ export default async function HomeStorefront() {
                     {isOutOfStock ? (
                       <button
                         disabled
-                        className="bg-slate-850 text-slate-500 cursor-not-allowed font-extrabold px-5 py-3 rounded-2xl text-xs flex items-center justify-center space-x-2 border border-slate-800"
+                        className="bg-slate-850 text-slate-500 cursor-not-allowed font-extrabold px-5 py-3 rounded-2xl text-xs flex items-center justify-center space-x-2 border border-slate-800 translate-z-10"
                       >
                         <span>Out of Stock</span>
                       </button>
@@ -424,7 +424,7 @@ export default async function HomeStorefront() {
                         href={clickToBuyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-100 font-black px-6 py-3.5 rounded-2xl text-xs flex items-center justify-center space-x-2 transition-all hover:scale-[1.03] active:scale-98 shadow-xl shadow-amber-500/10 hover:shadow-amber-500/20"
+                        className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-100 font-black px-6 py-3.5 rounded-2xl text-xs flex items-center justify-center space-x-2 transition-all hover:scale-[1.03] active:scale-98 shadow-xl shadow-amber-500/10 hover:shadow-amber-500/20 translate-z-20"
                       >
                         <Smartphone className="w-4 h-4 stroke-[2.5] text-slate-100" />
                         <span>Buy via WhatsApp</span>
