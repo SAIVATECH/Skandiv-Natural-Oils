@@ -198,7 +198,7 @@ export default function AdminOrdersPage() {
               placeholder="Search order ID, buyer, phone..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-white text-xs outline-none transition-colors"
+              className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-slate-100 text-xs outline-none transition-colors"
             />
           </div>
 
@@ -211,7 +211,7 @@ export default function AdminOrdersPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-transparent text-white font-bold outline-none cursor-pointer"
+                className="bg-transparent text-slate-100 font-bold outline-none cursor-pointer"
               >
                 <option value="ALL">All Statuses</option>
                 <option value="PENDING">PENDING</option>
@@ -228,7 +228,7 @@ export default function AdminOrdersPage() {
               <select
                 value={paymentFilter}
                 onChange={(e) => setPaymentFilter(e.target.value)}
-                className="bg-transparent text-white font-bold outline-none cursor-pointer"
+                className="bg-transparent text-slate-100 font-bold outline-none cursor-pointer"
               >
                 <option value="ALL">All Payments</option>
                 <option value="PENDING">PENDING</option>
@@ -259,7 +259,7 @@ export default function AdminOrdersPage() {
           <div className="bg-slate-900/30 border border-slate-850 rounded-3xl p-12 text-center space-y-3">
             <Receipt className="w-12 h-12 text-slate-500 mx-auto" />
             <div>
-              <h4 className="font-bold text-white text-sm">No Orders Found</h4>
+              <h4 className="font-bold text-slate-100 text-sm">No Orders Found</h4>
               <p className="text-xs text-slate-400">No transactions match your current query or filters.</p>
             </div>
           </div>
@@ -297,7 +297,7 @@ export default function AdminOrdersPage() {
 
                       {/* Customer */}
                       <td className="p-4">
-                        <p className="font-bold text-white leading-tight">{order.user.name || 'WhatsApp Buyer'}</p>
+                        <p className="font-bold text-slate-100 leading-tight">{order.user.name || 'WhatsApp Buyer'}</p>
                         <span className="text-[10px] text-slate-500 font-mono">{order.user.whatsappNumber}</span>
                       </td>
 
@@ -328,7 +328,7 @@ export default function AdminOrdersPage() {
                       </td>
 
                       {/* Price */}
-                      <td className="p-4 text-right font-black text-white text-sm">
+                      <td className="p-4 text-right font-black text-slate-100 text-sm">
                         ₹{Number(order.totalAmount).toLocaleString('en-IN')}
                       </td>
 
@@ -368,13 +368,13 @@ export default function AdminOrdersPage() {
                     <Package className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-white text-sm leading-none">Modify Order Status</h3>
+                    <h3 className="font-extrabold text-slate-100 text-sm leading-none">Modify Order Status</h3>
                     <span className="text-[10px] text-slate-500 font-mono font-semibold">#{selectedOrder.id.substring(0, 16).toUpperCase()}...</span>
                   </div>
                 </div>
                 <button
                   onClick={() => { setModalOpen(false); setSelectedOrder(null); }}
-                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white"
+                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-slate-100"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -388,7 +388,7 @@ export default function AdminOrdersPage() {
                   <select
                     value={form.orderStatus}
                     onChange={(e: any) => setForm((prev) => ({ ...prev, orderStatus: e.target.value }))}
-                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none cursor-pointer"
+                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none cursor-pointer"
                   >
                     <option value="PENDING">PENDING (Awaiting Checkout)</option>
                     <option value="PROCESSING">PROCESSING (Preparing in warehouse)</option>
@@ -407,7 +407,7 @@ export default function AdminOrdersPage() {
                   <select
                     value={form.paymentStatus}
                     onChange={(e: any) => setForm((prev) => ({ ...prev, paymentStatus: e.target.value }))}
-                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none cursor-pointer"
+                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none cursor-pointer"
                   >
                     <option value="PENDING">PENDING</option>
                     <option value="PAID">PAID</option>
@@ -423,7 +423,7 @@ export default function AdminOrdersPage() {
                     type="url"
                     value={form.trackingUrl}
                     onChange={(e) => setForm((prev) => ({ ...prev, trackingUrl: e.target.value }))}
-                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none"
+                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
                     placeholder="e.g. https://shipment.com/track/1234"
                   />
                   <span className="text-[9px] text-slate-500 font-medium italic block">
@@ -457,7 +457,7 @@ export default function AdminOrdersPage() {
                     <button
                       type="button"
                       onClick={() => { setModalOpen(false); setSelectedOrder(null); }}
-                      className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-white font-bold px-4 rounded-xl text-xs active:scale-95"
+                      className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-slate-100 font-bold px-4 rounded-xl text-xs active:scale-95"
                     >
                       Cancel
                     </button>

@@ -108,7 +108,7 @@ export default function AdminCustomersPage() {
               placeholder="Search customers directory..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-white text-xs outline-none transition-colors"
+              className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-slate-100 text-xs outline-none transition-colors"
             />
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function AdminCustomersPage() {
           <div className="bg-slate-900/30 border border-slate-850 rounded-3xl p-12 text-center space-y-3">
             <Users className="w-12 h-12 text-slate-500 mx-auto" />
             <div>
-              <h4 className="font-bold text-white text-sm">No Customers Logged</h4>
+              <h4 className="font-bold text-slate-100 text-sm">No Customers Logged</h4>
               <p className="text-xs text-slate-400">Store clients will appear here automatically on sending their first WhatsApp message.</p>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function AdminCustomersPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
                     <div className="space-y-1 min-w-0">
-                      <h4 className="font-bold text-white text-sm truncate group-hover:text-emerald-400 transition-colors">
+                      <h4 className="font-bold text-slate-100 text-sm truncate group-hover:text-emerald-400 transition-colors">
                         {cust.name}
                       </h4>
                       <span className="text-[10px] text-slate-500 font-mono font-bold block">
@@ -163,7 +163,7 @@ export default function AdminCustomersPage() {
                       <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block">Orders placed</span>
                       <div className="flex items-baseline space-x-1">
                         <Receipt className="w-3.5 h-3.5 text-slate-500" />
-                        <span className="text-xs font-bold text-white">{cust.totalOrders} total</span>
+                        <span className="text-xs font-bold text-slate-100">{cust.totalOrders} total</span>
                       </div>
                     </div>
                     <div className="space-y-0.5 text-right">
@@ -180,7 +180,7 @@ export default function AdminCustomersPage() {
                 <div className="pt-4 mt-4 border-t border-slate-850 flex items-center gap-3">
                   <button
                     onClick={() => handleOpenMsg(cust)}
-                    className="flex-1 h-10 bg-slate-950 border border-slate-850 hover:border-emerald-500/30 text-slate-400 hover:text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition-all active:scale-98"
+                    className="flex-1 h-10 bg-slate-950 border border-slate-850 hover:border-emerald-500/30 text-slate-400 hover:text-slate-100 font-bold rounded-2xl flex items-center justify-center space-x-2 transition-all active:scale-98"
                   >
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                     <span>Open Message Center</span>
@@ -218,13 +218,13 @@ export default function AdminCustomersPage() {
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-white text-sm leading-none">WhatsApp Message Center</h3>
+                    <h3 className="font-extrabold text-slate-100 text-sm leading-none">WhatsApp Message Center</h3>
                     <span className="text-[10px] text-slate-500 font-mono font-semibold">{selectedCustomer.whatsappNumber}</span>
                   </div>
                 </div>
                 <button
                   onClick={() => { setModalOpen(false); setSelectedCustomer(null); }}
-                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white"
+                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-slate-100"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -234,7 +234,7 @@ export default function AdminCustomersPage() {
               <div className="bg-slate-950/65 border border-slate-850 rounded-2xl p-4 flex justify-between text-xs text-slate-400">
                 <div>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Purchaser profile</p>
-                  <p className="font-bold text-white">{selectedCustomer.name}</p>
+                  <p className="font-bold text-slate-100">{selectedCustomer.name}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Lifetime spend</p>
@@ -251,7 +251,7 @@ export default function AdminCustomersPage() {
                     rows={4}
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl p-4 text-white text-xs outline-none"
+                    className="w-full bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl p-4 text-slate-100 text-xs outline-none"
                     placeholder="Type custom message or manual notification template here (e.g. Hey, we've updated your shipment details...)"
                   />
                   <span className="text-[9px] text-slate-500 font-medium italic block">
@@ -271,7 +271,7 @@ export default function AdminCustomersPage() {
                   <button
                     type="button"
                     onClick={() => { setModalOpen(false); setSelectedCustomer(null); }}
-                    className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-white font-bold px-4 rounded-xl text-xs active:scale-95"
+                    className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-slate-100 font-bold px-4 rounded-xl text-xs active:scale-95"
                   >
                     Close
                   </button>

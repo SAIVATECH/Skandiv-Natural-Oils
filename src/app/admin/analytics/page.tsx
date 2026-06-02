@@ -82,7 +82,7 @@ export default function AdminAnalyticsPage() {
               >
                 <div className="space-y-1.5">
                   <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">{stat.title}</span>
-                  <h3 className="text-2xl font-black text-white">{stat.value}</h3>
+                  <h3 className="text-2xl font-black text-slate-100">{stat.value}</h3>
                   <span className="text-[10px] text-slate-500 font-medium block">{stat.desc}</span>
                 </div>
                 <div className="w-11 h-11 bg-slate-950 border border-slate-850 rounded-2xl flex items-center justify-center">
@@ -100,7 +100,7 @@ export default function AdminAnalyticsPage() {
           <div className="lg:col-span-2 bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Revenue Stream Over Time</h3>
+                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Revenue Stream Over Time</h3>
                 <p className="text-xs text-slate-400">Past 7 days daily earnings chart</p>
               </div>
               <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full flex items-center space-x-1">
@@ -158,7 +158,7 @@ export default function AdminAnalyticsPage() {
           {/* Bar Chart distribution */}
           <div className="bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
             <div className="border-b border-slate-800 pb-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Revenue share by Category</h3>
+              <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Revenue share by Category</h3>
               <p className="text-xs text-slate-400">Visual distributions of store inventory</p>
             </div>
 
@@ -214,7 +214,7 @@ export default function AdminAnalyticsPage() {
               <div className="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-emerald-400" />
               </div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Detailed Sales Inventory Audit</h3>
+              <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Detailed Sales Inventory Audit</h3>
             </div>
           </div>
 
@@ -245,7 +245,7 @@ export default function AdminAnalyticsPage() {
                         <td className="p-4 font-mono font-bold text-slate-500">
                           #{(idx + 1).toString().padStart(2, '0')}
                         </td>
-                        <td className="p-4 font-bold text-white">{prod.name}</td>
+                        <td className="p-4 font-bold text-slate-100">{prod.name}</td>
                         <td className="p-4 text-center text-slate-300 font-semibold">{prod.quantity} units</td>
                         <td className="p-4 text-right font-black text-emerald-400 text-sm">
                           ₹{prod.revenue.toLocaleString('en-IN')}

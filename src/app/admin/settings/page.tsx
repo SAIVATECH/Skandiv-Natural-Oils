@@ -60,7 +60,7 @@ export default function AdminSettingsPage() {
           <div className="flex items-start space-x-3.5">
             <ShieldAlert className="w-6 h-6 text-emerald-400 mt-1 md:mt-0 flex-shrink-0" />
             <div>
-              <h4 className="font-bold text-white text-sm">Simulated Razorpay Checkout Sandbox</h4>
+              <h4 className="font-bold text-slate-100 text-sm">Simulated Razorpay Checkout Sandbox</h4>
               <p className="text-xs text-slate-400">
                 Generate local checkout pages instead of real Razorpay payment links for local developer testing.
               </p>
@@ -91,7 +91,7 @@ export default function AdminSettingsPage() {
           <div className="bg-slate-900/60 border border-slate-850 p-6 rounded-3xl shadow-xl space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
               <Key className="w-4 h-4 text-emerald-400" />
-              <h4 className="font-bold text-white text-xs uppercase tracking-wider">Razorpay Payment Integrations</h4>
+              <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Razorpay Payment Integrations</h4>
             </div>
 
             <div className="space-y-4 text-xs">
@@ -101,7 +101,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={razorpayKey}
                   onChange={(e) => setRazorpayKey(e.target.value)}
-                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white font-mono outline-none"
+                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 font-mono outline-none"
                 />
               </div>
 
@@ -121,7 +121,7 @@ export default function AdminSettingsPage() {
           <div className="bg-slate-900/60 border border-slate-850 p-6 rounded-3xl shadow-xl space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
               <Key className="w-4 h-4 text-emerald-400" />
-              <h4 className="font-bold text-white text-xs uppercase tracking-wider">Meta WhatsApp Cloud API</h4>
+              <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Meta WhatsApp Cloud API</h4>
             </div>
 
             <div className="space-y-4 text-xs">
@@ -131,7 +131,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={whatsappPhoneId}
                   onChange={(e) => setWhatsappPhoneId(e.target.value)}
-                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white font-mono outline-none"
+                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 font-mono outline-none"
                 />
               </div>
 
@@ -141,7 +141,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={whatsappVerifyToken}
                   onChange={(e) => setWhatsappVerifyToken(e.target.value)}
-                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white font-mono outline-none"
+                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 font-mono outline-none"
                 />
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function AdminSettingsPage() {
           <div className="md:col-span-2 bg-slate-900/60 border border-slate-850 p-6 rounded-3xl shadow-xl space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
               <Globe className="w-4 h-4 text-emerald-400" />
-              <h4 className="font-bold text-white text-xs uppercase tracking-wider">Store Logistics Operations</h4>
+              <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Store Logistics Operations</h4>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -161,7 +161,7 @@ export default function AdminSettingsPage() {
                   type="text"
                   value={storeAddress}
                   onChange={(e) => setStoreAddress(e.target.value)}
-                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white outline-none"
+                  className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 outline-none"
                 />
               </div>
 
@@ -181,7 +181,7 @@ export default function AdminSettingsPage() {
           <div className="md:col-span-2 bg-slate-900/60 border border-slate-850 p-6 rounded-3xl shadow-xl space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
               <MessageSquare className="w-4 h-4 text-emerald-400" />
-              <h4 className="font-bold text-white text-xs uppercase tracking-wider">Automated Conversational Templates</h4>
+              <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Automated Conversational Templates</h4>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

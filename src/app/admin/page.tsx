@@ -137,7 +137,7 @@ export default function AdminOverviewPage() {
             <div className="flex items-center space-x-3 text-amber-400">
               <AlertTriangle className="w-5 h-5 flex-shrink-0" />
               <div>
-                <p className="text-sm font-bold text-white">Stock Warning</p>
+                <p className="text-sm font-bold text-slate-100">Stock Warning</p>
                 <p className="text-xs text-slate-400">There are {cards.lowStockCount} product(s) running dangerously low on inventory.</p>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function AdminOverviewPage() {
               >
                 <div className="space-y-1.5">
                   <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">{stat.title}</span>
-                  <h3 className="text-2xl font-black text-white">{stat.value}</h3>
+                  <h3 className="text-2xl font-black text-slate-100">{stat.value}</h3>
                   <span className="text-[10px] text-slate-500 font-medium block">{stat.desc}</span>
                 </div>
                 <div className={`w-12 h-12 ${stat.bgColor} border ${stat.borderColor} rounded-2xl flex items-center justify-center`}>
@@ -180,7 +180,7 @@ export default function AdminOverviewPage() {
           <div className="lg:col-span-2 bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Weekly Revenue Stream</h3>
+                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Weekly Revenue Stream</h3>
                 <p className="text-xs text-slate-400">Sum of PAID order transactions</p>
               </div>
               <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full flex items-center space-x-1.5">
@@ -238,7 +238,7 @@ export default function AdminOverviewPage() {
           {/* Secondary Chart: Category Pie Breakdown */}
           <div className="bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
             <div className="border-b border-slate-800 pb-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Category Revenue</h3>
+              <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Category Revenue</h3>
               <p className="text-xs text-slate-400">Total volume grouped by type</p>
             </div>
 
@@ -283,7 +283,7 @@ export default function AdminOverviewPage() {
                     <div key={idx} className="flex items-center space-x-1.5 truncate">
                       <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
                       <span className="text-slate-400 truncate">{item.name}</span>
-                      <span className="text-white ml-auto">₹{item.value}</span>
+                      <span className="text-slate-100 ml-auto">₹{item.value}</span>
                     </div>
                   ))}
                 </div>
@@ -300,7 +300,7 @@ export default function AdminOverviewPage() {
           <div className="lg:col-span-2 bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Incoming Cart Requests</h3>
+                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Incoming Cart Requests</h3>
                 <p className="text-xs text-slate-400">Recent customer interactions</p>
               </div>
               <Link
@@ -335,7 +335,7 @@ export default function AdminOverviewPage() {
                           #{order.id.substring(0, 8).toUpperCase()}
                         </td>
                         <td className="py-3.5">
-                          <p className="font-bold text-white">{order.user.name || 'WhatsApp Buyer'}</p>
+                          <p className="font-bold text-slate-100">{order.user.name || 'WhatsApp Buyer'}</p>
                           <span className="text-[10px] text-slate-500 font-mono">{order.user.whatsappNumber}</span>
                         </td>
                         <td className="py-3.5">
@@ -352,7 +352,7 @@ export default function AdminOverviewPage() {
                             {order.orderStatus}
                           </span>
                         </td>
-                        <td className="py-3.5 text-right font-extrabold text-white">
+                        <td className="py-3.5 text-right font-extrabold text-slate-100">
                           ₹{Number(order.totalAmount).toLocaleString('en-IN')}
                         </td>
                       </tr>
@@ -366,7 +366,7 @@ export default function AdminOverviewPage() {
           {/* Top Selling Products List */}
           <div className="bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
             <div className="border-b border-slate-800 pb-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Top Selling Items</h3>
+              <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Top Selling Items</h3>
               <p className="text-xs text-slate-400">Total units sold & financial yield</p>
             </div>
 
@@ -382,7 +382,7 @@ export default function AdminOverviewPage() {
                       #{idx + 1}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold text-white truncate">{prod.name}</p>
+                      <p className="text-xs font-bold text-slate-100 truncate">{prod.name}</p>
                       <span className="text-[10px] text-slate-500 font-semibold">{prod.quantity} Units Sold</span>
                     </div>
                     <div className="text-right text-xs font-extrabold text-emerald-400">

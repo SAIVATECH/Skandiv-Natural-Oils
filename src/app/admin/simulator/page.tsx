@@ -303,7 +303,7 @@ export default function SimulatorPage() {
         {/* Header Block */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800 pb-5">
           <div>
-            <h1 className="text-xl font-black text-white flex items-center space-x-2">
+            <h1 className="text-xl font-black text-slate-100 flex items-center space-x-2">
               <Smartphone className="w-5 h-5 text-emerald-400" />
               <span>Manual WABA Automation Simulator</span>
             </h1>
@@ -318,11 +318,11 @@ export default function SimulatorPage() {
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1 text-xs text-white font-mono outline-none focus:border-emerald-500/50 w-36"
+              className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1 text-xs text-slate-100 font-mono outline-none focus:border-emerald-500/50 w-36"
             />
             <button
               onClick={() => fetchData(true)}
-              className="p-1 text-slate-400 hover:text-white transition-colors"
+              className="p-1 text-slate-400 hover:text-slate-100 transition-colors"
               title="Refresh logs manually"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -343,7 +343,7 @@ export default function SimulatorPage() {
                   <Smartphone className="w-5.5 h-5.5 text-emerald-400" />
                 </div>
                 <div>
-                  <h3 className="text-xs font-black text-white tracking-wide">+{phone}</h3>
+                  <h3 className="text-xs font-black text-slate-100 tracking-wide">+{phone}</h3>
                   <span className="text-[9px] text-emerald-400 font-bold tracking-widest flex items-center space-x-1">
                     <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping mr-1" />
                     <span>SIMULATOR CONSOLE ACTIVE</span>
@@ -425,7 +425,7 @@ export default function SimulatorPage() {
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(item.value)}
-                  className="bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-emerald-500/30 px-3 py-1.5 rounded-xl transition-all text-[10px] font-bold hover:scale-[1.03] active:scale-[0.97]"
+                  className="bg-slate-950 border border-slate-800 text-slate-300 hover:text-slate-100 hover:border-emerald-500/30 px-3 py-1.5 rounded-xl transition-all text-[10px] font-bold hover:scale-[1.03] active:scale-[0.97]"
                 >
                   {item.label}
                 </button>
@@ -440,7 +440,7 @@ export default function SimulatorPage() {
                 onChange={(e) => setInputMsg(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Type simulated customer response..."
-                className="flex-1 bg-slate-950 border border-slate-800 focus:border-emerald-500/50 rounded-2xl px-5 h-11 text-xs text-white outline-none"
+                className="flex-1 bg-slate-950 border border-slate-800 focus:border-emerald-500/50 rounded-2xl px-5 h-11 text-xs text-slate-100 outline-none"
               />
               <button
                 onClick={() => handleSendMessage()}
@@ -459,7 +459,7 @@ export default function SimulatorPage() {
             <div className="bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-5">
               <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
                 <Layers className="w-4 h-4 text-emerald-400" />
-                <h4 className="font-bold text-white text-xs uppercase tracking-wider">Engine State Machine Monitor</h4>
+                <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Engine State Machine Monitor</h4>
               </div>
 
               {userState ? (
@@ -480,7 +480,7 @@ export default function SimulatorPage() {
 
                   <div className="flex items-center justify-between border-b border-slate-850/50 pb-2">
                     <span className="text-slate-400 font-medium">Purchasing Quantity:</span>
-                    <span className="font-mono text-white font-extrabold">
+                    <span className="font-mono text-slate-100 font-extrabold">
                       {userState.quantity !== null ? userState.quantity : <span className="italic text-slate-600 font-normal">null (None)</span>}
                     </span>
                   </div>
@@ -509,7 +509,7 @@ export default function SimulatorPage() {
               <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-500/10 transition-colors" />
               <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
                 <Wifi className="w-4 h-4 text-emerald-400 animate-pulse" />
-                <h4 className="font-bold text-white text-xs uppercase tracking-wider">Simulate Real WhatsApp</h4>
+                <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Simulate Real WhatsApp</h4>
               </div>
 
               <div className="text-[11px] text-slate-400 space-y-3.5 leading-relaxed text-left">
@@ -527,7 +527,7 @@ export default function SimulatorPage() {
                       </div>
                     </li>
                     <li>Verify your phone number as a **Test Recipient** in your Meta App Dashboard.</li>
-                    <li>Change the **Test Phone** input field above to your **real phone number** (e.g. <code className="text-white bg-slate-900 px-1 rounded">919442101823</code>).</li>
+                    <li>Change the **Test Phone** input field above to your **real phone number** (e.g. <code className="text-slate-100 bg-slate-900 px-1 rounded">919442101823</code>).</li>
                   </ul>
                 </div>
 
@@ -548,25 +548,25 @@ export default function SimulatorPage() {
             <div className="bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
               <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
                 <HelpCircle className="w-4 h-4 text-emerald-400" />
-                <h4 className="font-bold text-white text-xs uppercase tracking-wider">How to test manually:</h4>
+                <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">How to test manually:</h4>
               </div>
 
               <div className="text-[11px] text-slate-400 space-y-3 leading-relaxed">
                 <p className="flex items-start space-x-2">
                   <span className="w-4 h-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center font-bold text-[9px] flex-shrink-0 mt-0.5">1</span>
-                  <span>Click <strong className="text-white">👋 Say HI</strong> presets shortcut to view active products and get shortcodes from PostgreSQL database.</span>
+                  <span>Click <strong className="text-slate-100">👋 Say HI</strong> presets shortcut to view active products and get shortcodes from PostgreSQL database.</span>
                 </p>
                 <p className="flex items-start space-x-2">
                   <span className="w-4 h-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center font-bold text-[9px] flex-shrink-0 mt-0.5">2</span>
-                  <span>Type and send an active product code like <strong className="text-white">headphones</strong> (slug) or click the shortcut.</span>
+                  <span>Type and send an active product code like <strong className="text-slate-100">headphones</strong> (slug) or click the shortcut.</span>
                 </p>
                 <p className="flex items-start space-x-2">
                   <span className="w-4 h-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center font-bold text-[9px] flex-shrink-0 mt-0.5">3</span>
-                  <span>Specify unit quantity (e.g. <strong className="text-white">2</strong>) to get a full calculated order aggregate invoice.</span>
+                  <span>Specify unit quantity (e.g. <strong className="text-slate-100">2</strong>) to get a full calculated order aggregate invoice.</span>
                 </p>
                 <p className="flex items-start space-x-2">
                   <span className="w-4 h-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center font-bold text-[9px] flex-shrink-0 mt-0.5">4</span>
-                  <span>Submit <strong className="text-white">CONFIRM</strong>. Open the generated secure Checkout Link in your browser to mock payment.</span>
+                  <span>Submit <strong className="text-slate-100">CONFIRM</strong>. Open the generated secure Checkout Link in your browser to mock payment.</span>
                 </p>
                 <p className="flex items-start space-x-2">
                   <span className="w-4 h-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center justify-center font-bold text-[9px] flex-shrink-0 mt-0.5">5</span>

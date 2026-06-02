@@ -285,7 +285,7 @@ export default function AdminProductsPage() {
               placeholder="Search products catalog..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-white text-xs outline-none transition-colors"
+              className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-slate-100 text-xs outline-none transition-colors"
             />
           </div>
 
@@ -307,7 +307,7 @@ export default function AdminProductsPage() {
           <div className="bg-slate-900/30 border border-slate-850 rounded-3xl p-12 text-center space-y-3">
             <AlertCircle className="w-12 h-12 text-slate-500 mx-auto" />
             <div>
-              <h4 className="font-bold text-white text-sm">No Products Found</h4>
+              <h4 className="font-bold text-slate-100 text-sm">No Products Found</h4>
               <p className="text-xs text-slate-400">Add a new item to populate the catalogue or adjust your search.</p>
             </div>
           </div>
@@ -339,7 +339,7 @@ export default function AdminProductsPage() {
                 {/* Content Panel */}
                 <div className="p-5 flex-1 flex flex-col space-y-4">
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white text-sm leading-tight group-hover:text-emerald-400 transition-colors">
+                    <h4 className="font-bold text-slate-100 text-sm leading-tight group-hover:text-emerald-400 transition-colors">
                       {prod.name}
                     </h4>
                     <span className="text-[10px] text-slate-500 font-mono font-bold uppercase tracking-wider block">
@@ -354,7 +354,7 @@ export default function AdminProductsPage() {
                   <div className="flex justify-between items-center border-y border-slate-850 py-3">
                     <div className="text-xs">
                       <p className="text-slate-500 font-semibold mb-0.5">Price</p>
-                      <span className="text-base font-black text-white">₹{Number(prod.price).toLocaleString('en-IN')}</span>
+                      <span className="text-base font-black text-slate-100">₹{Number(prod.price).toLocaleString('en-IN')}</span>
                     </div>
                     <div className="text-xs text-right">
                       <p className="text-slate-500 font-semibold mb-0.5">Inventory</p>
@@ -367,7 +367,7 @@ export default function AdminProductsPage() {
                     {/* Active toggle button */}
                     <button
                       onClick={() => handleToggleStatus(prod)}
-                      className="flex items-center space-x-1 text-[10px] font-bold uppercase text-slate-400 hover:text-white transition-colors"
+                      className="flex items-center space-x-1 text-[10px] font-bold uppercase text-slate-400 hover:text-slate-100 transition-colors"
                     >
                       {prod.isActive ? (
                         <>
@@ -423,13 +423,13 @@ export default function AdminProductsPage() {
                   <div className="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center">
                     <Sparkles className="w-4 h-4 text-emerald-400" />
                   </div>
-                  <h3 className="font-extrabold text-white text-base">
+                  <h3 className="font-extrabold text-slate-100 text-base">
                     {editingId ? 'Edit Store Item' : 'Register Store Item'}
                   </h3>
                 </div>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-white"
+                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-slate-100"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -446,7 +446,7 @@ export default function AdminProductsPage() {
                       required
                       value={form.name}
                       onChange={(e) => handleNameChange(e.target.value)}
-                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none transition-colors"
+                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none transition-colors"
                       placeholder="e.g. Mechanical Gaming Keyboard"
                     />
                     {formErrors.name && <p className="text-[10px] text-rose-400 font-bold">{formErrors.name[0]}</p>}
@@ -474,7 +474,7 @@ export default function AdminProductsPage() {
                       required
                       value={form.category}
                       onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none"
+                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
                       placeholder="e.g. Electronics"
                     />
                     {formErrors.category && <p className="text-[10px] text-rose-400 font-bold">{formErrors.category[0]}</p>}
@@ -490,7 +490,7 @@ export default function AdminProductsPage() {
                       step="0.01"
                       value={form.price}
                       onChange={(e) => setForm((prev) => ({ ...prev, price: e.target.value }))}
-                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none"
+                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
                       placeholder="e.g. 4999"
                     />
                     {formErrors.price && <p className="text-[10px] text-rose-400 font-bold">{formErrors.price[0]}</p>}
@@ -505,7 +505,7 @@ export default function AdminProductsPage() {
                       min="0"
                       value={form.stock}
                       onChange={(e) => setForm((prev) => ({ ...prev, stock: e.target.value }))}
-                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none"
+                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
                       placeholder="e.g. 30"
                     />
                     {formErrors.stock && <p className="text-[10px] text-rose-400 font-bold">{formErrors.stock[0]}</p>}
@@ -567,7 +567,7 @@ export default function AdminProductsPage() {
                             <div className="space-y-1.5">
                               <Upload className="w-5 h-5 text-slate-500 group-hover:text-emerald-400 transition-colors mx-auto" />
                               <div>
-                                <p className="text-[10px] font-extrabold text-white leading-normal">
+                                <p className="text-[10px] font-extrabold text-slate-100 leading-normal">
                                   Drag & drop or <span className="text-emerald-400 underline">click to upload</span>
                                 </p>
                                 <p className="text-[8px] text-slate-500 mt-0.5">JPEG or PNG only (max 5MB)</p>
@@ -597,7 +597,7 @@ export default function AdminProductsPage() {
                           setForm((prev) => ({ ...prev, imageUrl: e.target.value }));
                           checkUrlWarning(e.target.value);
                         }}
-                        className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-white text-xs outline-none transition-colors"
+                        className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none transition-colors"
                         placeholder="e.g. https://images.unsplash.com/...w=800"
                       />
                       
@@ -649,7 +649,7 @@ export default function AdminProductsPage() {
                       rows={3}
                       value={form.description}
                       onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-                      className="w-full bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl p-4 text-white text-xs outline-none"
+                      className="w-full bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl p-4 text-slate-100 text-xs outline-none"
                       placeholder="Enter detailed description listing specifications..."
                     />
                     {formErrors.description && <p className="text-[10px] text-rose-400 font-bold">{formErrors.description[0]}</p>}
@@ -667,7 +667,7 @@ export default function AdminProductsPage() {
                   <button
                     type="button"
                     onClick={() => setModalOpen(false)}
-                    className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-white font-bold px-4 rounded-xl text-xs active:scale-95 flex-shrink-0"
+                    className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-slate-100 font-bold px-4 rounded-xl text-xs active:scale-95 flex-shrink-0"
                   >
                     Discard
                   </button>
