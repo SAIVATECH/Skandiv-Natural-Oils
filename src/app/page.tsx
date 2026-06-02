@@ -47,8 +47,8 @@ export default async function HomeStorefront() {
       <div className="absolute bottom-[20%] left-10 w-[450px] h-[450px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Top Banner Message */}
-      <div className="bg-emerald-950/80 border-b border-emerald-900/40 text-center py-2 px-4 text-xs font-medium tracking-wide text-emerald-300 flex items-center justify-center space-x-2 relative z-50">
-        <span className="inline-block w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+      <div className="bg-emerald-50 border-b border-emerald-100/60 text-center py-2.5 px-4 text-xs font-bold tracking-wide text-emerald-800 flex items-center justify-center space-x-2 relative z-50">
+        <span className="inline-block w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
         <span>Grand Opening Sale! Instant checkout via WhatsApp. Real-time updates via SMS & chat.</span>
       </div>
 
@@ -64,7 +64,7 @@ export default async function HomeStorefront() {
           </div>
           <div>
             <h1 className="text-xl font-black tracking-tight text-white flex items-center space-x-1">
-              <span className="bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent">SKANDÍV</span>
+              <span className="font-serif bg-gradient-to-r from-emerald-700 to-emerald-500 bg-clip-text text-transparent">SKANDÍV</span>
             </h1>
             <p className="text-[10px] text-amber-500 font-bold tracking-widest uppercase leading-none">Natural Oils</p>
           </div>
@@ -87,7 +87,7 @@ export default async function HomeStorefront() {
           href={whatsappSupportUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold px-4 py-2 rounded-2xl border border-emerald-500/20 text-xs flex items-center space-x-2 transition-all active:scale-95"
+          className="bg-emerald-50 hover:bg-emerald-100/80 text-emerald-700 font-bold px-4 py-2 rounded-2xl border border-emerald-200/50 text-xs flex items-center space-x-2 transition-all active:scale-95 shadow-sm"
         >
           <MessageSquare className="w-4 h-4" />
           <span>Customer Support</span>
@@ -97,14 +97,14 @@ export default async function HomeStorefront() {
       {/* Hero Section */}
       <section className="relative py-20 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7 space-y-8 text-left z-10">
-          <div className="inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-400">
+          <div className="inline-flex items-center space-x-2 bg-emerald-100/60 border border-emerald-200/40 px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-800">
             <Award className="w-4 h-4" />
             <span>Premium Natural Extracts</span>
           </div>
           
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-[1.08] tracking-tight">
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-black text-slate-100 leading-[1.08] tracking-tight">
             Pure Wood-Pressed Oils <br/>
-            <span className="bg-gradient-to-r from-emerald-400 via-emerald-200 to-amber-400 bg-clip-text text-transparent">For Vibrant Health</span>
+            <span className="bg-gradient-to-r from-emerald-700 via-emerald-500 to-amber-600 bg-clip-text text-transparent animate-pulse-slow">For Vibrant Health</span>
           </h2>
           
           <p className="text-slate-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
@@ -114,15 +114,15 @@ export default async function HomeStorefront() {
           {/* Quick trust metrics */}
           <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-900/60 max-w-xl">
             <div>
-              <p className="text-2xl font-black text-white">100%</p>
+              <p className="text-2xl font-black text-slate-100">100%</p>
               <p className="text-xs text-slate-500 font-semibold">Raw & Organic</p>
             </div>
             <div>
-              <p className="text-2xl font-black text-white">0%</p>
+              <p className="text-2xl font-black text-slate-100">0%</p>
               <p className="text-xs text-slate-500 font-semibold">Chemical Additives</p>
             </div>
             <div>
-              <p className="text-2xl font-black text-white">Real-Time</p>
+              <p className="text-2xl font-black text-slate-100">Real-Time</p>
               <p className="text-xs text-slate-500 font-semibold">WhatsApp Delivery</p>
             </div>
           </div>
@@ -130,7 +130,7 @@ export default async function HomeStorefront() {
           <div className="pt-2">
             <a
               href="#catalog"
-              className="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 text-slate-950 font-black px-7 py-4 rounded-2xl shadow-xl shadow-emerald-500/10 hover:shadow-emerald-500/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-100 font-black px-7 py-4 rounded-2xl shadow-xl shadow-amber-500/10 hover:shadow-amber-500/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <span>Explore Premium Catalog</span>
               <ArrowRight className="w-4 h-4 stroke-[3]" />
@@ -153,7 +153,7 @@ export default async function HomeStorefront() {
               </div>
 
               <div className="text-center space-y-1.5">
-                <h4 className="text-xl font-extrabold text-white">Skandiv Pure Guarantee</h4>
+                <h4 className="text-xl font-extrabold text-slate-100">Skandiv Pure Guarantee</h4>
                 <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
                   Every batch is freshly extracted under stringent organic quality protocols. Bottled raw and unrefined.
                 </p>
@@ -166,7 +166,7 @@ export default async function HomeStorefront() {
                     <Droplet className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h5 className="font-extrabold text-white">Traditional Wood Cold-Press</h5>
+                    <h5 className="font-extrabold text-slate-100">Traditional Wood Cold-Press</h5>
                     <p className="text-slate-400 mt-0.5 leading-normal">Extracted at low temperatures below 40°C to preserve key bio-active nutrients.</p>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export default async function HomeStorefront() {
                     <ShieldCheck className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h5 className="font-extrabold text-white">Razorpay Secured Webhooks</h5>
+                    <h5 className="font-extrabold text-slate-100">Razorpay Secured Webhooks</h5>
                     <p className="text-slate-400 mt-0.5 leading-normal">Encrypted sandboxed checkouts with dynamic inventory lock reservation.</p>
                   </div>
                 </div>
@@ -186,7 +186,7 @@ export default async function HomeStorefront() {
                     <Truck className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h5 className="font-extrabold text-white">Real-Time Delivery Maps</h5>
+                    <h5 className="font-extrabold text-slate-100">Real-Time Delivery Maps</h5>
                     <p className="text-slate-400 mt-0.5 leading-normal">Instant digital tracking invoices dispatched automatically via Meta WhatsApp.</p>
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export default async function HomeStorefront() {
       <section className="bg-slate-900/30 border-y border-slate-900/80 py-16 px-6 md:px-12">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-3">
-            <h3 className="text-2xl sm:text-3xl font-black text-white">How Conversational Checkout Works</h3>
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-100">How Conversational Checkout Works</h3>
             <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
               We have automated shopping to reside right inside your favorite chat app. Buy in less than a minute.
             </p>
@@ -209,11 +209,11 @@ export default async function HomeStorefront() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Step 1 */}
             <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-emerald-500 text-slate-950 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-emerald-500/10">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
                 01
               </div>
               <div className="space-y-1 flex-1">
-                <h4 className="font-bold text-white text-sm">Select Product</h4>
+                <h4 className="font-bold text-slate-100 text-sm">Select Product</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   Explore our premium oil items below and click **Buy via WhatsApp** on your favorite selection.
                 </p>
@@ -222,11 +222,11 @@ export default async function HomeStorefront() {
 
             {/* Step 2 */}
             <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-emerald-500 text-slate-950 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-emerald-500/10">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
                 02
               </div>
               <div className="space-y-1 flex-1">
-                <h4 className="font-bold text-white text-sm">Send Quantity</h4>
+                <h4 className="font-bold text-slate-100 text-sm">Send Quantity</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   WhatsApp will open with a pre-filled buy code. Click send, and the bot will instantly reply asking for the quantity!
                 </p>
@@ -235,11 +235,11 @@ export default async function HomeStorefront() {
 
             {/* Step 3 */}
             <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-emerald-500 text-slate-950 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-emerald-500/10">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
                 03
               </div>
               <div className="space-y-1 flex-1">
-                <h4 className="font-bold text-white text-sm">Submit Address</h4>
+                <h4 className="font-bold text-slate-100 text-sm">Submit Address</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   Add more items or click checkout. Send your delivery address. The bot will render an itemized Invoice Summary.
                 </p>
@@ -248,11 +248,11 @@ export default async function HomeStorefront() {
 
             {/* Step 4 */}
             <div className="bg-slate-900/40 border border-slate-850 p-6 rounded-3xl flex flex-col space-y-4">
-              <div className="w-10 h-10 bg-emerald-500 text-slate-950 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-emerald-500/10">
+              <div className="w-10 h-10 bg-amber-500 text-slate-100 font-black rounded-2xl flex items-center justify-center text-sm shadow-lg shadow-amber-500/20">
                 04
               </div>
               <div className="space-y-1 flex-1">
-                <h4 className="font-bold text-white text-sm">Pay & Track</h4>
+                <h4 className="font-bold text-slate-100 text-sm">Pay & Track</h4>
                 <p className="text-xs text-slate-400 leading-normal">
                   Confirm the order to receive your secure Razorpay payment link. Pay safely to unlock live WhatsApp package tracking.
                 </p>
@@ -266,8 +266,8 @@ export default async function HomeStorefront() {
       <section id="catalog" className="py-20 px-6 md:px-12 max-w-7xl mx-auto space-y-16">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-900 pb-8">
           <div className="space-y-3 text-left">
-            <h3 className="text-3xl font-black text-white flex items-center space-x-2">
-              <ShoppingBag className="w-7 h-7 text-emerald-400" />
+            <h3 className="text-3xl font-black text-slate-100 flex items-center space-x-2">
+              <ShoppingBag className="w-7 h-7 text-emerald-600" />
               <span>Premium Wood-Pressed Catalog</span>
             </h3>
             <p className="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
@@ -304,7 +304,7 @@ export default async function HomeStorefront() {
         {!dbError && products.length === 0 && (
           <div className="bg-slate-900/30 border border-slate-850 text-slate-400 p-12 rounded-3xl max-w-xl mx-auto text-center space-y-4">
             <Leaf className="w-12 h-12 text-slate-600 mx-auto" />
-            <h4 className="font-bold text-lg text-white">Catalog Currently Restocking</h4>
+            <h4 className="font-bold text-lg text-slate-100">Catalog Currently Restocking</h4>
             <p className="text-xs leading-normal">
               Our traditional cold-press mills are currently working on a fresh batch of organic seeds! All items are undergoing filter maturation. Please click below to get notified once new bottles are seeded:
             </p>
@@ -379,7 +379,7 @@ export default async function HomeStorefront() {
                       </div>
                       <span className="font-semibold text-slate-400 text-[10px]">(5.0 / 48 Reviews)</span>
                     </div>
-                    <h4 className="text-lg font-black text-white group-hover:text-emerald-400 transition-colors line-clamp-1">{product.name}</h4>
+                    <h4 className="font-serif text-lg font-black text-slate-100 group-hover:text-primary transition-colors line-clamp-1">{product.name}</h4>
                     <p className="text-xs text-slate-400 leading-normal line-clamp-2 min-h-[36px]">{product.description}</p>
                   </div>
 
@@ -407,7 +407,7 @@ export default async function HomeStorefront() {
                   <div className="flex items-center justify-between pt-1">
                     <div className="space-y-0.5">
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">Price per bottle</span>
-                      <p className="text-xl font-black text-white">
+                      <p className="text-xl font-black text-slate-100">
                         ₹{Number(product.price).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                       </p>
                     </div>
@@ -424,9 +424,9 @@ export default async function HomeStorefront() {
                         href={clickToBuyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-6 py-3.5 rounded-2xl text-xs flex items-center justify-center space-x-2 transition-all hover:scale-[1.03] active:scale-98 shadow-xl shadow-emerald-500/5 hover:shadow-emerald-500/10"
+                        className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-100 font-black px-6 py-3.5 rounded-2xl text-xs flex items-center justify-center space-x-2 transition-all hover:scale-[1.03] active:scale-98 shadow-xl shadow-amber-500/10 hover:shadow-amber-500/20"
                       >
-                        <Smartphone className="w-4 h-4 stroke-[2.5]" />
+                        <Smartphone className="w-4 h-4 stroke-[2.5] text-slate-100" />
                         <span>Buy via WhatsApp</span>
                       </a>
                     )}
@@ -443,30 +443,30 @@ export default async function HomeStorefront() {
       <section className="bg-slate-900/20 py-16 px-6 md:px-12 border-t border-slate-900">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 mx-auto">
+            <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-primary mx-auto">
               <Shield className="w-6 h-6" />
             </div>
-            <h4 className="font-extrabold text-white text-base">Uncompromised Quality</h4>
+            <h4 className="font-serif font-extrabold text-slate-100 text-base">Uncompromised Quality</h4>
             <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
               Sealed under vacuum filters. Bypasses standard commercial heating channels completely.
             </p>
           </div>
 
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 mx-auto">
+            <div className="w-12 h-12 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 mx-auto">
               <Lock className="w-6 h-6" />
             </div>
-            <h4 className="font-extrabold text-white text-base">Secured Payment Escrow</h4>
+            <h4 className="font-serif font-extrabold text-slate-100 text-base">Secured Payment Escrow</h4>
             <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
               Integrated Razorpay sandbox checkout. Complete peace of mind with 100% money-back rules.
             </p>
           </div>
 
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mx-auto">
+            <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 mx-auto">
               <Truck className="w-6 h-6" />
             </div>
-            <h4 className="font-extrabold text-white text-base">Instant Tracking Alerts</h4>
+            <h4 className="font-serif font-extrabold text-slate-100 text-base">Instant Tracking Alerts</h4>
             <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
               Automated delivery tracking hooks. Receive updates and dynamic invoices via SMS.
             </p>
@@ -487,13 +487,13 @@ export default async function HomeStorefront() {
             />
           </div>
           <div className="text-center">
-            <p className="text-sm font-black tracking-widest uppercase text-white bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent leading-none">SKANDÍV</p>
-            <p className="text-[8px] text-amber-500 font-bold tracking-widest uppercase mt-0.5 leading-none">Natural Oils Store</p>
+            <p className="font-serif text-sm font-black tracking-widest uppercase bg-gradient-to-r from-emerald-700 to-emerald-500 bg-clip-text text-transparent leading-none">SKANDÍV</p>
+            <p className="text-[8px] text-amber-600 font-bold tracking-widest uppercase mt-0.5 leading-none">Natural Oils Store</p>
           </div>
         </div>
 
-        <p className="text-slate-500 max-w-md mx-auto leading-normal">
-          © 2026 Skandiv Natural Oils. Handcrafted organic cold-pressed wellness extracts. Designed by<Link href="https://saivatech.in" className="text-emerald-400 font-semibold hover:text-emerald-300 transition-colors ml-1" target="_blank" rel="noopener noreferrer">
+        <p className="text-slate-550 max-w-md mx-auto leading-normal">
+          © 2026 Skandiv Natural Oils. Handcrafted organic cold-pressed wellness extracts. Designed by<Link href="https://saivatech.in" className="text-emerald-600 font-semibold hover:text-emerald-500 transition-colors ml-1" target="_blank" rel="noopener noreferrer">
           Saivatech</Link>.
         </p>
 

@@ -42,6 +42,23 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        
+        // Re-map the hardcoded slate colors to organic light mode matching the Skandiv logo!
+        slate: {
+          950: "#fcfcf9",  /* Main organic background space */
+          900: "#ffffff",  /* Card backgrounds */
+          850: "#e3eae0",  /* Thin borders */
+          800: "#d2ded0",  /* Secondary borders */
+          500: "#5c7567",  /* Muted sage texts */
+          400: "#2a4133",  /* sage forest body texts */
+          300: "#132c1e",  /* Prominent titles and headers */
+          200: "#0c1f15",  /* Deeper headers */
+          100: "#07150d",  /* Deepest near-black forest green text */
+        },
+      },
+      fontFamily: {
+        sans: ["var(--font-outfit)", "sans-serif"],
+        serif: ["var(--font-cinzel)", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

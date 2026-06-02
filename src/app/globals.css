@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 60 18% 98.2%;     /* Warm off-white/cream background */
+    --foreground: 145 45% 9.5%;      /* Deep forest green primary text */
 
-    --card: 240 10% 5.5%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;               /* Pure white card backgrounds */
+    --card-foreground: 145 45% 9.5%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 145 45% 9.5%;
 
-    --primary: 142.1 70.6% 45.3%; /* Vibrant Emerald primary */
-    --primary-foreground: 144 9% 10%;
+    --primary: 145 58% 23%;         /* Rich emerald brand leaf green */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 48 70% 93.5%;       /* Soft cream-gold accent */
+    --secondary-foreground: 145 45% 9.5%;
 
-    --muted: 240 3.7% 12.3%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 120 10% 91.5%;          /* Soft sage/mint gray background */
+    --muted-foreground: 150 15% 42%; /* Soft olive text */
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 48 85% 93%;            /* Warm golden yellow accent */
+    --accent-foreground: 145 45% 9.5%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142.1 70.6% 45.3%;
+    --border: 120 8% 87%;            /* Thin organic border */
+    --input: 120 8% 87%;
+    --ring: 145 58% 23%;
 
     --radius: 1rem;
   }
@@ -51,23 +51,23 @@
 
 /* Custom premium styles */
 .glass-panel {
-  background: rgba(15, 15, 17, 0.65);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(12, 81, 50, 0.05);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(20, 20, 25, 0.7) 0%, rgba(10, 10, 12, 0.8) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(252, 253, 251, 0.9) 100%);
+  border: 1px solid rgba(12, 81, 50, 0.04);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  border-color: rgba(16, 185, 129, 0.25);
-  background: linear-gradient(135deg, rgba(22, 30, 26, 0.85) 0%, rgba(10, 10, 12, 0.9) 100%);
+  border-color: rgba(12, 81, 50, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 252, 245, 0.98) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 12px 20px -8px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 12px 24px -10px rgba(12, 81, 50, 0.06);
 }
 
 /* Custom scrollbars */
