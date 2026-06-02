@@ -47,38 +47,30 @@ export default async function HomeStorefront() {
       <div className="absolute bottom-[20%] left-10 w-[450px] h-[450px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Top Banner Message */}
-      <div className="bg-emerald-50 border-b border-emerald-100/60 text-center py-2.5 px-4 text-xs font-bold tracking-wide text-emerald-800 flex items-center justify-center space-x-2 relative z-50">
-        <span className="inline-block w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-        <span>Grand Opening Sale! Instant checkout via WhatsApp. Real-time updates via SMS & chat.</span>
+      <div className="bg-[#053520] border-b border-[#042818] text-center py-2.5 px-4 text-xs font-bold tracking-wide text-white flex items-center justify-center space-x-2 relative z-50">
+        <span className="inline-block w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+        <span>Grand Opening Sale! <span className="text-amber-400">Instant checkout</span> via WhatsApp. Real-time updates via SMS & Chat.</span>
       </div>
 
       {/* Modern Premium Header */}
-      <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-900 py-4 px-6 md:px-12 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-md border-b border-slate-850 py-4 px-6 md:px-12 flex items-center justify-between">
         <div className="flex items-center space-x-3.5">
-          <div className="w-12 h-12 bg-white rounded-2xl overflow-hidden border border-slate-800 p-0.5 shadow-md flex items-center justify-center hover:rotate-3 transition-transform duration-300">
+          <div className="w-14 h-14 bg-white rounded-full overflow-hidden border-2 border-amber-600/30 p-0.5 shadow-md flex items-center justify-center hover:rotate-6 transition-transform duration-300">
             <img 
               src="/logo.jpg" 
               alt="Skandiv Logo" 
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full object-cover rounded-full"
             />
           </div>
-          <div>
-            <h1 className="text-xl font-black tracking-tight text-white flex items-center space-x-1">
-              <span className="font-serif bg-gradient-to-r from-emerald-700 to-emerald-500 bg-clip-text text-transparent">SKANDÍV</span>
+          <div className="flex flex-col text-left">
+            <h1 className="text-2xl font-black tracking-tight flex items-center space-x-1.5 leading-none">
+              <span className="font-serif text-[#053520] tracking-wide">SKANDÍV</span>
             </h1>
-            <p className="text-[10px] text-amber-500 font-bold tracking-widest uppercase leading-none">Natural Oils</p>
-          </div>
-        </div>
-
-        {/* Dynamic Badges / Shortcuts */}
-        <div className="hidden md:flex items-center space-x-6 text-sm">
-          <div className="flex items-center space-x-2 text-slate-300">
-            <Leaf className="w-4 h-4 text-emerald-400" />
-            <span className="font-semibold">100% Cold-Pressed</span>
-          </div>
-          <div className="flex items-center space-x-2 text-slate-300">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span className="font-semibold">Meta API Verified</span>
+            <div className="flex items-center space-x-1 mt-1">
+              <span className="h-[1px] w-2 bg-amber-505 bg-amber-500" />
+              <span className="text-[9px] text-amber-600 font-bold tracking-[0.16em] uppercase leading-none">Natural Oils</span>
+              <span className="h-[1px] w-2 bg-amber-500" />
+            </div>
           </div>
         </div>
 
@@ -87,111 +79,147 @@ export default async function HomeStorefront() {
           href={whatsappSupportUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-emerald-50 hover:bg-emerald-100/80 text-emerald-700 font-bold px-4 py-2 rounded-2xl border border-emerald-200/50 text-xs flex items-center space-x-2 transition-all active:scale-95 shadow-sm"
+          className="bg-white hover:bg-slate-50 text-[#053520] font-extrabold px-5 py-2.5 rounded-full border border-amber-500/40 hover:border-amber-500 text-xs flex items-center space-x-2 transition-all active:scale-95 shadow-md shadow-amber-500/5"
         >
-          <MessageSquare className="w-4 h-4" />
-          <span>Customer Support</span>
+          <svg className="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24">
+            <path d="M12.004 2C6.51 2 2.014 6.5 2.014 12c0 2.16.7 4.21 2.02 5.87L2.01 22l4.25-1.23c1.61.88 3.47 1.34 5.75 1.34 5.49 0 9.99-4.5 9.99-10S17.49 2 12.004 2zm0 16.5c-1.92 0-3.69-.53-5.22-1.46l-.37-.23-2.58.75.76-2.51-.25-.4c-1.02-1.62-1.56-3.48-1.56-5.4 0-4.83 3.96-8.75 8.84-8.75 4.88 0 8.85 3.92 8.85 8.75-.01 4.83-3.97 8.75-8.85 8.75zm4.84-6.62c-.27-.14-1.57-.77-1.81-.86-.24-.09-.42-.14-.59.14-.18.27-.69.86-.85 1.05-.15.18-.31.2-.58.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.15-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.52-.43-.45-.59-.46-.15-.01-.33-.01-.51-.01-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.67 1.13 2.85c.14.18 1.96 2.99 4.74 4.19.66.29 1.18.46 1.58.59.66.21 1.27.18 1.74.11.53-.08 1.57-.64 1.79-1.27.22-.63.22-1.18.16-1.27-.07-.09-.25-.14-.52-.28z"/>
+          </svg>
+          <span className="font-sans">Customer Support</span>
         </a>
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="relative py-16 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7 space-y-8 text-left z-10">
-          <div className="inline-flex items-center space-x-2 bg-emerald-100/60 border border-emerald-200/40 px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-800">
-            <Award className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 bg-[#e3eae0] border border-[#d2ded0]/40 px-4 py-1.5 rounded-full text-xs font-bold text-[#053520]">
+            <Award className="w-4.5 h-4.5 text-emerald-700" />
             <span>Premium Natural Extracts</span>
           </div>
           
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-black text-slate-100 leading-[1.08] tracking-tight">
-            Pure Wood-Pressed Oils <br/>
-            <span className="bg-gradient-to-r from-emerald-700 via-emerald-500 to-amber-600 bg-clip-text text-transparent animate-pulse-slow">For Vibrant Health</span>
-          </h2>
+          <div className="space-y-4">
+            <h2 className="font-serif text-5xl sm:text-6xl md:text-[68px] font-black text-slate-100 leading-[1.05] tracking-tight flex flex-col uppercase">
+              <span className="text-slate-100">Pure Wood-</span>
+              <span className="text-slate-100">Pressed Oils</span>
+              <span className="text-[#053520]">For Vibrant</span>
+              <span className="text-amber-500">Health</span>
+            </h2>
+            {/* Elegant horizontal gold accent underline separator */}
+            <div className="w-48 h-[3px] bg-gradient-to-r from-[#caa023] via-amber-400 to-transparent rounded-full mt-2" />
+          </div>
           
           <p className="text-slate-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
-            We extract our oils using traditional wooden wood-presses (Mara Chekku) to prevent heat generation. This keeps natural nutrients, aroma, and rich antioxidants intact—bringing purity straight to your kitchen!
+            We extract our oils using traditional wooden wood-presses (Mara Chekku) to retain natural nutrients, aroma, and rich antioxidants — bringing purity straight to your kitchen!
           </p>
 
-          {/* Quick trust metrics */}
-          <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-900/60 max-w-xl">
-            <div>
-              <p className="text-2xl font-black text-slate-100">100%</p>
-              <p className="text-xs text-slate-500 font-semibold">Raw & Organic</p>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-slate-100">0%</p>
-              <p className="text-xs text-slate-500 font-semibold">Chemical Additives</p>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-slate-100">Real-Time</p>
-              <p className="text-xs text-slate-500 font-semibold">WhatsApp Delivery</p>
-            </div>
-          </div>
-
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
             <a
               href="#catalog"
-              className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-100 font-black px-7 py-4 rounded-2xl shadow-xl shadow-amber-500/10 hover:shadow-amber-500/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex items-center justify-center space-x-2 bg-[#053520] hover:bg-[#032013] text-white font-black px-8 py-4 rounded-2xl shadow-xl shadow-[#053520]/10 hover:shadow-[#053520]/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 animate-pulse-slow"
             >
-              <span>Explore Premium Catalog</span>
+              <span>Shop Our Oils</span>
               <ArrowRight className="w-4 h-4 stroke-[3]" />
+            </a>
+            
+            <a
+              href={whatsappSupportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center space-x-2 bg-white hover:bg-slate-50 text-[#053520] font-black px-8 py-4 rounded-2xl border-2 border-amber-500/40 hover:border-amber-500/70 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-amber-500/5"
+            >
+              <svg className="w-5 h-5 fill-[#25D366]" viewBox="0 0 24 24">
+                <path d="M12.004 2C6.51 2 2.014 6.5 2.014 12c0 2.16.7 4.21 2.02 5.87L2.01 22l4.25-1.23c1.61.88 3.47 1.34 5.75 1.34 5.49 0 9.99-4.5 9.99-10S17.49 2 12.004 2zm0 16.5c-1.92 0-3.69-.53-5.22-1.46l-.37-.23-2.58.75.76-2.51-.25-.4c-1.02-1.62-1.56-3.48-1.56-5.4 0-4.83 3.96-8.75 8.84-8.75 4.88 0 8.85 3.92 8.85 8.75-.01 4.83-3.97 8.75-8.85 8.75zm4.84-6.62c-.27-.14-1.57-.77-1.81-.86-.24-.09-.42-.14-.59.14-.18.27-.69.86-.85 1.05-.15.18-.31.2-.58.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.15-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.52-.43-.45-.59-.46-.15-.01-.33-.01-.51-.01-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.67 1.13 2.85c.14.18 1.96 2.99 4.74 4.19.66.29 1.18.46 1.58.59.66.21 1.27.18 1.74.11.53-.08 1.57-.64 1.79-1.27.22-.63.22-1.18.16-1.27-.07-.09-.25-.14-.52-.28z"/>
+              </svg>
+              <span>Order on WhatsApp</span>
             </a>
           </div>
         </div>
 
-        {/* Feature Visual Brand card */}
-        <div className="lg:col-span-5 relative flex justify-center">
-          <div className="w-full max-w-md bg-slate-900/40 border border-slate-850 p-8 rounded-[36px] shadow-2xl relative overflow-hidden backdrop-blur-sm card-3d preserve-3d perspective-1000">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-[40px] rounded-full pointer-events-none" />
+        {/* Mockup-Matched Hero Showcase Image */}
+        <div className="lg:col-span-5 relative flex justify-center z-10">
+          <div className="w-full max-w-md bg-white border border-[#e3eae0] p-3.5 rounded-[40px] shadow-2xl relative overflow-hidden card-3d preserve-3d perspective-1000">
+            {/* Ambient organic glows */}
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/5 blur-[50px] rounded-full pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-amber-500/5 blur-[50px] rounded-full pointer-events-none" />
             
-            <div className="flex flex-col space-y-6">
-              <div className="w-20 h-20 bg-white rounded-3xl p-1 border border-slate-850 shadow-xl self-center float-3d">
-                <img 
-                  src="/logo.jpg" 
-                  alt="Skandiv Organic Logo" 
-                  className="w-full h-full object-cover rounded-2xl"
-                />
+            <div className="w-full aspect-[4/5] rounded-[32px] overflow-hidden border border-[#e3eae0] relative shadow-inner bg-slate-950 preserve-3d">
+              <img 
+                src="/hero-showcase.png" 
+                alt="Skandiv Premium Oils Showcase" 
+                className="w-full h-full object-cover depth-image"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Trust Badges Grid (Mockup-matched) */}
+      <section className="px-6 md:px-12 max-w-7xl mx-auto -mt-6 mb-12">
+        <div className="bg-white border border-[#e3eae0] rounded-[32px] p-6 shadow-xl shadow-emerald-950/[0.01]">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-[#e3eae0]">
+            
+            {/* Badge 1: 100% Raw & Organic */}
+            <div className="flex flex-col items-center text-center p-3 space-y-3 justify-center">
+              <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
+                <Leaf className="w-5 h-5" />
               </div>
-
-              <div className="text-center space-y-1.5">
-                <h4 className="text-xl font-extrabold text-slate-100">Skandiv Pure Guarantee</h4>
-                <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
-                  Every batch is freshly extracted under stringent organic quality protocols. Bottled raw and unrefined.
-                </p>
-              </div>
-
-              {/* List features with icons */}
-              <div className="space-y-4 pt-4 border-t border-slate-850">
-                <div className="flex items-start space-x-3 text-xs">
-                  <div className="w-5 h-5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center justify-center flex-shrink-0 text-emerald-400">
-                    <Droplet className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <h5 className="font-extrabold text-slate-100">Traditional Wood Cold-Press</h5>
-                    <p className="text-slate-400 mt-0.5 leading-normal">Extracted at low temperatures below 40°C to preserve key bio-active nutrients.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 text-xs">
-                  <div className="w-5 h-5 bg-amber-500/10 border border-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0 text-amber-400">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <h5 className="font-extrabold text-slate-100">Razorpay Secured Webhooks</h5>
-                    <p className="text-slate-400 mt-0.5 leading-normal">Encrypted sandboxed checkouts with dynamic inventory lock reservation.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3 text-xs">
-                  <div className="w-5 h-5 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0 text-blue-400">
-                    <Truck className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <h5 className="font-extrabold text-slate-100">Real-Time Delivery Maps</h5>
-                    <p className="text-slate-400 mt-0.5 leading-normal">Instant digital tracking invoices dispatched automatically via Meta WhatsApp.</p>
-                  </div>
-                </div>
+              <div>
+                <p className="text-lg font-black text-slate-100 leading-none">100%</p>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">Raw & Organic</p>
               </div>
             </div>
+
+            {/* Badge 2: 0% Chemical Additives */}
+            <div className="flex flex-col items-center text-center p-3 pt-6 md:pt-3 space-y-3 justify-center">
+              <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 shadow-sm border border-amber-100">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M19 19c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V8h14v11zM10.22 6h3.56l.72 1.44c.15.3.46.56.78.56h.72V6h-1v-.5c0-.83-.67-1.5-1.5-1.5h-1c-.83 0-1.5.67-1.5 1.5V6h-1v2h.72c.32 0 .63-.26.78-.56L10.22 6zM18.8 16.7c-.5-.8-1.4-1.3-2.4-1.3H16v-4.5c0-.6-.2-1.1-.6-1.5l-2.4-2.4c-.2-.2-.5-.3-.8-.3s-.6.1-.8.3L9 9.8c-.4.4-.6.9-.6 1.5V15.4H7.6c-1 0-1.9.5-2.4 1.3-.5.8-.6 1.8-.2 2.7.4.8 1.3 1.4 2.3 1.4h9.4c1 0 1.9-.6 2.3-1.4.4-.9.3-1.9-.2-2.7zM11 9.4c.2-.2.5-.2.7 0l1.7 1.7V15H11V9.4zM7.7 19.3c-.4 0-.8-.2-1-.6-.2-.4-.2-.8 0-1.2.2-.4.6-.6 1-.6H11V18H7.7v1.3zm8.6 0H13v-3h3.3c.4 0 .8.2 1 .6.2.4.2.8 0 1.2-.2.4-.6.6-1 .6z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg font-black text-slate-100 leading-none">0%</p>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">Chemical Additives</p>
+              </div>
+            </div>
+
+            {/* Badge 3: Traditional Mara Chekku */}
+            <div className="flex flex-col items-center text-center p-3 pt-6 md:pt-3 space-y-3 justify-center">
+              <div className="w-12 h-12 bg-amber-100/50 rounded-full flex items-center justify-center text-amber-800 shadow-sm border border-amber-200">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M6 19h12v2H6zm6-17c-2.76 0-5 2.24-5 5v3c0 2.21 1.79 4 4 4h2c2.21 0 4-1.79 4-4V7c0-2.76-2.24-5-5-5zm-1 8H9V7h2v3zm4 0h-2V7h2v3z"/>
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-black text-slate-100 leading-tight">Traditional</p>
+                <p className="text-[10px] text-slate-500 font-semibold mt-0.5">Mara Chekku Method</p>
+              </div>
+            </div>
+
+            {/* Badge 4: Rich in Nutrients */}
+            <div className="flex flex-col items-center text-center p-3 pt-6 md:pt-3 space-y-3 justify-center">
+              <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-700 shadow-sm border border-emerald-100">
+                <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-black text-slate-100 leading-tight">Rich in</p>
+                <p className="text-[10px] text-slate-500 font-semibold mt-0.5">Nutrients & Antioxidants</p>
+              </div>
+            </div>
+
+            {/* Badge 5: Real-Time WhatsApp Support */}
+            <div className="flex flex-col items-center text-center p-3 pt-6 md:pt-3 space-y-3 justify-center">
+              <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 shadow-sm border border-amber-100">
+                <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-black text-slate-100 leading-tight">Real-Time</p>
+                <p className="text-[10px] text-slate-500 font-semibold mt-0.5">WhatsApp Support</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -439,37 +467,41 @@ export default async function HomeStorefront() {
         </div>
       </section>
 
-      {/* Trust guarantees badge section */}
-      <section className="bg-slate-900/20 py-16 px-6 md:px-12 border-t border-slate-900">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-primary mx-auto">
-              <Shield className="w-6 h-6" />
+      {/* Secondary Mockup-Matched Trust Showcase Card */}
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-12">
+        <div className="bg-[#f5f8f3] border-2 border-emerald-100/30 rounded-[36px] p-8 shadow-xl shadow-[#053520]/[0.01]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center divide-y md:divide-y-0 md:divide-x divide-emerald-200/40">
+            
+            {/* Card Column 1: 100% Raw & Organic */}
+            <div className="flex flex-col items-center text-center p-4 space-y-2 justify-center">
+              <div className="relative">
+                <span className="text-[56px] font-black text-[#053520] font-serif leading-none tracking-tight">100%</span>
+                <span className="absolute -top-1 -right-4 text-emerald-600 font-serif text-xl">🌿</span>
+              </div>
+              <div className="w-24 h-[2px] bg-emerald-500/30 mx-auto" />
+              <p className="text-xs text-[#053520] font-black uppercase tracking-widest mt-1">Raw & Organic</p>
             </div>
-            <h4 className="font-serif font-extrabold text-slate-100 text-base">Uncompromised Quality</h4>
-            <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
-              Sealed under vacuum filters. Bypasses standard commercial heating channels completely.
-            </p>
-          </div>
 
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 mx-auto">
-              <Lock className="w-6 h-6" />
+            {/* Card Column 2: 0% Chemical Additives */}
+            <div className="flex flex-col items-center text-center p-4 pt-8 md:pt-4 space-y-2 justify-center">
+              <span className="text-[56px] font-black text-[#caa023] font-serif leading-none tracking-tight">0%</span>
+              <div className="w-24 h-[2px] bg-amber-500/30 mx-auto" />
+              <p className="text-xs text-amber-700 font-black uppercase tracking-widest mt-1">Chemical Additives</p>
             </div>
-            <h4 className="font-serif font-extrabold text-slate-100 text-base">Secured Payment Escrow</h4>
-            <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
-              Integrated Razorpay sandbox checkout. Complete peace of mind with 100% money-back rules.
-            </p>
-          </div>
 
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 mx-auto">
-              <Truck className="w-6 h-6" />
+            {/* Card Column 3: Real-Time WhatsApp Support */}
+            <div className="flex flex-col items-center text-center p-4 pt-8 md:pt-4 space-y-3 justify-center">
+              <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/20 border border-[#1ebd59] hover:scale-105 transition-transform duration-300">
+                <svg className="w-8 h-8 fill-white" viewBox="0 0 24 24">
+                  <path d="M12.004 2C6.51 2 2.014 6.5 2.014 12c0 2.16.7 4.21 2.02 5.87L2.01 22l4.25-1.23c1.61.88 3.47 1.34 5.75 1.34 5.49 0 9.99-4.5 9.99-10S17.49 2 12.004 2zm0 16.5c-1.92 0-3.69-.53-5.22-1.46l-.37-.23-2.58.75.76-2.51-.25-.4c-1.02-1.62-1.56-3.48-1.56-5.4 0-4.83 3.96-8.75 8.84-8.75 4.88 0 8.85 3.92 8.85 8.75-.01 4.83-3.97 8.75-8.85 8.75zm4.84-6.62c-.27-.14-1.57-.77-1.81-.86-.24-.09-.42-.14-.59.14-.18.27-.69.86-.85 1.05-.15.18-.31.2-.58.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.15-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.52-.43-.45-.59-.46-.15-.01-.33-.01-.51-.01-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.67 1.13 2.85c.14.18 1.96 2.99 4.74 4.19.66.29 1.18.46 1.58.59.66.21 1.27.18 1.74.11.53-.08 1.57-.64 1.79-1.27.22-.63.22-1.18.16-1.27-.07-.09-.25-.14-.52-.28z"/>
+                </svg>
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-sm font-black text-[#053520]">Real-Time</p>
+                <p className="text-[11px] text-slate-500 font-bold uppercase tracking-wider leading-none">WhatsApp Support</p>
+              </div>
             </div>
-            <h4 className="font-serif font-extrabold text-slate-100 text-base">Instant Tracking Alerts</h4>
-            <p className="text-xs text-slate-400 leading-normal max-w-xs mx-auto">
-              Automated delivery tracking hooks. Receive updates and dynamic invoices via SMS.
-            </p>
+
           </div>
         </div>
       </section>
