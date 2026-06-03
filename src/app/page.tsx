@@ -46,6 +46,15 @@ export default async function HomeStorefront() {
       <div className="absolute top-[30%] right-1/4 w-[600px] h-[600px] bg-amber-500/5 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[20%] left-10 w-[450px] h-[450px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none" />
 
+      {/* Decorative organic leaf branches from mockup */}
+      <div className="absolute top-16 right-0 w-64 md:w-[350px] pointer-events-none select-none z-30 mix-blend-multiply opacity-95">
+        <img 
+          src="/leaves-branch.png" 
+          alt="Decorative Organic Leaves Branch" 
+          className="w-full h-auto object-contain transform origin-top-right rotate-[-5deg]" 
+        />
+      </div>
+
       {/* Top Banner Message */}
       <div className="bg-[#053520] border-b border-[#042818] text-center py-2.5 px-4 text-xs font-bold tracking-wide text-white flex items-center justify-center space-x-2 relative z-50">
         <span className="inline-block w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
@@ -468,7 +477,25 @@ export default async function HomeStorefront() {
       </section>
 
       {/* Secondary Mockup-Matched Trust Showcase Card */}
-      <section className="px-6 md:px-12 max-w-6xl mx-auto py-12">
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-12 relative overflow-visible">
+        {/* Left overlapping leaf branch */}
+        <div className="absolute -bottom-6 -left-8 w-24 md:w-32 pointer-events-none select-none z-20 mix-blend-multiply opacity-90">
+          <img 
+            src="/leaves-corner.png" 
+            alt="Decorative Organic Leaf Bottom Left" 
+            className="w-full h-auto object-contain transform -rotate-12" 
+          />
+        </div>
+        
+        {/* Right overlapping leaf branch */}
+        <div className="absolute -bottom-8 -right-8 w-24 md:w-32 pointer-events-none select-none z-20 mix-blend-multiply opacity-90">
+          <img 
+            src="/leaves-corner.png" 
+            alt="Decorative Organic Leaf Bottom Right" 
+            className="w-full h-auto object-contain transform scale-x-[-1] rotate-12" 
+          />
+        </div>
+
         <div className="bg-[#f5f8f3] border-2 border-emerald-100/30 rounded-[36px] p-8 shadow-xl shadow-[#053520]/[0.01]">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center divide-y md:divide-y-0 md:divide-x divide-emerald-200/40">
             
