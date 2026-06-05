@@ -69,15 +69,15 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
     }
 
     // Global intercept for enquiries or manual support triggers
-    if (text === 'enquiry_contact' || text.includes('99407') || text.includes('65917') || text.includes('enquiry')) {
+    if (text === 'enquiry_contact' || text === 'contact & support' || text.includes('99407') || text.includes('65917') || text.includes('enquiry')) {
       await sendWhatsAppMessage(
         user.whatsappNumber,
-        "if any enqurie contact \"99407 65917\"",
+        "For custom orders, business enquiries, or support assistance, please reach out to us at +91 99407 65917.",
         {
           type: 'button',
           buttons: [
             { id: 'menu', title: '🛍️ View Products' },
-            { id: 'enquiry_contact', title: '99407 65917' }
+            { id: 'enquiry_contact', title: 'Contact & Support' }
           ]
         }
       );
@@ -159,12 +159,12 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
         });
         await sendWhatsAppMessage(
           user.whatsappNumber,
-          "if any enqurie contact \"99407 65917\"",
+          "For custom orders, business enquiries, or support assistance, please reach out to us at +91 99407 65917.",
           {
             type: 'button',
             buttons: [
               { id: 'menu', title: '🛍️ View Products' },
-              { id: 'enquiry_contact', title: '99407 65917' }
+              { id: 'enquiry_contact', title: 'Contact & Support' }
             ]
           }
         );
@@ -248,12 +248,12 @@ async function handleStepSelectProduct(user: any, state: any, input: string) {
   if (!product) {
     await sendWhatsAppMessage(
       user.whatsappNumber,
-      "if any enqurie contact \"99407 65917\"",
+      "For custom orders, business enquiries, or support assistance, please reach out to us at +91 99407 65917.",
       {
         type: 'button',
         buttons: [
           { id: 'menu', title: '🛍️ View Products' },
-          { id: 'enquiry_contact', title: '99407 65917' }
+          { id: 'enquiry_contact', title: 'Contact & Support' }
         ]
       }
     );
