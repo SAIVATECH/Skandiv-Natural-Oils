@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { HeroSlider } from '@/components/hero-slider';
 import { 
   ShoppingBag, 
   Smartphone, 
@@ -97,68 +98,9 @@ export default async function HomeStorefront() {
         </a>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative py-16 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7 space-y-8 text-left z-10">
-          <div className="inline-flex items-center space-x-2 bg-[#e3eae0] border border-[#d2ded0]/40 px-4 py-1.5 rounded-full text-xs font-bold text-[#053520]">
-            <Award className="w-4.5 h-4.5 text-emerald-700" />
-            <span>Premium Natural Extracts</span>
-          </div>
-          
-          <div className="space-y-4">
-            <h2 className="font-serif text-5xl sm:text-6xl md:text-[68px] font-black text-slate-100 leading-[1.05] tracking-tight flex flex-col uppercase">
-              <span className="text-slate-100">Pure Wood-</span>
-              <span className="text-slate-100">Pressed Oils</span>
-              <span className="text-[#053520]">For Vibrant</span>
-              <span className="text-amber-500">Health</span>
-            </h2>
-            {/* Elegant horizontal gold accent underline separator */}
-            <div className="w-48 h-[3px] bg-gradient-to-r from-[#caa023] via-amber-400 to-transparent rounded-full mt-2" />
-          </div>
-          
-          <p className="text-slate-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
-            We extract our oils using traditional wooden wood-presses (Mara Chekku) to retain natural nutrients, aroma, and rich antioxidants — bringing purity straight to your kitchen!
-          </p>
-
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <a
-              href="#catalog"
-              className="inline-flex items-center justify-center space-x-2 bg-[#053520] hover:bg-[#032013] text-white font-black px-8 py-4 rounded-2xl shadow-xl shadow-[#053520]/10 hover:shadow-[#053520]/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 animate-pulse-slow"
-            >
-              <span>Shop Our Oils</span>
-              <ArrowRight className="w-4 h-4 stroke-[3]" />
-            </a>
-            
-            <a
-              href={whatsappSupportUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center space-x-2 bg-white hover:bg-slate-50 text-[#053520] font-black px-8 py-4 rounded-2xl border-2 border-amber-500/40 hover:border-amber-500/70 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-amber-500/5"
-            >
-              <svg className="w-5 h-5 fill-[#25D366]" viewBox="0 0 24 24">
-                <path d="M12.004 2C6.51 2 2.014 6.5 2.014 12c0 2.16.7 4.21 2.02 5.87L2.01 22l4.25-1.23c1.61.88 3.47 1.34 5.75 1.34 5.49 0 9.99-4.5 9.99-10S17.49 2 12.004 2zm0 16.5c-1.92 0-3.69-.53-5.22-1.46l-.37-.23-2.58.75.76-2.51-.25-.4c-1.02-1.62-1.56-3.48-1.56-5.4 0-4.83 3.96-8.75 8.84-8.75 4.88 0 8.85 3.92 8.85 8.75-.01 4.83-3.97 8.75-8.85 8.75zm4.84-6.62c-.27-.14-1.57-.77-1.81-.86-.24-.09-.42-.14-.59.14-.18.27-.69.86-.85 1.05-.15.18-.31.2-.58.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.15-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.52-.43-.45-.59-.46-.15-.01-.33-.01-.51-.01-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.67 1.13 2.85c.14.18 1.96 2.99 4.74 4.19.66.29 1.18.46 1.58.59.66.21 1.27.18 1.74.11.53-.08 1.57-.64 1.79-1.27.22-.63.22-1.18.16-1.27-.07-.09-.25-.14-.52-.28z"/>
-              </svg>
-              <span>Order on WhatsApp</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Mockup-Matched Hero Showcase Image */}
-        <div className="lg:col-span-5 relative flex justify-center z-10">
-          <div className="w-full max-w-md bg-white border border-[#e3eae0] p-3.5 rounded-[40px] shadow-2xl relative overflow-hidden card-3d preserve-3d perspective-1000">
-            {/* Ambient organic glows */}
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/5 blur-[50px] rounded-full pointer-events-none" />
-            <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-amber-500/5 blur-[50px] rounded-full pointer-events-none" />
-            
-            <div className="w-full aspect-[4/5] rounded-[32px] overflow-hidden border border-[#e3eae0] relative shadow-inner bg-slate-950 preserve-3d">
-              <img 
-                src="/hero-showcase.png" 
-                alt="Skandiv Premium Oils Showcase" 
-                className="w-full h-full object-cover depth-image"
-              />
-            </div>
-          </div>
-        </div>
+      {/* Hero Slider Section */}
+      <section className="relative py-8 lg:py-12 max-w-7xl mx-auto z-10">
+        <HeroSlider products={products} whatsappPhone={whatsappPhone} />
       </section>
 
       {/* Premium Trust Badges Grid (Mockup-matched) */}
