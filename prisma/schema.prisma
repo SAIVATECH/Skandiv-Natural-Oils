@@ -28,6 +28,7 @@ model Product {
   slug        String      @unique
   description String
   price       Decimal     @db.Decimal(10, 2)
+  mrp         Decimal?    @db.Decimal(10, 2)
   stock       Int
   imageUrl    String      @map("image_url")
   category    String

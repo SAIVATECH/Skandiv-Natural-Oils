@@ -24,6 +24,7 @@ interface ProductForm {
   slug: string;
   description: string;
   price: string;
+  mrp: string;
   stock: string;
   imageUrl: string;
   category: string;
@@ -50,6 +51,7 @@ export default function AdminProductsPage() {
     slug: '',
     description: '',
     price: '',
+    mrp: '',
     stock: '',
     imageUrl: '',
     category: '',
@@ -183,6 +185,7 @@ export default function AdminProductsPage() {
       slug: prod.slug,
       description: prod.description,
       price: String(prod.price),
+      mrp: prod.mrp !== null && prod.mrp !== undefined ? String(prod.mrp) : '',
       stock: String(prod.stock),
       imageUrl: prod.imageUrl,
       category: prod.category,
@@ -205,6 +208,7 @@ export default function AdminProductsPage() {
       slug: prod.slug,
       description: prod.description,
       price: Number(prod.price),
+      mrp: prod.mrp !== null && prod.mrp !== undefined ? Number(prod.mrp) : null,
       stock: Number(prod.stock),
       imageUrl: prod.imageUrl,
       category: prod.category,
@@ -241,6 +245,7 @@ export default function AdminProductsPage() {
       slug: form.slug,
       description: form.description,
       price: parseFloat(form.price) || 0,
+      mrp: form.mrp ? parseFloat(form.mrp) : null,
       stock: parseInt(form.stock, 10) || 0,
       imageUrl: form.imageUrl,
       category: form.category,
@@ -354,7 +359,12 @@ export default function AdminProductsPage() {
                   <div className="flex justify-between items-center border-y border-slate-850 py-3">
                     <div className="text-xs">
                       <p className="text-slate-500 font-semibold mb-0.5">Price</p>
-                      <span className="text-base font-black text-slate-100">₹{Number(prod.price).toLocaleString('en-IN')}</span>
+                      <div className="flex items-center gap-1.5">
+                        {prod.mrp && Number(prod.mrp) > Number(prod.price) && (
+                          <span className="text-xs line-through text-slate-500">₹{Number(prod.mrp).toLocaleString('en-IN')}</span>
+                        )}
+                        <span className="text-base font-black text-slate-100">₹{Number(prod.price).toLocaleString('en-IN')}</span>
+                      </div>
                     </div>
                     <div className="text-xs text-right">
                       <p className="text-slate-500 font-semibold mb-0.5">Inventory</p>
@@ -482,7 +492,7 @@ export default function AdminProductsPage() {
 
                   {/* Price Field */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Price (INR)</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Selling Price (INR)</label>
                     <input
                       type="number"
                       required
@@ -496,8 +506,23 @@ export default function AdminProductsPage() {
                     {formErrors.price && <p className="text-[10px] text-rose-400 font-bold">{formErrors.price[0]}</p>}
                   </div>
 
-                  {/* Stock Field */}
+                  {/* MRP Field */}
                   <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">MRP Price (Optional)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      step="0.01"
+                      value={form.mrp}
+                      onChange={(e) => setForm((prev) => ({ ...prev, mrp: e.target.value }))}
+                      className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
+                      placeholder="e.g. 5999"
+                    />
+                    {formErrors.mrp && <p className="text-[10px] text-rose-400 font-bold">{formErrors.mrp[0]}</p>}
+                  </div>
+
+                  {/* Stock Field */}
+                  <div className="col-span-2 space-y-1.5">
                     <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Initial Stock</label>
                     <input
                       type="number"

@@ -6,6 +6,7 @@ interface Product {
   slug: string;
   description: string;
   price: number;
+  mrp?: number | null;
   stock: number;
   imageUrl: string;
   category: string;

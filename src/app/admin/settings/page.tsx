@@ -195,7 +195,7 @@ export default function AdminSettingsPage() {
 Explore our premium catalog below. To purchase an item, reply with its code word (e.g. *headphones* or *keyboard*):
 
 1. *Wireless Noise-Canceling Headphones*
-💰 Price: ₹8,999.00
+💰 Price: ~₹9,999.00~ *₹8,999.00*
 👉 Reply: *headphones*`}
                 </div>
               </div>

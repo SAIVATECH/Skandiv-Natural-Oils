@@ -444,9 +444,16 @@ export default async function HomeStorefront() {
                   <div className="flex items-center justify-between pt-1">
                     <div className="space-y-0.5">
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">Price per bottle</span>
-                      <p className="text-xl font-black text-slate-100">
-                        ₹{Number(product.price).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                      </p>
+                      <div className="flex items-baseline space-x-2">
+                        {product.mrp && Number(product.mrp) > Number(product.price) && (
+                          <span className="text-sm line-through text-slate-500 font-medium">
+                            ₹{Number(product.mrp).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                          </span>
+                        )}
+                        <p className="text-xl font-black text-slate-100">
+                          ₹{Number(product.price).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                        </p>
+                      </div>
                     </div>
 
                     {isOutOfStock ? (

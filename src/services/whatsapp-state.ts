@@ -106,7 +106,10 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
           },
         });
 
-        const selectQtyMsg = `You selected *${targetProduct.name}* (₹${Number(targetProduct.price).toLocaleString('en-IN')} each). Great choice! 👍\n\nHow many units would you like to buy? Choose from the options below, or reply with your desired quantity (1-${targetProduct.stock}):`;
+        const priceStr = targetProduct.mrp && Number(targetProduct.mrp) > Number(targetProduct.price)
+          ? `~₹${Number(targetProduct.mrp).toLocaleString('en-IN')}~ *₹${Number(targetProduct.price).toLocaleString('en-IN')}*`
+          : `*₹${Number(targetProduct.price).toLocaleString('en-IN')}*`;
+        const selectQtyMsg = `You selected *${targetProduct.name}* (${priceStr} each). Great choice! 👍\n\nHow many units would you like to buy? Choose from the options below, or reply with your desired quantity (1-${targetProduct.stock}):`;
 
         await sendWhatsAppMessage(user.whatsappNumber, selectQtyMsg, {
           type: 'button',
@@ -221,11 +224,18 @@ async function handleStepStart(user: any, state: any) {
     sections: [
       {
         title: 'Premium Catalog',
-        rows: products.map((prod: any) => ({
-          id: prod.slug,
-          title: prod.name.substring(0, 24),
-          description: `${prod.stock === 0 ? '🚫 OUT OF STOCK' : `₹${Number(prod.price).toLocaleString('en-IN')}`} - ${prod.description.substring(0, 42)}...`
-        }))
+        rows: products.map((prod: any) => {
+          const priceStr = prod.stock === 0
+            ? '🚫 OUT OF STOCK'
+            : (prod.mrp && Number(prod.mrp) > Number(prod.price)
+              ? `~₹${Number(prod.mrp).toLocaleString('en-IN')}~ *₹${Number(prod.price).toLocaleString('en-IN')}*`
+              : `*₹${Number(prod.price).toLocaleString('en-IN')}*`);
+          return {
+            id: prod.slug,
+            title: prod.name.substring(0, 24),
+            description: `${priceStr} - ${prod.description.substring(0, 42)}...`
+          };
+        })
       }
     ]
   });
@@ -269,7 +279,10 @@ async function handleStepSelectProduct(user: any, state: any, input: string) {
     },
   });
 
-  const selectQtyMsg = `You selected *${product.name}* (₹${Number(product.price).toLocaleString('en-IN')} each). Great choice! 👍\n\nHow many units would you like to buy? Choose from the options below, or reply with your desired quantity (1-${product.stock}):`;
+  const priceStr = product.mrp && Number(product.mrp) > Number(product.price)
+    ? `~₹${Number(product.mrp).toLocaleString('en-IN')}~ *₹${Number(product.price).toLocaleString('en-IN')}*`
+    : `*₹${Number(product.price).toLocaleString('en-IN')}*`;
+  const selectQtyMsg = `You selected *${product.name}* (${priceStr} each). Great choice! 👍\n\nHow many units would you like to buy? Choose from the options below, or reply with your desired quantity (1-${product.stock}):`;
 
   await sendWhatsAppMessage(user.whatsappNumber, selectQtyMsg, {
     type: 'button',
@@ -451,7 +464,10 @@ async function sendCartPreviewMessage(user: any, orderId: string) {
   let cartMsg = `🛒 *YOUR SHOPPING CART*\n`;
   cartMsg += `----------------------------------\n`;
   order.items.forEach((item: any) => {
-    cartMsg += `- *${item.quantity} x ${item.product.name}*\n  (₹${Number(item.price).toLocaleString('en-IN')} each)\n`;
+    const eachPriceStr = item.product.mrp && Number(item.product.mrp) > Number(item.price)
+      ? `~₹${Number(item.product.mrp).toLocaleString('en-IN')}~ *₹${Number(item.price).toLocaleString('en-IN')}*`
+      : `*₹${Number(item.price).toLocaleString('en-IN')}*`;
+    cartMsg += `- *${item.quantity} x ${item.product.name}*\n  (${eachPriceStr} each)\n`;
   });
   cartMsg += `----------------------------------\n`;
   cartMsg += `💰 *Subtotal:* ₹${Number(order.totalAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}\n\n`;
@@ -506,11 +522,18 @@ async function handleStepCartView(user: any, state: any, input: string) {
       sections: [
         {
           title: 'Premium Catalog',
-          rows: products.map((prod: any) => ({
-            id: prod.slug,
-            title: prod.name.substring(0, 24),
-            description: `${prod.stock === 0 ? '🚫 OUT OF STOCK' : `₹${Number(prod.price).toLocaleString('en-IN')}`} - ${prod.description.substring(0, 42)}...`
-          }))
+          rows: products.map((prod: any) => {
+            const priceStr = prod.stock === 0
+              ? '🚫 OUT OF STOCK'
+              : (prod.mrp && Number(prod.mrp) > Number(prod.price)
+                ? `~₹${Number(prod.mrp).toLocaleString('en-IN')}~ *₹${Number(prod.price).toLocaleString('en-IN')}*`
+                : `*₹${Number(prod.price).toLocaleString('en-IN')}*`);
+            return {
+              id: prod.slug,
+              title: prod.name.substring(0, 24),
+              description: `${priceStr} - ${prod.description.substring(0, 42)}...`
+            };
+          })
         }
       ]
     });
@@ -619,7 +642,10 @@ async function handleStepGetAddress(user: any, state: any, input: string) {
   let summaryMsg = `📝 *INVOICE SUMMARY*\n`;
   summaryMsg += `----------------------------------\n`;
   order.items.forEach((item: any) => {
-    summaryMsg += `- *${item.quantity} x ${item.product.name}*\n  (₹${Number(item.price).toLocaleString('en-IN')} each)\n`;
+    const eachPriceStr = item.product.mrp && Number(item.product.mrp) > Number(item.price)
+      ? `~₹${Number(item.product.mrp).toLocaleString('en-IN')}~ *₹${Number(item.price).toLocaleString('en-IN')}*`
+      : `*₹${Number(item.price).toLocaleString('en-IN')}*`;
+    summaryMsg += `- *${item.quantity} x ${item.product.name}*\n  (${eachPriceStr} each)\n`;
   });
   summaryMsg += `----------------------------------\n`;
   summaryMsg += `💰 *Total Amount:* ₹${Number(order.totalAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}\n`;

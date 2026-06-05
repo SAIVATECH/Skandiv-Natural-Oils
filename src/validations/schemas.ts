@@ -9,6 +9,14 @@ export const productSchema = z.object({
     (val) => parseFloat(String(val)),
     z.number().positive('Price must be a positive number')
   ),
+  mrp: z.preprocess(
+    (val) => {
+      if (val === undefined || val === null || val === '') return null;
+      const parsed = parseFloat(String(val));
+      return isNaN(parsed) ? null : parsed;
+    },
+    z.number().positive('MRP must be a positive number').nullable().optional()
+  ),
   stock: z.preprocess(
     (val) => parseInt(String(val), 10),
     z.number().int().nonnegative('Stock must be a non-negative integer')
