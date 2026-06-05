@@ -289,11 +289,13 @@ export default function SimulatorPage() {
 
   const quickShortcuts = [
     { label: '👋 Say HI', value: 'Hi' },
-    { label: '🎧 Headphones', value: 'headphones' },
+    { label: '🥥 Coconut Oil', value: 'coconut-oil' },
+    { label: '🌱 Sesame Oil', value: 'sesame-oil' },
     { label: '🔢 Quantity 2', value: '2' },
     { label: '🚚 Send Address', value: '123 Tech Park, Bangalore, KA, 560001' },
     { label: '✅ Confirm Order', value: 'confirm' },
-    { label: '❌ Cancel Order', value: 'cancel' }
+    { label: '❌ Cancel Order', value: 'cancel' },
+    { label: '❓ Unwanted Chat', value: 'Hello! I have a question about shipping' }
   ];
 
   return (

@@ -68,6 +68,22 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
       state.currentStep = 'START';
     }
 
+    // Global intercept for enquiries or manual support triggers
+    if (text === 'enquiry_contact' || text.includes('99407') || text.includes('65917') || text.includes('enquiry')) {
+      await sendWhatsAppMessage(
+        user.whatsappNumber,
+        "if any enqurie contact \"99407 65917\"",
+        {
+          type: 'button',
+          buttons: [
+            { id: 'menu', title: '🛍️ View Products' },
+            { id: 'enquiry_contact', title: '99407 65917' }
+          ]
+        }
+      );
+      return;
+    }
+
     // Global intercept for landing page "Buy Now" clicks (e.g. "buy_500ml-coconut-oil")
     if (text.startsWith('buy_')) {
       const targetSlug = text.replace(/^buy_/i, '').trim();
@@ -141,7 +157,17 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
           where: { userId: user.id },
           data: { currentStep: 'START' },
         });
-        await sendWhatsAppMessage(user.whatsappNumber, "Oops! Something went wrong in our messaging flow. Let's start fresh. Reply 'HI' to view our store menu.");
+        await sendWhatsAppMessage(
+          user.whatsappNumber,
+          "if any enqurie contact \"99407 65917\"",
+          {
+            type: 'button',
+            buttons: [
+              { id: 'menu', title: '🛍️ View Products' },
+              { id: 'enquiry_contact', title: '99407 65917' }
+            ]
+          }
+        );
         break;
     }
   } catch (error: any) {
@@ -222,7 +248,14 @@ async function handleStepSelectProduct(user: any, state: any, input: string) {
   if (!product) {
     await sendWhatsAppMessage(
       user.whatsappNumber,
-      `Sorry, we couldn't find that item or it is out of stock. 🚫\n\nPlease reply with a valid product code (e.g., *coconut oil, Groundnut oil, Seasame oil*).\n\nReply *MENU* to view the entire catalogue again.`
+      "if any enqurie contact \"99407 65917\"",
+      {
+        type: 'button',
+        buttons: [
+          { id: 'menu', title: '🛍️ View Products' },
+          { id: 'enquiry_contact', title: '99407 65917' }
+        ]
+      }
     );
     return;
   }
