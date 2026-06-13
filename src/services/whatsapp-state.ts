@@ -96,6 +96,26 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
       });
 
       if (targetProduct) {
+        const isDefaultName = !user.name || user.name.startsWith('Customer ') || user.name === 'WhatsApp Buyer' || user.name === 'Valued Customer';
+        
+        if (isDefaultName) {
+          state = await prisma.conversationState.update({
+            where: { userId: user.id },
+            data: {
+              currentStep: 'GET_NAME',
+              selectedProductId: targetProduct.id,
+              quantity: null,
+              pendingOrderId: null,
+            },
+          });
+          
+          await sendWhatsAppMessage(
+            user.whatsappNumber,
+            `Welcome to Skandiv Natural Oils! 🌿\n\nBefore we process your selection (*${targetProduct.name}*), could you please tell us your name?`
+          );
+          return;
+        }
+
         state = await prisma.conversationState.update({
           where: { userId: user.id },
           data: {
@@ -128,6 +148,10 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
     switch (state.currentStep) {
       case 'START':
         await handleStepStart(user, state);
+        break;
+
+      case 'GET_NAME':
+        await handleStepGetName(user, state, bodyText);
         break;
 
       case 'SELECT_PRODUCT':
@@ -196,6 +220,18 @@ export async function handleWhatsAppMessage(fromNumber: string, bodyText: string
  * Displays a welcome message and lists available active products with shortcodes.
  */
 async function handleStepStart(user: any, state: any) {
+  const isDefaultName = !user.name || user.name.startsWith('Customer ') || user.name === 'WhatsApp Buyer' || user.name === 'Valued Customer';
+  if (isDefaultName) {
+    await prisma.conversationState.update({
+      where: { id: state.id },
+      data: { currentStep: 'GET_NAME' },
+    });
+
+    const namePrompt = `Welcome to Skandiv Natural Oils! 🌿\n\nBefore we browse our premium catalog, could you please tell us your name?`;
+    await sendWhatsAppMessage(user.whatsappNumber, namePrompt);
+    return;
+  }
+
   // Fetch active products (show all active products regardless of stock status)
   const products = await prisma.product.findMany({
     where: { isActive: true },
@@ -805,6 +841,100 @@ async function handleStepAwaitingPayment(user: any, state: any) {
     buttons: [
       { id: 'reset', title: '🔄 Discard & Reset' },
       { id: 'menu', title: '🛍️ Catalog Menu' }
+    ]
+  });
+}
+
+/**
+ * STEP 0.5: GET_NAME
+ * Updates the customer's name and proceeds to START step or resumes purchase.
+ */
+async function handleStepGetName(user: any, state: any, input: string) {
+  const cleanName = input.trim();
+  if (cleanName.length < 2 || cleanName.length > 50 || cleanName.toLowerCase().startsWith('buy_')) {
+    await sendWhatsAppMessage(
+      user.whatsappNumber,
+      "Please enter a valid name (2-50 characters) so we know how to address you:"
+    );
+    return;
+  }
+
+  // Update user's name in the database
+  const updatedUser = await prisma.user.update({
+    where: { id: user.id },
+    data: { name: cleanName },
+  });
+
+  await sendWhatsAppMessage(user.whatsappNumber, `Nice to meet you, *${cleanName}*! 🎉`);
+
+  // If they have a pending product selection, resume checkout immediately
+  if (state.selectedProductId) {
+    const targetProduct = await prisma.product.findUnique({
+      where: { id: state.selectedProductId }
+    });
+    if (targetProduct) {
+      await prisma.conversationState.update({
+        where: { id: state.id },
+        data: { currentStep: 'SELECT_QUANTITY' }
+      });
+      const priceStr = targetProduct.mrp && Number(targetProduct.mrp) > Number(targetProduct.price)
+        ? `~₹${Number(targetProduct.mrp).toLocaleString('en-IN')}~ *₹${Number(targetProduct.price).toLocaleString('en-IN')}*`
+        : `*₹${Number(targetProduct.price).toLocaleString('en-IN')}*`;
+      const selectQtyMsg = `You selected *${targetProduct.name}* (${priceStr} each). Great choice! 👍\n\nHow many units would you like to buy? Choose from the options below, or reply with your desired quantity (1-${targetProduct.stock}):`;
+
+      await sendWhatsAppMessage(user.whatsappNumber, selectQtyMsg, {
+        type: 'button',
+        imageUrl: targetProduct.imageUrl || undefined,
+        buttons: [
+          { id: '1', title: 'Buy 1 Unit' },
+          { id: '2', title: 'Buy 2 Units' },
+          { id: '3', title: 'Buy 3 Units' }
+        ]
+      });
+      return;
+    }
+  }
+
+  // Otherwise show the welcome products catalog
+  await prisma.conversationState.update({
+    where: { id: state.id },
+    data: { currentStep: 'SELECT_PRODUCT' },
+  });
+  
+  const products = await prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { category: 'asc' },
+  });
+
+  if (products.length === 0) {
+    await sendWhatsAppMessage(
+      user.whatsappNumber,
+      "We are currently restocking our inventory. Please check back later!"
+    );
+    return;
+  }
+
+  const welcomeMessage = `Explore our premium catalog below. Click the button below to open the catalog or reply with its code word (e.g. *coconut oil*, *Groundnut oil* or *Seasame oil*):`;
+
+  await sendWhatsAppMessage(user.whatsappNumber, welcomeMessage, {
+    type: 'list',
+    buttonText: '🛍️ View Products',
+    sections: [
+      {
+        title: 'Premium Catalog',
+        rows: products.map((prod: any) => {
+          const priceStr = prod.stock === 0
+            ? '🚫 OUT OF STOCK'
+            : (prod.mrp && Number(prod.mrp) > Number(prod.price)
+              ? `~₹${Number(prod.mrp).toLocaleString('en-IN')}~ *₹${Number(prod.price).toLocaleString('en-IN')}*`
+              : `*₹${Number(prod.price).toLocaleString('en-IN')}*`);
+          return {
+            id: prod.slug,
+            title: prod.name.substring(0, 24),
+            description: `${priceStr} - ${prod.description.substring(0, 42)}...`
+          };
+        })
+      }
     ]
   });
 }

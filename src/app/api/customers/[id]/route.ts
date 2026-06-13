@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { customerSchema } from '@/validations/schemas';
 
 /**
  * DELETE Customer from the database
@@ -36,5 +37,77 @@ export async function DELETE(
   } catch (error) {
     console.error('[API Customer DELETE Error]:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
+  }
+}
+
+/**
+ * PUT update customer details
+ * Path: PUT /api/customers/[id]
+ */
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const body = await req.json();
+
+    // Validate inputs
+    const validatedData = customerSchema.safeParse(body);
+    if (!validatedData.success) {
+      return NextResponse.json(
+        { errors: validatedData.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+
+    const { name, whatsappNumber } = validatedData.data;
+
+    // Verify user exists
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      return new NextResponse('Customer not found', { status: 404 });
+    }
+
+    if (user.role === 'ADMIN') {
+      return new NextResponse('Cannot update administrator accounts', { status: 403 });
+    }
+
+    // Check if the new WhatsApp number is already in use by another user
+    if (whatsappNumber !== user.whatsappNumber) {
+      const existing = await prisma.user.findUnique({
+        where: { whatsappNumber },
+      });
+      if (existing) {
+        return NextResponse.json(
+          { errors: { whatsappNumber: ['WhatsApp number is already in use'] } },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Update Customer details
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        name,
+        whatsappNumber,
+      },
+    });
+
+    return NextResponse.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      whatsappNumber: updatedUser.whatsappNumber,
+    });
+  } catch (error: any) {
+    console.error('[API Customer PUT Error]:', error);
+    return NextResponse.json(
+      { errors: { global: [error.message || 'Internal Server Error'] } },
+      { status: 500 }
+    );
   }
 }

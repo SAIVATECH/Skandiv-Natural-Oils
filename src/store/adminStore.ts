@@ -86,6 +86,8 @@ interface AdminState {
   deleteProduct: (id: string) => Promise<boolean>;
   deleteOrder: (id: string) => Promise<boolean>;
   deleteCustomer: (id: string) => Promise<boolean>;
+  addCustomer: (customer: { name: string; whatsappNumber: string }) => Promise<{ success: boolean; errors?: any }>;
+  updateCustomer: (id: string, customer: { name: string; whatsappNumber: string }) => Promise<{ success: boolean; errors?: any }>;
 
   updateOrderStatus: (id: string, data: { orderStatus: string; paymentStatus: string; trackingUrl?: string }) => Promise<boolean>;
   sendWhatsAppMessage: (to: string, message: string) => Promise<boolean>;
@@ -289,6 +291,62 @@ export const useAdminStore = create<AdminState>((set, get) => ({
     } catch (err) {
       console.error('Zustand: Failed to delete customer', err);
       return false;
+    }
+  },
+
+  addCustomer: async (customer) => {
+    try {
+      const res = await fetch('/api/customers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(customer),
+      });
+
+      let data: any = {};
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        data = { errors: { global: [text || 'Internal server error occurred'] } };
+      }
+
+      if (res.ok) {
+        get().fetchCustomers();
+        return { success: true };
+      }
+      return { success: false, errors: data.errors || data };
+    } catch (err) {
+      console.error('Zustand: Failed to add customer', err);
+      return { success: false, errors: { global: ['Something went wrong'] } };
+    }
+  },
+
+  updateCustomer: async (id, customer) => {
+    try {
+      const res = await fetch(`/api/customers/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(customer),
+      });
+
+      let data: any = {};
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        data = { errors: { global: [text || 'Internal server error occurred'] } };
+      }
+
+      if (res.ok) {
+        get().fetchCustomers();
+        return { success: true };
+      }
+      return { success: false, errors: data.errors || data };
+    } catch (err) {
+      console.error('Zustand: Failed to update customer', err);
+      return { success: false, errors: { global: ['Something went wrong'] } };
     }
   },
 

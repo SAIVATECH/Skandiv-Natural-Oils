@@ -33,6 +33,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
     if (pathname === '/admin/products') return 'Product Catalog';
     if (pathname === '/admin/orders') return 'Order Transactions';
     if (pathname === '/admin/customers') return 'Customer Directory';
+    if (pathname === '/admin/chat') return 'Live Customer Chat';
     if (pathname === '/admin/analytics') return 'Analytics & Insights';
     if (pathname === '/admin/settings') return 'Platform Settings';
     return 'Admin Panel';

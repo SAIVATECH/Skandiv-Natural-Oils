@@ -15,7 +15,9 @@ import {
   Loader2,
   AlertCircle,
   CheckCircle2,
-  Trash2
+  Trash2,
+  Plus,
+  Edit2
 } from 'lucide-react';
 
 export default function AdminCustomersPage() {
@@ -24,22 +26,35 @@ export default function AdminCustomersPage() {
     loadingCustomers,
     fetchCustomers,
     sendWhatsAppMessage,
-    deleteCustomer
+    deleteCustomer,
+    addCustomer,
+    updateCustomer
   } = useAdminStore();
 
   const [search, setSearch] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   
   // Custom Message Form State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const [messageText, setMessageText] = useState('');
   const [sendingMsg, setSendingMsg] = useState(false);
   const [sendSuccess, setSendSuccess] = useState(false);
+
+  // Customer Profile CRUD Form State
+  const [customerModalOpen, setCustomerModalOpen] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState<any>(null);
+  const [customerForm, setCustomerForm] = useState({
+    name: '',
+    whatsappNumber: '',
+  });
+  const [customerFormErrors, setCustomerFormErrors] = useState<any>({});
+  const [submittingCustomer, setSubmittingCustomer] = useState(false);
 
   useEffect(() => {
     fetchCustomers();
   }, [fetchCustomers]);
 
+  // Message Center Handlers
   const handleOpenMsg = (customer: any) => {
     setSelectedCustomer(customer);
     setMessageText('');
@@ -57,12 +72,50 @@ export default function AdminCustomersPage() {
     if (success) {
       setSendSuccess(true);
       setMessageText('');
-      // Automatically fade out success tick after 3 seconds
       setTimeout(() => setSendSuccess(false), 3000);
     } else {
       alert('Failed to transmit message. Please verify Meta settings.');
     }
     setSendingMsg(false);
+  };
+
+  // Profile CRUD Handlers
+  const handleOpenAddCustomer = () => {
+    setEditingCustomer(null);
+    setCustomerForm({ name: '', whatsappNumber: '' });
+    setCustomerFormErrors({});
+    setCustomerModalOpen(true);
+  };
+
+  const handleOpenEditCustomer = (customer: any) => {
+    setEditingCustomer(customer);
+    setCustomerForm({
+      name: customer.name,
+      whatsappNumber: customer.whatsappNumber,
+    });
+    setCustomerFormErrors({});
+    setCustomerModalOpen(true);
+  };
+
+  const handleCustomerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingCustomer(true);
+    setCustomerFormErrors({});
+
+    let result;
+    if (editingCustomer) {
+      result = await updateCustomer(editingCustomer.id, customerForm);
+    } else {
+      result = await addCustomer(customerForm);
+    }
+
+    if (result.success) {
+      setCustomerModalOpen(false);
+      setCustomerForm({ name: '', whatsappNumber: '' });
+    } else {
+      setCustomerFormErrors(result.errors || {});
+    }
+    setSubmittingCustomer(false);
   };
 
   const handleDeleteCustomer = async (customer: any) => {
@@ -97,7 +150,7 @@ export default function AdminCustomersPage() {
     <DashboardShell>
       <div className="space-y-6">
         
-        {/* Search bar */}
+        {/* Search bar & Add Customer Button */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900/40 p-4 rounded-3xl border border-slate-900">
           <div className="relative w-full sm:max-w-xs">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -111,6 +164,13 @@ export default function AdminCustomersPage() {
               className="w-full h-10 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-2xl pl-10 pr-4 text-slate-100 text-xs outline-none transition-colors"
             />
           </div>
+          <button
+            onClick={handleOpenAddCustomer}
+            className="w-full sm:w-auto h-10 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 rounded-2xl flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
+          >
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <span>Add New Customer</span>
+          </button>
         </div>
 
         {/* 2. DIRECTORY VIEW */}
@@ -184,6 +244,13 @@ export default function AdminCustomersPage() {
                   >
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                     <span>Open Message Center</span>
+                  </button>
+                  <button
+                    onClick={() => handleOpenEditCustomer(cust)}
+                    className="w-10 h-10 bg-slate-950 border border-slate-850 hover:border-emerald-500/30 text-slate-400 hover:text-slate-100 rounded-2xl flex items-center justify-center transition-all active:scale-90"
+                    title="Edit Profile"
+                  >
+                    <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDeleteCustomer(cust)}
@@ -292,6 +359,83 @@ export default function AdminCustomersPage() {
                 </div>
               </form>
 
+            </div>
+          </div>
+        )}
+
+        {/* 4. CUSTOMER PROFILE CRUD MODAL */}
+        {customerModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div 
+              className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300"
+              onClick={() => setCustomerModalOpen(false)}
+            />
+
+            <div className="relative max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 z-10 animate-scale-up">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h3 className="font-extrabold text-slate-100 text-sm">
+                  {editingCustomer ? 'Edit Customer Details' : 'Register New Customer'}
+                </h3>
+                <button
+                  onClick={() => setCustomerModalOpen(false)}
+                  className="w-8 h-8 bg-slate-950 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 hover:text-slate-100"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleCustomerSubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Customer Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={customerForm.name}
+                    onChange={(e) => setCustomerForm(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
+                    placeholder="e.g. Rahul Sharma"
+                  />
+                  {customerFormErrors.name && <p className="text-[10px] text-rose-400 font-bold">{customerFormErrors.name[0]}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">WhatsApp Number</label>
+                  <input
+                    type="text"
+                    required
+                    value={customerForm.whatsappNumber}
+                    onChange={(e) => setCustomerForm(prev => ({ ...prev, whatsappNumber: e.target.value.replace(/\D/g, '') }))}
+                    className="w-full h-11 bg-slate-950 border border-slate-850 focus:border-emerald-500/50 rounded-xl px-4 text-slate-100 text-xs outline-none"
+                    placeholder="e.g. 919876543210 (with country code)"
+                  />
+                  {customerFormErrors.whatsappNumber && <p className="text-[10px] text-rose-400 font-bold">{customerFormErrors.whatsappNumber[0]}</p>}
+                </div>
+
+                {customerFormErrors.global && (
+                  <p className="text-[10px] text-rose-400 font-bold">{customerFormErrors.global[0]}</p>
+                )}
+
+                <div className="flex items-center justify-end space-x-3 pt-4 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => setCustomerModalOpen(false)}
+                    className="h-11 bg-slate-950 border border-slate-850 text-slate-400 hover:text-slate-100 font-bold px-4 rounded-xl text-xs active:scale-95"
+                  >
+                    Discard
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submittingCustomer}
+                    className="h-11 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-6 rounded-xl text-xs flex items-center justify-center space-x-2 active:scale-95 disabled:opacity-50"
+                  >
+                    {submittingCustomer ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <span>Save Customer</span>
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

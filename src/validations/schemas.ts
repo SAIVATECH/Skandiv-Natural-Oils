@@ -38,3 +38,9 @@ export const sendWhatsAppSchema = z.object({
   to: z.string().min(10, 'Recipient number must be valid'),
   message: z.string().min(1, 'Message cannot be empty'),
 });
+
+// Customer Creation/Editing Validation Schema
+export const customerSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters long'),
+  whatsappNumber: z.string().min(10, 'WhatsApp number must be at least 10 digits long').regex(/^\d+$/, 'WhatsApp number can only contain digits'),
+});
