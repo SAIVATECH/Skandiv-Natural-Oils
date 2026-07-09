@@ -4,7 +4,10 @@ import { sendWhatsAppTemplateMessage } from '@/lib/whatsapp';
 /**
  * Helper to map template variables configuration to Meta Cloud API components format.
  */
-function mapTemplateVariables(varsConfig: any, customer: any): any[] {
+/**
+ * Helper to map template variables configuration to Meta Cloud API components format.
+ */
+function mapTemplateVariables(varsConfig: any, customer: any, template: any = null): any[] {
   const bodyParams: any[] = [];
   const headerParams: any[] = [];
 
@@ -41,6 +44,40 @@ function mapTemplateVariables(varsConfig: any, customer: any): any[] {
   if (headerParams.length > 0) {
     components.push({ type: 'header', parameters: headerParams });
   }
+
+  // Automatically map button variables if the template contains a URL button with placeholder variables
+  if (template && Array.isArray(template.components)) {
+    const buttonsComp = template.components.find((c: any) => c.type === 'BUTTONS' || c.type === 'buttons');
+    if (buttonsComp && Array.isArray(buttonsComp.buttons)) {
+      buttonsComp.buttons.forEach((btn: any, idx: number) => {
+        if (btn.type === 'URL' || btn.type === 'url') {
+          // If the URL button requires a variable parameter (contains e.g. {{1}}), map it
+          if (btn.url && (btn.url.includes('{{1}}') || btn.url.includes('{{2}}'))) {
+            // Use the first body variable value (typically the OTP code or custom text)
+            let btnText = '12345';
+            if (bodyParams.length > 0 && bodyParams[0].text) {
+              btnText = bodyParams[0].text;
+            } else if (customer.name) {
+              btnText = customer.name;
+            }
+
+            components.push({
+              type: 'button',
+              sub_type: 'url',
+              index: String(idx),
+              parameters: [
+                {
+                  type: 'text',
+                  text: btnText
+                }
+              ]
+            });
+          }
+        }
+      });
+    }
+  }
+
   return components;
 }
 
@@ -69,6 +106,11 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
       console.error(`[Campaign Processor] Campaign not found: ${campaignId}`);
       return { processedCount: 0, hasMore: false };
     }
+
+    // Fetch the stored template schema from the database
+    const template = await prisma.campaignTemplate.findUnique({
+      where: { name: campaign.templateName }
+    });
 
     // Set status to SENDING if it isn't already
     if (campaign.status !== 'SENDING') {
@@ -205,8 +247,8 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
         return { processedCount, hasMore: false };
       }
 
-      // Map variables
-      const components = mapTemplateVariables(campaign.templateVariables, recipient.customer);
+      // Map variables (including button parameters from template schema)
+      const components = mapTemplateVariables(campaign.templateVariables, recipient.customer, template);
 
       // Mark recipient status as SENDING
       await prisma.campaignRecipient.update({
