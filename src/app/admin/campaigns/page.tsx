@@ -642,7 +642,7 @@ export default function CampaignsPage() {
                 <div className="col-span-full bg-slate-900/20 border border-slate-900 p-12 text-center rounded-3xl space-y-3">
                   <Layers className="w-10 h-10 text-slate-700 mx-auto" />
                   <p className="text-slate-300 text-xs font-bold">No cached templates available</p>
-                  <p className="text-slate-500 text-[11px]">Click "Sync From Meta" above to pull templates.</p>
+                  <p className="text-slate-500 text-[11px]">Click &quot;Sync From Meta&quot; above to pull templates.</p>
                 </div>
               ) : (
                 templates.map((t) => {
