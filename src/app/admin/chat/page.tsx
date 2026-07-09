@@ -173,7 +173,7 @@ export default function AdminLiveChatPage() {
                         : 'hover:bg-slate-900/50 text-slate-300'
                     }`}
                   >
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${isSelected ? 'bg-slate-950/25 text-white' : 'bg-slate-950 border border-slate-850 text-emerald-400'}`}>
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${isSelected ? 'bg-slate-950/25 text-slate-100' : 'bg-slate-950 border border-slate-850 text-emerald-400'}`}>
                       <User className="w-4.5 h-4.5" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -205,7 +205,7 @@ export default function AdminLiveChatPage() {
                     onClick={() => setMobileShowChat(false)}
                     className="md:hidden w-8 h-8 bg-slate-900 rounded-lg border border-slate-850 flex items-center justify-center text-slate-400 active:scale-95"
                   >
-                    <ArrowLeft className="w-4 h-4 text-white" />
+                    <ArrowLeft className="w-4 h-4 text-slate-100" />
                   </button>
                   <div>
                     <h4 className="font-extrabold text-sm text-slate-100 leading-none">{selectedCust.name}</h4>

@@ -51,7 +51,7 @@ export function AdminSidebar({ onCloseMobile }: SidebarProps) {
           <Smartphone className="w-5 h-5 text-slate-950 stroke-[2.5]" />
         </div>
         <div>
-          <h1 className="font-extrabold text-white leading-none tracking-wide text-sm">WABA STORE</h1>
+          <h1 className="font-extrabold text-slate-100 leading-none tracking-wide text-sm">WABA STORE</h1>
           <span className="text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">Automations</span>
         </div>
       </div>
@@ -70,12 +70,12 @@ export function AdminSidebar({ onCloseMobile }: SidebarProps) {
               className={`flex items-center space-x-3.5 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-200 group active:scale-[0.98] ${
                 isActive
                   ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/15'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                  : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
               }`}
             >
               <Icon
                 className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${
-                  isActive ? 'text-slate-950' : 'text-slate-400 group-hover:text-white'
+                  isActive ? 'text-slate-950' : 'text-slate-400 group-hover:text-slate-100'
                 }`}
               />
               <span>{item.name}</span>

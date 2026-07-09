@@ -100,13 +100,13 @@ export default function CampaignSettingsPage() {
         <div className="flex items-center space-x-3 pb-2 border-b border-slate-900">
           <Link 
             href="/admin/campaigns" 
-            className="w-10 h-10 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-colors active:scale-95"
+            className="w-10 h-10 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-100 transition-colors active:scale-95"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-5 h-5 text-slate-100" />
           </Link>
           <div>
             <p className="text-[10px] text-slate-500 font-bold font-mono uppercase tracking-widest">Global Caps</p>
-            <h1 className="text-xl font-black text-white tracking-tight">Campaign Limits & Settings</h1>
+            <h1 className="text-xl font-black text-slate-100 tracking-tight">Campaign Limits & Settings</h1>
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export default function CampaignSettingsPage() {
         {/* Configuration settings form */}
         <form onSubmit={handleSaveSettings} className="bg-slate-900/40 border border-slate-900 rounded-3xl p-6 space-y-6 shadow-xl">
           
-          <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
+          <div className="flex items-center gap-2 text-xs font-black text-slate-100 uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
             <ShieldAlert className="w-4.5 h-4.5 text-emerald-400" />
             <span>Messaging Safety Guardrails</span>
           </div>
@@ -182,7 +182,7 @@ export default function CampaignSettingsPage() {
           <div className="bg-amber-500/5 border border-amber-500/15 p-4.5 rounded-2xl flex items-start gap-3 text-amber-300 text-[11px] leading-relaxed">
             <AlertTriangle className="w-5 h-5 flex-shrink-0 text-amber-500" />
             <div>
-              <span className="font-bold block text-white mb-0.5">API Rate limits and Meta Account Rules</span>
+              <span className="font-bold block text-slate-100 mb-0.5">API Rate limits and Meta Account Rules</span>
               Meta restricts template sending rates based on your WhatsApp Business phone number quality score and tier rating. Ensure you match local regulatory guidelines to avoid account bans.
             </div>
           </div>

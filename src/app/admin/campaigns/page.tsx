@@ -248,14 +248,14 @@ export default function CampaignsPage() {
             </div>
             <div>
               <p className="text-xs text-slate-400 font-semibold font-mono uppercase tracking-widest">Broadcast Core</p>
-              <h1 className="text-2xl font-black tracking-tight text-white">Campaign Management</h1>
+              <h1 className="text-2xl font-black tracking-tight text-slate-100">Campaign Management</h1>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Link 
               href="/admin/campaigns/settings" 
-              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-300 hover:text-white transition-all text-xs font-bold flex items-center gap-2"
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl text-slate-300 hover:text-slate-100 transition-all text-xs font-bold flex items-center gap-2"
             >
               <SettingsIcon className="w-4 h-4" />
               <span>Limits Settings</span>
@@ -277,7 +277,7 @@ export default function CampaignsPage() {
             <div className="flex justify-between items-start">
               <div className="space-y-1.5">
                 <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Total Broadcasts</p>
-                <h3 className="text-3xl font-black text-white tracking-tight">{cards.totalCampaigns}</h3>
+                <h3 className="text-3xl font-black text-slate-100 tracking-tight">{cards.totalCampaigns}</h3>
               </div>
               <div className="p-2.5 bg-slate-800/60 rounded-2xl text-slate-400 group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-all">
                 <Layers className="w-5 h-5" />
@@ -294,7 +294,7 @@ export default function CampaignsPage() {
             <div className="flex justify-between items-start">
               <div className="space-y-1.5">
                 <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Delivery Rate</p>
-                <h3 className="text-3xl font-black text-white tracking-tight">{Math.round(cards.deliveryRate)}%</h3>
+                <h3 className="text-3xl font-black text-slate-100 tracking-tight">{Math.round(cards.deliveryRate)}%</h3>
               </div>
               <div className="p-2.5 bg-slate-800/60 rounded-2xl text-slate-400 group-hover:text-teal-400 group-hover:bg-teal-500/10 transition-all">
                 <MailCheck className="w-5 h-5" />
@@ -311,7 +311,7 @@ export default function CampaignsPage() {
             <div className="flex justify-between items-start">
               <div className="space-y-1.5">
                 <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Read Open Rate</p>
-                <h3 className="text-3xl font-black text-white tracking-tight">{Math.round(cards.openRate)}%</h3>
+                <h3 className="text-3xl font-black text-slate-100 tracking-tight">{Math.round(cards.openRate)}%</h3>
               </div>
               <div className="p-2.5 bg-slate-800/60 rounded-2xl text-slate-400 group-hover:text-blue-400 group-hover:bg-blue-500/10 transition-all">
                 <Eye className="w-5 h-5" />
@@ -328,7 +328,7 @@ export default function CampaignsPage() {
             <div className="flex justify-between items-start">
               <div className="space-y-1.5">
                 <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Simulated Cost</p>
-                <h3 className="text-3xl font-black text-white tracking-tight">${cards.totalCost.toFixed(2)}</h3>
+                <h3 className="text-3xl font-black text-slate-100 tracking-tight">${cards.totalCost.toFixed(2)}</h3>
               </div>
               <div className="p-2.5 bg-slate-800/60 rounded-2xl text-slate-400 group-hover:text-purple-400 group-hover:bg-purple-500/10 transition-all">
                 <TrendingUp className="w-5 h-5" />
@@ -347,7 +347,7 @@ export default function CampaignsPage() {
           <div className="bg-slate-900/20 border border-slate-900 rounded-3xl p-5 space-y-3">
             <div className="flex justify-between items-center text-xs">
               <span className="text-slate-400 font-bold uppercase tracking-wider">Daily Messaging Cap</span>
-              <span className="text-white font-black">{cards.sentToday} / {cards.dailyCap} messages</span>
+              <span className="text-slate-100 font-black">{cards.sentToday} / {cards.dailyCap} messages</span>
             </div>
             <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
               <div 
@@ -365,7 +365,7 @@ export default function CampaignsPage() {
           <div className="bg-slate-900/20 border border-slate-900 rounded-3xl p-5 space-y-3">
             <div className="flex justify-between items-center text-xs">
               <span className="text-slate-400 font-bold uppercase tracking-wider">Monthly Messaging Cap</span>
-              <span className="text-white font-black">{cards.sentThisMonth} / {cards.monthlyCap} messages</span>
+              <span className="text-slate-100 font-black">{cards.sentThisMonth} / {cards.monthlyCap} messages</span>
             </div>
             <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
               <div 
@@ -386,7 +386,7 @@ export default function CampaignsPage() {
             onClick={() => setActiveTab('campaigns')}
             className={`px-6 py-3 text-sm font-bold border-b-2 transition-all ${
               activeTab === 'campaigns'
-                ? 'border-emerald-500 text-white'
+                ? 'border-emerald-500 text-slate-100'
                 : 'border-transparent text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -396,7 +396,7 @@ export default function CampaignsPage() {
             onClick={() => setActiveTab('templates')}
             className={`px-6 py-3 text-sm font-bold border-b-2 transition-all ${
               activeTab === 'templates'
-                ? 'border-emerald-500 text-white'
+                ? 'border-emerald-500 text-slate-100'
                 : 'border-transparent text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -480,7 +480,7 @@ export default function CampaignsPage() {
             {/* Campaign grid listing */}
             <div className="bg-slate-900/30 border border-slate-900 rounded-3xl overflow-hidden">
               <div className="px-6 py-4 border-b border-slate-900 bg-slate-900/40 flex justify-between items-center">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Marketing Campaigns</h3>
+                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Marketing Campaigns</h3>
                 <span className="text-[10px] text-slate-500 font-bold">{campaigns.length} campaigns configured</span>
               </div>
 
@@ -512,7 +512,7 @@ export default function CampaignsPage() {
                         {/* Name and template detail info */}
                         <div className="space-y-1 max-w-sm">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <h4 className="font-bold text-white text-sm hover:underline">
+                            <h4 className="font-bold text-slate-100 text-sm hover:underline">
                               <Link href={`/admin/campaigns/${c.id}`}>{c.name}</Link>
                             </h4>
                             {getStatusBadge(c.status)}
@@ -532,7 +532,7 @@ export default function CampaignsPage() {
                           <div className="w-36 space-y-1.5">
                             <div className="flex justify-between text-[10px] text-slate-400">
                               <span>Sending Progress</span>
-                              <span className="font-mono text-white">{progress}%</span>
+                              <span className="font-mono text-slate-100">{progress}%</span>
                             </div>
                             <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                               <div 
@@ -590,7 +590,7 @@ export default function CampaignsPage() {
 
                           <Link 
                             href={`/admin/campaigns/${c.id}`}
-                            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 rounded-xl transition-all active:scale-95 flex items-center justify-center"
+                            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-slate-100 border border-slate-700/80 rounded-xl transition-all active:scale-95 flex items-center justify-center"
                             title="Open Control Panel"
                           >
                             <ChevronRight className="w-4 h-4" />
@@ -620,7 +620,7 @@ export default function CampaignsPage() {
             {/* Meta template sync card */}
             <div className="bg-slate-900/40 border border-slate-900 rounded-3xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1.5">
-                <h3 className="font-bold text-white text-base">WhatsApp Template Synchronization</h3>
+                <h3 className="font-bold text-slate-100 text-base">WhatsApp Template Synchronization</h3>
                 <p className="text-slate-400 text-xs max-w-xl">
                   Meta requires using approved message templates for bulk campaign outreach. Sync approved templates from your Meta Developer Account WABA console to formulate broadcasts.
                 </p>
@@ -658,7 +658,7 @@ export default function CampaignsPage() {
                         {/* Header metadata */}
                         <div className="flex justify-between items-start gap-2">
                           <div>
-                            <h4 className="font-extrabold text-white text-xs truncate max-w-[150px]" title={t.name}>{t.name}</h4>
+                            <h4 className="font-extrabold text-slate-100 text-xs truncate max-w-[150px]" title={t.name}>{t.name}</h4>
                             <span className="text-[9px] text-slate-500 font-mono">ID: {t.id}</span>
                           </div>
                           <div className="flex flex-col items-end gap-1">
@@ -672,7 +672,7 @@ export default function CampaignsPage() {
                           
                           {/* Header section preview */}
                           {headerComp && (
-                            <div className="font-bold text-white border-b border-slate-900 pb-1.5 mb-1.5 flex items-center gap-1 text-[10px]">
+                            <div className="font-bold text-slate-100 border-b border-slate-900 pb-1.5 mb-1.5 flex items-center gap-1 text-[10px]">
                               <span className="text-emerald-400">Header:</span>
                               <span className="truncate">{headerComp.text || `[${headerComp.format}]`}</span>
                             </div>

@@ -252,11 +252,11 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
       <DashboardShell>
         <div className="space-y-4 max-w-md mx-auto text-center py-12">
           <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto" />
-          <h2 className="text-lg font-black text-white">Access Failure</h2>
+          <h2 className="text-lg font-black text-slate-100">Access Failure</h2>
           <p className="text-slate-400 text-xs">{error || 'Campaign details could not be retrieved.'}</p>
           <Link 
             href="/admin/campaigns" 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 text-xs text-white rounded-xl hover:bg-slate-850"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 text-xs text-slate-100 rounded-xl hover:bg-slate-850"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Campaigns
           </Link>
@@ -280,13 +280,13 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
           <div className="flex items-center space-x-3.5">
             <Link 
               href="/admin/campaigns" 
-              className="w-10 h-10 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-colors active:scale-95"
+              className="w-10 h-10 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-100 transition-colors active:scale-95"
             >
-              <ArrowLeft className="w-5 h-5 text-white" />
+              <ArrowLeft className="w-5 h-5 text-slate-100" />
             </Link>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-xl font-black text-white tracking-tight">{campaign.name}</h1>
+                <h1 className="text-xl font-black text-slate-100 tracking-tight">{campaign.name}</h1>
                 {getStatusBadge(campaign.status)}
               </div>
               <p className="text-slate-500 text-xs mt-0.5">Template: <strong className="text-slate-300 font-mono">{campaign.templateName}</strong> ({campaign.templateLanguage})</p>
@@ -347,7 +347,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
           <div className="bg-slate-900/20 border border-slate-900 rounded-3xl p-5 space-y-3">
             <div className="flex justify-between items-center text-xs">
               <span className="text-slate-400 font-bold uppercase tracking-wider">Dispatch Progress</span>
-              <span className="text-white font-black">{processed} / {total} recipients processed ({progressPercent}%)</span>
+              <span className="text-slate-100 font-black">{processed} / {total} recipients processed ({progressPercent}%)</span>
             </div>
             <div className="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
               <div 
@@ -366,7 +366,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <div className="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 text-center">
             <span className="text-slate-500 text-[10px] font-bold block uppercase tracking-wider mb-1">Target List</span>
-            <span className="text-2xl font-black text-white font-mono">{total}</span>
+            <span className="text-2xl font-black text-slate-100 font-mono">{total}</span>
           </div>
           <div className="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 text-center">
             <span className="text-emerald-400 text-[10px] font-bold block uppercase tracking-wider mb-1">Sent</span>
@@ -394,7 +394,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
             <div className="bg-slate-900/30 border border-slate-900 rounded-3xl p-5 space-y-4">
               
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-900 pb-4">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
                   <Database className="w-4 h-4 text-emerald-400" />
                   <span>Recipients Directory</span>
                 </h3>
@@ -485,14 +485,14 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
                     <button
                       onClick={() => setPage(p => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="p-1.5 bg-slate-950 border border-slate-900 text-slate-400 hover:text-white rounded-lg disabled:opacity-30 disabled:pointer-events-none"
+                      className="p-1.5 bg-slate-950 border border-slate-900 text-slate-400 hover:text-slate-100 rounded-lg disabled:opacity-30 disabled:pointer-events-none"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                       disabled={page === totalPages}
-                      className="p-1.5 bg-slate-950 border border-slate-900 text-slate-400 hover:text-white rounded-lg disabled:opacity-30 disabled:pointer-events-none"
+                      className="p-1.5 bg-slate-950 border border-slate-900 text-slate-400 hover:text-slate-100 rounded-lg disabled:opacity-30 disabled:pointer-events-none"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -505,7 +505,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
 
           {/* Right: Diagnostics Campaign logs console */}
           <div className="bg-slate-900/30 border border-slate-900 rounded-3xl p-5 space-y-4">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
               <Megaphone className="w-4 h-4 text-emerald-400" />
               <span>Execution Logs</span>
             </h3>

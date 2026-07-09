@@ -260,32 +260,32 @@ export default function NewCampaignPage() {
         <div className="flex items-center space-x-3 pb-2">
           <Link 
             href="/admin/campaigns" 
-            className="w-10 h-10 bg-slate-900 hover:bg-slate-800 border border-slate-800/80 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-colors active:scale-95"
+            className="w-10 h-10 bg-slate-900 hover:bg-slate-800 border border-slate-800/80 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-100 transition-colors active:scale-95"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-5 h-5 text-slate-100" />
           </Link>
           <div>
             <p className="text-[10px] text-slate-500 font-bold font-mono uppercase tracking-widest">Step {step} of 4</p>
-            <h1 className="text-xl font-black text-white tracking-tight">Create Broadcast Campaign</h1>
+            <h1 className="text-xl font-black text-slate-100 tracking-tight">Create Broadcast Campaign</h1>
           </div>
         </div>
 
         {/* Builder Steps indicator */}
         <div className="flex items-center justify-between bg-slate-900/20 border border-slate-900/60 rounded-2xl p-4 text-xs font-bold text-slate-500">
-          <div className={`flex items-center gap-2 ${step === 1 ? 'text-emerald-400' : step > 1 ? 'text-white' : ''}`}>
-            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 1 ? 'bg-emerald-500 text-slate-950 font-black' : step > 1 ? 'bg-slate-800 text-white' : 'bg-slate-900 border border-slate-800'}`}>1</span>
+          <div className={`flex items-center gap-2 ${step === 1 ? 'text-emerald-400' : step > 1 ? 'text-slate-100' : ''}`}>
+            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 1 ? 'bg-emerald-500 text-slate-950 font-black' : step > 1 ? 'bg-slate-800 text-slate-100' : 'bg-slate-900 border border-slate-800'}`}>1</span>
             <span>Details</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-800" />
           
-          <div className={`flex items-center gap-2 ${step === 2 ? 'text-emerald-400' : step > 2 ? 'text-white' : ''}`}>
-            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 2 ? 'bg-emerald-500 text-slate-950 font-black' : step > 2 ? 'bg-slate-800 text-white' : 'bg-slate-900 border border-slate-800'}`}>2</span>
+          <div className={`flex items-center gap-2 ${step === 2 ? 'text-emerald-400' : step > 2 ? 'text-slate-100' : ''}`}>
+            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 2 ? 'bg-emerald-500 text-slate-950 font-black' : step > 2 ? 'bg-slate-800 text-slate-100' : 'bg-slate-900 border border-slate-800'}`}>2</span>
             <span>Template Setup</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-800" />
           
-          <div className={`flex items-center gap-2 ${step === 3 ? 'text-emerald-400' : step > 3 ? 'text-white' : ''}`}>
-            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 3 ? 'bg-emerald-500 text-slate-950 font-black' : step > 3 ? 'bg-slate-800 text-white' : 'bg-slate-900 border border-slate-800'}`}>3</span>
+          <div className={`flex items-center gap-2 ${step === 3 ? 'text-emerald-400' : step > 3 ? 'text-slate-100' : ''}`}>
+            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 3 ? 'bg-emerald-500 text-slate-950 font-black' : step > 3 ? 'bg-slate-800 text-slate-100' : 'bg-slate-900 border border-slate-800'}`}>3</span>
             <span>Recipients</span>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-800" />
@@ -310,7 +310,7 @@ export default function NewCampaignPage() {
           {/* STEP 1: CAMPAIGN DETAILS */}
           {step === 1 && (
             <div className="space-y-5">
-              <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
+              <div className="flex items-center gap-2 text-xs font-black text-slate-100 uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
                 <Megaphone className="w-4 h-4 text-emerald-400" />
                 <span>Campaign Description Info</span>
               </div>
@@ -342,7 +342,7 @@ export default function NewCampaignPage() {
           {/* STEP 2: TEMPLATE SELECTION & MAPPING */}
           {step === 2 && (
             <div className="space-y-6">
-              <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
+              <div className="flex items-center gap-2 text-xs font-black text-slate-100 uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
                 <Layers className="w-4 h-4 text-emerald-400" />
                 <span>Select & Map Approved Templates</span>
               </div>
@@ -373,7 +373,7 @@ export default function NewCampaignPage() {
 
                     {selectedTemplate && bodyVars.length > 0 && (
                       <div className="space-y-4 pt-2 border-t border-slate-900">
-                        <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1">
+                        <h4 className="text-xs font-bold text-slate-100 uppercase tracking-wider flex items-center gap-1">
                           <Info className="w-3.5 h-3.5 text-emerald-400" />
                           <span>Variables Config (Body placeholders)</span>
                         </h4>
@@ -381,7 +381,7 @@ export default function NewCampaignPage() {
                         {bodyVars.map((v, idx) => (
                           <div key={idx} className="space-y-2 bg-slate-950/40 border border-slate-900 p-3.5 rounded-2xl space-y-3">
                             <div className="flex justify-between items-center text-[11px]">
-                              <span className="text-slate-400 font-bold">Placeholder: <strong className="text-white font-mono">{"{{"}{idx + 1}{"}}"}</strong></span>
+                              <span className="text-slate-400 font-bold">Placeholder: <strong className="text-slate-100 font-mono">{"{{"}{idx + 1}{"}}"}</strong></span>
                             </div>
 
                             <div className="grid grid-cols-3 gap-2">
@@ -435,7 +435,7 @@ export default function NewCampaignPage() {
                         <div className="bg-slate-950 border border-slate-900 p-4 rounded-2xl space-y-3">
                           {/* Header section preview */}
                           {selectedTemplate.components.find(c => c.type === 'HEADER') && (
-                            <div className="font-bold text-white text-[11px] pb-1.5 border-b border-slate-900">
+                            <div className="font-bold text-slate-100 text-[11px] pb-1.5 border-b border-slate-900">
                               {selectedTemplate.components.find(c => c.type === 'HEADER').text}
                             </div>
                           )}
@@ -474,7 +474,7 @@ export default function NewCampaignPage() {
           {/* STEP 3: RECIPIENT SELECTOR */}
           {step === 3 && (
             <div className="space-y-6">
-              <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
+              <div className="flex items-center gap-2 text-xs font-black text-slate-100 uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
                 <Users className="w-4 h-4 text-emerald-400" />
                 <span>Assign Recipient Customers</span>
               </div>
@@ -513,7 +513,7 @@ export default function NewCampaignPage() {
                         <button 
                           type="button" 
                           onClick={toggleAllRecipients}
-                          className="text-slate-400 hover:text-white"
+                          className="text-slate-400 hover:text-slate-100"
                         >
                           {filteredCustomers.length > 0 && filteredCustomers.every(c => selectedRecipientIds.includes(c.id)) ? (
                             <CheckSquare className="w-4.5 h-4.5 text-emerald-400" />
@@ -561,7 +561,7 @@ export default function NewCampaignPage() {
 
               {/* Selection Summary footer */}
               <div className="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-3">
-                <span>Selected: <strong className="text-white">{selectedRecipientIds.length}</strong> / {customers.length} total customers</span>
+                <span>Selected: <strong className="text-slate-100">{selectedRecipientIds.length}</strong> / {customers.length} total customers</span>
                 <button
                   type="button"
                   onClick={() => setSelectedRecipientIds(customers.map(c => c.id))}
@@ -576,7 +576,7 @@ export default function NewCampaignPage() {
           {/* STEP 4: REVIEW & SEND */}
           {step === 4 && (
             <div className="space-y-6">
-              <div className="flex items-center gap-2 text-xs font-black text-white uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
+              <div className="flex items-center gap-2 text-xs font-black text-slate-100 uppercase tracking-wider border-b border-slate-900 pb-3 mb-2">
                 <Send className="w-4 h-4 text-emerald-400" />
                 <span>Review & Scheduling Setup</span>
               </div>
@@ -585,7 +585,7 @@ export default function NewCampaignPage() {
                 
                 {/* Details list summary */}
                 <div className="bg-slate-950/40 border border-slate-900 rounded-3xl p-5 space-y-4 text-xs">
-                  <h4 className="font-bold text-white uppercase tracking-wider">Campaign Overview</h4>
+                  <h4 className="font-bold text-slate-100 uppercase tracking-wider">Campaign Overview</h4>
                   
                   <div className="space-y-2.5 divide-y divide-slate-900">
                     <div className="pt-2 flex justify-between">
@@ -609,7 +609,7 @@ export default function NewCampaignPage() {
 
                 {/* Scheduling controls */}
                 <div className="bg-slate-950/40 border border-slate-900 rounded-3xl p-5 space-y-4">
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">Scheduling Configuration</h4>
+                  <h4 className="text-xs font-bold text-slate-100 uppercase tracking-wider">Scheduling Configuration</h4>
                   
                   <div className="space-y-3">
                     <label className="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-slate-400">
@@ -656,7 +656,7 @@ export default function NewCampaignPage() {
           {step > 1 ? (
             <button
               onClick={() => setStep((step - 1) as any)}
-              className="px-5 py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95"
+              className="px-5 py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-slate-100 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>Back</span>
@@ -683,7 +683,7 @@ export default function NewCampaignPage() {
                 setError(null);
                 setStep((step + 1) as any);
               }}
-              className="px-5 py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95"
+              className="px-5 py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-slate-100 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95"
             >
               <span>Next</span>
               <ChevronRight className="w-4 h-4" />
@@ -693,7 +693,7 @@ export default function NewCampaignPage() {
               <button
                 onClick={() => handleCreateCampaign(false)}
                 disabled={submitting}
-                className="px-5 py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-all active:scale-95"
+                className="px-5 py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-slate-100 rounded-xl text-xs font-bold transition-all active:scale-95"
               >
                 Save as Draft
               </button>

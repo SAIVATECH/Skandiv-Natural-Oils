@@ -80,7 +80,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center border border-slate-700 text-slate-400 active:scale-95"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5 text-slate-100" />
               </button>
             </div>
             <AdminSidebar onCloseMobile={() => setMobileMenuOpen(false)} />
@@ -98,11 +98,11 @@ export function DashboardShell({ children }: DashboardShellProps) {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden w-10 h-10 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+              className="md:hidden w-10 h-10 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-slate-300 hover:text-slate-100 transition-colors"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h2 className="text-lg font-black tracking-tight text-white hidden sm:block">
+            <h2 className="text-lg font-black tracking-tight text-slate-100 hidden sm:block">
               {getPageTitle()}
             </h2>
           </div>
@@ -118,7 +118,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
             </div>
 
             {/* Notification trigger */}
-            <button className="relative w-10 h-10 bg-slate-900/50 hover:bg-slate-900 border border-slate-800/60 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+            <button className="relative w-10 h-10 bg-slate-900/50 hover:bg-slate-900 border border-slate-800/60 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-100 transition-colors">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ring-slate-900" />
             </button>
@@ -129,7 +129,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 <User className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="hidden md:block text-left">
-                <p className="text-xs font-bold text-white leading-none">Admin Owner</p>
+                <p className="text-xs font-bold text-slate-100 leading-none">Admin Owner</p>
                 <span className="text-[9px] text-slate-500 font-semibold font-mono">Store Manager</span>
               </div>
             </div>
