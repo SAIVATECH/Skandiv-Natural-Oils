@@ -34,6 +34,10 @@ export function DashboardShell({ children }: DashboardShellProps) {
     if (pathname === '/admin/orders') return 'Order Transactions';
     if (pathname === '/admin/customers') return 'Customer Directory';
     if (pathname === '/admin/chat') return 'Live Customer Chat';
+    if (pathname === '/admin/campaigns') return 'Marketing Campaigns';
+    if (pathname === '/admin/campaigns/new') return 'New Marketing Campaign';
+    if (pathname === '/admin/campaigns/settings') return 'Campaign Settings';
+    if (pathname.startsWith('/admin/campaigns/') && pathname !== '/admin/campaigns/new' && pathname !== '/admin/campaigns/settings') return 'Campaign Control Panel';
     if (pathname === '/admin/analytics') return 'Analytics & Insights';
     if (pathname === '/admin/settings') return 'Platform Settings';
     return 'Admin Panel';

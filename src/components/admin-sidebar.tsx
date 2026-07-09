@@ -13,6 +13,7 @@ import {
   LogOut,
   Smartphone,
   MessageSquare,
+  Megaphone,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -27,6 +28,7 @@ export function AdminSidebar({ onCloseMobile }: SidebarProps) {
     { name: 'Overview', href: '/admin', icon: LayoutDashboard },
     { name: 'Simulator', href: '/admin/simulator', icon: Smartphone },
     { name: 'Live Chat', href: '/admin/chat', icon: MessageSquare },
+    { name: 'Campaigns', href: '/admin/campaigns', icon: Megaphone },
     { name: 'Products', href: '/admin/products', icon: ShoppingBag },
     { name: 'Orders', href: '/admin/orders', icon: Receipt },
     { name: 'Customers', href: '/admin/customers', icon: Users },

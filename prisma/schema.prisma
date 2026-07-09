@@ -18,6 +18,7 @@ model User {
   createdAt      DateTime           @default(now()) @map("created_at")
   state          ConversationState?
   orders         Order[]
+  campaignRecipients CampaignRecipient[]
 
   @@map("users")
 }
@@ -121,4 +122,109 @@ model MessageLog {
   timestamp DateTime @default(now())
 
   @@map("message_logs")
+}
+
+model Campaign {
+  id               String              @id @default(dbgenerated("(gen_random_uuid())::text"))
+  name             String
+  description      String?
+  status           CampaignStatus      @default(DRAFT)
+  templateName     String              @map("template_name")
+  templateLanguage String              @map("template_language")
+  templateVariables Json               @map("template_variables")
+  scheduledAt      DateTime?           @map("scheduled_at")
+  startedAt        DateTime?           @map("started_at")
+  completedAt      DateTime?           @map("completed_at")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  recipients       CampaignRecipient[]
+  logs             CampaignLog[]
+
+  @@map("campaigns")
+}
+
+model CampaignRecipient {
+  id           String          @id @default(dbgenerated("(gen_random_uuid())::text"))
+  campaignId   String          @map("campaign_id")
+  customerId   String          @map("customer_id")
+  status       RecipientStatus @default(PENDING)
+  sentAt       DateTime?       @map("sent_at")
+  deliveredAt  DateTime?       @map("delivered_at")
+  readAt       DateTime?       @map("read_at")
+  failedAt     DateTime?       @map("failed_at")
+  errorMessage String?         @map("error_message")
+  retryCount   Int             @default(0) @map("retry_count")
+  wamid        String?         @unique
+  cost         Decimal?        @db.Decimal(10, 4)
+  variables    Json?
+  campaign     Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  customer     User            @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, customerId])
+  @@index([wamid])
+  @@index([status])
+  @@map("campaign_recipients")
+}
+
+model CampaignTemplate {
+  id           String   @id
+  name         String   @unique
+  language     String
+  category     String
+  status       String
+  components   Json
+  lastSyncedAt DateTime @default(now()) @map("last_synced_at")
+
+  @@map("campaign_templates")
+}
+
+model CampaignLog {
+  id         String   @id @default(dbgenerated("(gen_random_uuid())::text"))
+  campaignId String   @map("campaign_id")
+  level      String
+  message    String
+  timestamp  DateTime @default(now())
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@map("campaign_logs")
+}
+
+model CampaignSettings {
+  id                      String   @id @default("global")
+  dailyCap                Int      @default(1000) @map("daily_cap")
+  monthlyCap              Int      @default(30000) @map("monthly_cap")
+  campaignRateLimitPerMin Int      @default(60) @map("campaign_rate_limit_per_min")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  @@map("campaign_settings")
+}
+
+model CampaignAuditLog {
+  id        String   @id @default(dbgenerated("(gen_random_uuid())::text"))
+  userId    String   @map("user_id")
+  action    String
+  details   String?
+  timestamp DateTime @default(now())
+
+  @@map("campaign_audit_logs")
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  COMPLETED
+  PAUSED
+  CANCELLED
+}
+
+enum RecipientStatus {
+  PENDING
+  QUEUED
+  SENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  SKIPPED
 }

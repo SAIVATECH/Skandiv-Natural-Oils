@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   CheckCheck,
   ExternalLink,
-  Wifi
+  Wifi,
+  Megaphone
 } from 'lucide-react';
 
 interface SimulatedMsg {
@@ -46,6 +47,35 @@ export default function SimulatorPage() {
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  const [campaignRecipients, setCampaignRecipients] = useState<any[]>([]);
+
+  const fetchCampaignRecipients = useCallback(async () => {
+    try {
+      const res = await fetch('/api/test/campaign-recipients');
+      if (res.ok) {
+        const data = await res.json();
+        setCampaignRecipients(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch campaign recipients:', err);
+    }
+  }, []);
+
+  const handleSimulateWebhook = async (wamid: string, status: string, phone: string, errorCode?: number) => {
+    try {
+      const res = await fetch('/api/test/campaign-recipients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wamid, status, phone, errorCode })
+      });
+      if (res.ok) {
+        fetchCampaignRecipients();
+      }
+    } catch (err) {
+      console.error('Failed to simulate webhook:', err);
+    }
+  };
+
   // Scroll to bottom of chat when new logs arrive
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -74,11 +104,13 @@ export default function SimulatorPage() {
   // Poll for logs every 4 seconds to pick up webhook alerts automatically (optimized for tab focus)
   useEffect(() => {
     fetchData(true);
+    fetchCampaignRecipients();
     let interval: NodeJS.Timeout;
 
     const handlePoll = () => {
       if (document.hidden) return; // Pause polling when tab is inactive to conserve connection pool slots
       fetchData(false);
+      fetchCampaignRecipients();
     };
 
     if (polling) {
@@ -87,7 +119,7 @@ export default function SimulatorPage() {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [fetchData, polling]);
+  }, [fetchData, fetchCampaignRecipients, polling]);
 
   // Submit simulated message
   const handleSendMessage = async (customText?: string) => {
@@ -504,6 +536,68 @@ export default function SimulatorPage() {
                   State machine inactive. Send a message to seed conversational state.
                 </div>
               )}
+            </div>
+
+            {/* Campaign Webhook Status Simulator */}
+            <div className="bg-slate-900/60 border border-slate-850 rounded-3xl p-6 shadow-xl space-y-4">
+              <div className="flex items-center space-x-2 border-b border-slate-800 pb-3 justify-between">
+                <div className="flex items-center space-x-2">
+                  <Megaphone className="w-4 h-4 text-emerald-400" />
+                  <h4 className="font-bold text-slate-100 text-xs uppercase tracking-wider">Campaign Webhook Simulator</h4>
+                </div>
+                <button 
+                  onClick={fetchCampaignRecipients}
+                  className="text-slate-500 hover:text-slate-300"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="text-[11px] text-slate-400 space-y-3.5 max-h-[300px] overflow-y-auto custom-scrollbar">
+                {campaignRecipients.length === 0 ? (
+                  <p className="text-slate-600 text-center py-6 italic">No campaign template dispatches logged.</p>
+                ) : (
+                  campaignRecipients.map((cr: any) => (
+                    <div key={cr.id} className="bg-slate-950/60 p-3 rounded-2xl border border-slate-900 space-y-2.5">
+                      <div className="flex justify-between items-start gap-1">
+                        <div>
+                          <span className="font-extrabold text-slate-200 block truncate max-w-[150px]">{cr.campaign.name}</span>
+                          <span className="text-[9px] text-slate-500 font-mono">To: {cr.customer.name || 'WhatsApp Buyer'} (+{cr.customer.whatsappNumber})</span>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider ${
+                          cr.status === 'READ' ? 'bg-emerald-500/10 text-emerald-450 border border-emerald-500/10' :
+                          cr.status === 'DELIVERED' ? 'bg-teal-500/10 text-teal-400 border border-teal-500/10' :
+                          cr.status === 'FAILED' ? 'bg-rose-500/10 text-rose-450 border border-rose-500/10' :
+                          'bg-slate-800 text-slate-400'
+                        }`}>
+                          {cr.status}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-1.5">
+                        <button
+                          onClick={() => handleSimulateWebhook(cr.wamid, 'delivered', cr.customer.whatsappNumber)}
+                          className="bg-slate-900 hover:bg-slate-850 text-slate-300 py-1.5 rounded-xl text-[9px] font-bold border border-slate-850 active:scale-95 transition-all"
+                        >
+                          Delivered
+                        </button>
+                        <button
+                          onClick={() => handleSimulateWebhook(cr.wamid, 'read', cr.customer.whatsappNumber)}
+                          className="bg-slate-900 hover:bg-slate-850 text-slate-300 py-1.5 rounded-xl text-[9px] font-bold border border-slate-850 active:scale-95 transition-all"
+                        >
+                          Read
+                        </button>
+                        <button
+                          onClick={() => handleSimulateWebhook(cr.wamid, 'failed', cr.customer.whatsappNumber, 131047)}
+                          className="bg-slate-900 hover:bg-rose-950/20 text-slate-400 hover:text-rose-400 py-1.5 rounded-xl text-[9px] font-bold border border-slate-850 hover:border-rose-900/20 active:scale-95 transition-all"
+                        >
+                          Fail
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
 
             {/* Real WhatsApp Simulation & API Guide */}

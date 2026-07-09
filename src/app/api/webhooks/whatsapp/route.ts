@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { handleWhatsAppMessage } from '@/services/whatsapp-state';
 import { handleWhatsAppDeliveryError } from '@/lib/whatsapp';
+import { prisma } from '@/lib/prisma';
 
 /**
  * GET Handler for Meta Webhook Verification (Handshake).
@@ -76,12 +77,47 @@ export async function POST(req: Request) {
                 `[24-Hour Rule Violation] Cannot send message to ${recipient_id}. ` +
                 `Details: ${error.error_data?.details || 'Not provided'}`
               );
-              // TODO: Add to database log if needed
-              // TODO: Notify admin/user of delivery failure
             }
           }
         } else {
           console.log(`[Meta Webhook Status] Message ID: ${id}, Recipient: ${recipient_id}, Status: ${deliveryStatus}`);
+        }
+
+        // Sync CampaignRecipient delivery status in the database
+        try {
+          const campaignRecipient = await prisma.campaignRecipient.findUnique({
+            where: { wamid: id }
+          });
+
+          if (campaignRecipient) {
+            const mappedStatus = deliveryStatus.toUpperCase() as any;
+            const updateData: any = { status: mappedStatus };
+
+            if (deliveryStatus === 'sent') {
+              updateData.sentAt = new Date();
+            } else if (deliveryStatus === 'delivered') {
+              updateData.deliveredAt = new Date();
+            } else if (deliveryStatus === 'read') {
+              updateData.readAt = new Date();
+              if (!campaignRecipient.deliveredAt) {
+                updateData.deliveredAt = new Date();
+              }
+            } else if (deliveryStatus === 'failed') {
+              updateData.failedAt = new Date();
+              if (errors && errors.length > 0) {
+                updateData.errorMessage = errors[0].message || errors[0].title || 'Unknown Meta API error';
+              }
+            }
+
+            await prisma.campaignRecipient.update({
+              where: { id: campaignRecipient.id },
+              data: updateData
+            });
+
+            console.log(`[Campaign Webhook Sync] Updated recipient ${campaignRecipient.id} (Wamid: ${id}) to status: ${mappedStatus}`);
+          }
+        } catch (dbErr) {
+          console.error('[Campaign Webhook Sync Error] Failed to update recipient status:', dbErr);
         }
       }
       
