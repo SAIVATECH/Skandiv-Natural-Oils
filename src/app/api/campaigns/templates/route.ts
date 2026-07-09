@@ -40,6 +40,14 @@ export async function POST() {
       });
     }
 
+    // Delete old cached templates that are no longer returned by the Meta API (including any mock templates)
+    const fetchedNames = metaTemplates.map((t: any) => t.name);
+    await prisma.campaignTemplate.deleteMany({
+      where: {
+        name: { notIn: fetchedNames }
+      }
+    });
+
     const synced = await prisma.campaignTemplate.findMany({
       orderBy: { name: 'asc' }
     });

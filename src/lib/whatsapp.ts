@@ -437,69 +437,9 @@ export async function fetchMetaTemplates() {
   const wabaId = process.env.WHATSAPP_BUSINESS_ACCOUNT_ID;
   const isWabaMock = !wabaId || wabaId.includes('mock') || isMock;
 
-  const mockTemplates = [
-    {
-      id: 'welcome_promo_tmpl',
-      name: 'welcome_promo',
-      language: 'en_US',
-      category: 'MARKETING',
-      status: 'APPROVED',
-      components: [
-        {
-          type: 'HEADER',
-          format: 'TEXT',
-          text: 'Welcome to Skandiv! 🌿'
-        },
-        {
-          type: 'BODY',
-          text: 'Welcome to Skandiv Natural Oils, {{1}}! 🌿 Get {{2}}% off on your first order. Use code {{3}} at checkout.'
-        },
-        {
-          type: 'FOOTER',
-          text: 'Unsubscribe reply STOP'
-        }
-      ]
-    },
-    {
-      id: 'abandoned_cart_recovery_tmpl',
-      name: 'abandoned_cart_recovery',
-      language: 'en_US',
-      category: 'MARKETING',
-      status: 'APPROVED',
-      components: [
-        {
-          type: 'BODY',
-          text: 'Hi {{1}}! We noticed you left some pure wellness in your cart. 🌿 Complete your checkout now and get free shipping using coupon {{2}}.'
-        },
-        {
-          type: 'FOOTER',
-          text: 'Skandiv Natural Oils'
-        }
-      ]
-    },
-    {
-      id: 'new_product_alert_tmpl',
-      name: 'new_product_alert',
-      language: 'en_US',
-      category: 'MARKETING',
-      status: 'APPROVED',
-      components: [
-        {
-          type: 'HEADER',
-          format: 'TEXT',
-          text: 'New Launch! 🍃'
-        },
-        {
-          type: 'BODY',
-          text: 'Hello {{1}}! We have just launched our new {{2}} oil. Pure, cold-pressed, and 100% natural. 🍃 Learn more: {{3}}'
-        }
-      ]
-    }
-  ];
-
   if (isWabaMock) {
-    console.log('[Meta Templates API] Mock Mode Active. Returning default templates list.');
-    return mockTemplates;
+    console.log('[Meta Templates API] Mock Mode Active or WABA ID missing. Returning empty templates list.');
+    return [];
   }
 
   try {
@@ -513,15 +453,15 @@ export async function fetchMetaTemplates() {
 
     if (!response.ok) {
       const errText = await response.text();
-      console.warn(`[Meta Templates API Warning] Failed to fetch live templates (status ${response.status}: ${errText}). Returning mock template list.`);
-      return mockTemplates;
+      console.warn(`[Meta Templates API Warning] Failed to fetch live templates (status ${response.status}: ${errText}). Returning empty templates list.`);
+      return [];
     }
 
     const data = await response.json();
-    return data.data || mockTemplates;
+    return data.data || [];
   } catch (error) {
-    console.error('[Meta Templates API Error] Failed to fetch live templates. Returning mock template list. Details:', error);
-    return mockTemplates;
+    console.error('[Meta Templates API Error] Failed to fetch live templates. Details:', error);
+    return [];
   }
 }
 
