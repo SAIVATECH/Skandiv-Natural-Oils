@@ -144,3 +144,9 @@
   animation: float3d 6s ease-in-out infinite;
 }
 
+/* Global override for select options to prevent white-on-white text in browser dropdown menus */
+select option {
+  background-color: #0f172a !important; /* Matches bg-slate-900 */
+  color: #f1f5f9 !important;            /* Matches text-slate-100 */
+}
+
