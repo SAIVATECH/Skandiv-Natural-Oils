@@ -99,6 +99,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
       if (res.ok) {
         const data = await res.json();
         setCampaign(data);
+        return data;
       } else {
         const errData = await res.json();
         setError(errData.error || 'Failed to load campaign');
@@ -108,6 +109,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
     } finally {
       if (showLoading) setLoading(false);
     }
+    return null;
   }, [id]);
 
   // Fetch recipients list
@@ -145,10 +147,18 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    const runPoll = () => {
+    const runPoll = async () => {
       if (document.hidden) return; // Don't query when browser tab is inactive
-      fetchCampaignDetails(false);
+      const freshCampaign = await fetchCampaignDetails(false);
       fetchRecipients();
+
+      if (freshCampaign && freshCampaign.status === 'SENDING') {
+        try {
+          await fetch(`/api/campaigns/${id}/send`, { method: 'POST' });
+        } catch (e) {
+          console.error('Failed to trigger next campaign batch:', e);
+        }
+      }
     };
 
     if (polling && campaign?.status === 'SENDING') {
@@ -158,7 +168,7 @@ export default function CampaignDetailsPage({ params }: { params: Promise<{ id: 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [polling, campaign?.status, fetchCampaignDetails, fetchRecipients]);
+  }, [id, polling, campaign?.status, fetchCampaignDetails, fetchRecipients]);
 
   const handleToggleSend = async () => {
     if (!campaign) return;

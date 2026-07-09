@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { startCampaignProcessor } from '@/services/campaign-processor';
+import { processCampaignBatch } from '@/services/campaign-processor';
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -36,8 +36,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       }
     });
 
-    // Start background processing
-    startCampaignProcessor(id);
+    // Start background processing (synchronous batch of 5)
+    const batchResult = await processCampaignBatch(id, 5);
 
     try {
       await prisma.campaignAuditLog.create({
@@ -51,7 +51,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       console.warn('Failed to write audit log:', e);
     }
 
-    return NextResponse.json({ success: true, campaign: updated }, { status: 200 });
+    return NextResponse.json({ success: true, campaign: updated, hasMore: batchResult.hasMore }, { status: 200 });
   } catch (error: any) {
     console.error('[API Campaign Send Error]:', error);
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
