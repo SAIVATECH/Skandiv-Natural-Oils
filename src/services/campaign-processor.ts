@@ -5,11 +5,37 @@ import { sendWhatsAppTemplateMessage } from '@/lib/whatsapp';
  * Helper to map template variables configuration to Meta Cloud API components format.
  */
 /**
+ * Sanitize a template parameter value to comply with Meta's character limits.
+ * OTP / authentication templates: body params max 15 chars.
+ * All other templates: body params max 1024 chars.
+ */
+function sanitizeParam(text: string, isOtp: boolean): string {
+  const maxLen = isOtp ? 15 : 1024;
+  if (text.length > maxLen) {
+    console.warn(`[Campaign Processor] Parameter "${text.substring(0, 20)}..." exceeds Meta limit of ${maxLen} chars. Truncating.`);
+    return text.substring(0, maxLen);
+  }
+  return text;
+}
+
+/**
  * Helper to map template variables configuration to Meta Cloud API components format.
  */
 function mapTemplateVariables(varsConfig: any, customer: any, template: any = null): any[] {
   const bodyParams: any[] = [];
   const headerParams: any[] = [];
+
+  // Detect OTP / AUTHENTICATION templates which have a strict 15-char param limit
+  const isOtpTemplate = template &&
+    (template.category === 'AUTHENTICATION' ||
+     (Array.isArray(template.components) &&
+      template.components.some((c: any) =>
+        c.type === 'BUTTONS' &&
+        Array.isArray(c.buttons) &&
+        c.buttons.some((b: any) => b.otp_type || b.type === 'OTP')
+      )
+     )
+    );
 
   if (varsConfig && Array.isArray(varsConfig.body)) {
     varsConfig.body.forEach((v: any) => {
@@ -21,7 +47,7 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
       } else {
         text = v.value || '';
       }
-      bodyParams.push({ type: 'text', text });
+      bodyParams.push({ type: 'text', text: sanitizeParam(text, isOtpTemplate) });
     });
   }
 
@@ -33,7 +59,7 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
       } else {
         text = v.value || '';
       }
-      headerParams.push({ type: 'text', text });
+      headerParams.push({ type: 'text', text: sanitizeParam(text, false) });
     });
   }
 
@@ -68,7 +94,8 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
               parameters: [
                 {
                   type: 'text',
-                  text: btnText
+                  // Button URL param also has a 15-char limit
+                  text: sanitizeParam(btnText, true)
                 }
               ]
             });
