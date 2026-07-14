@@ -382,6 +382,29 @@ export default function AdminOrdersPage() {
 
               {/* Form Body */}
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Customer Info Card */}
+                <div className="bg-slate-950 border border-slate-850 rounded-2xl p-4 text-left text-xs space-y-2 text-slate-300">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">👤 Customer Details</span>
+                  <div className="space-y-1">
+                    <p><span className="text-slate-500">Name:</span> <strong className="text-slate-200">{selectedOrder.user?.name || 'WhatsApp Buyer'}</strong></p>
+                    <p><span className="text-slate-500">WhatsApp:</span> <strong className="text-slate-200 font-mono">+{selectedOrder.user?.whatsappNumber}</strong></p>
+                    {selectedOrder.user?.email && (
+                      <p><span className="text-slate-500">Email:</span> <strong className="text-slate-200">{selectedOrder.user.email}</strong></p>
+                    )}
+                  </div>
+                  
+                  {selectedOrder.shippingAddress ? (
+                    <div className="pt-2 border-t border-slate-850 mt-1">
+                      <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block mb-1">🚚 Shipping Address</span>
+                      <p className="text-slate-200 leading-relaxed font-semibold whitespace-pre-wrap">{selectedOrder.shippingAddress}</p>
+                    </div>
+                  ) : (
+                    <div className="pt-2 border-t border-slate-850 mt-1 text-slate-550 italic">
+                      No shipping address provided.
+                    </div>
+                  )}
+                </div>
+
                 {/* 1. Order Status Select */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wide">Shipment / Order Status</label>
@@ -430,16 +453,6 @@ export default function AdminOrdersPage() {
                     Binds to customer checkout confirmation notifications when order status is marked as SHIPPED.
                   </span>
                 </div>
-
-                {/* 4. Captured Shipping Address Display */}
-                {selectedOrder.shippingAddress && (
-                  <div className="bg-slate-950 border border-slate-850 rounded-xl p-4 space-y-1.5 text-left text-xs animate-fade-in">
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">🚚 Captured Shipping Address</span>
-                    <div className="text-slate-300 font-semibold leading-relaxed">
-                      {selectedOrder.shippingAddress}
-                    </div>
-                  </div>
-                )}
 
                 {/* Submit Row */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-800">

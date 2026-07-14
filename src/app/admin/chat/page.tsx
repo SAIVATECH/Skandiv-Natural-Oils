@@ -80,9 +80,36 @@ export default function AdminLiveChatPage() {
     };
   }, [selectedCust]);
 
-  // Autoscroll chat history viewport to bottom
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const lastMessageIdRef = useRef<string | null>(null);
+
+  // Autoscroll chat history viewport to bottom when new messages arrive
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messages.length === 0) {
+      lastMessageIdRef.current = null;
+      return;
+    }
+
+    const lastMsg = messages[messages.length - 1];
+    const isNewMessage = lastMsg.id !== lastMessageIdRef.current;
+
+    if (isNewMessage) {
+      const container = chatContainerRef.current;
+      const isFirstLoad = lastMessageIdRef.current === null;
+
+      if (container) {
+        const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
+        if (isFirstLoad || isNearBottom) {
+          // Delay slightly to let the new message render in DOM first
+          setTimeout(() => {
+            chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+          }, 60);
+        }
+      } else if (isFirstLoad) {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
+      lastMessageIdRef.current = lastMsg.id;
+    }
   }, [messages]);
 
   // Send reply handler
@@ -228,7 +255,7 @@ export default function AdminLiveChatPage() {
               </div>
 
               {/* Chat messages stream */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4">
                 {loadingMessages ? (
                   <div className="flex h-full items-center justify-center">
                     <Loader2 className="w-8 h-8 animate-spin text-emerald-400" />
