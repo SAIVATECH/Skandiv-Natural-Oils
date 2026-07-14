@@ -117,16 +117,9 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
   console.log(`[Campaign Processor] Processing batch for Campaign ID: ${campaignId} (size: ${batchSize})`);
   
   try {
-    // 1. Fetch Campaign Details along with a limited subset of pending recipients
+    // 1. Fetch Campaign Details to verify existence
     const campaign = await prisma.campaign.findUnique({
-      where: { id: campaignId },
-      include: {
-        recipients: {
-          where: { status: 'PENDING' },
-          include: { customer: true },
-          take: batchSize
-        }
-      }
+      where: { id: campaignId }
     });
 
     if (!campaign) {
@@ -147,7 +140,27 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
       });
     }
 
-    if (campaign.recipients.length === 0) {
+    // 2. Fetch and atomically mark a batch of PENDING recipients as SENDING inside a transaction.
+    // This locks the selected records so no concurrent execution loop can select the same recipients.
+    const recipients = await prisma.$transaction(async (tx) => {
+      const pending = await tx.campaignRecipient.findMany({
+        where: { campaignId, status: 'PENDING' },
+        include: { customer: true },
+        take: batchSize
+      });
+
+      if (pending.length === 0) return [];
+
+      const ids = pending.map(p => p.id);
+      await tx.campaignRecipient.updateMany({
+        where: { id: { in: ids } },
+        data: { status: 'SENDING' }
+      });
+
+      return pending;
+    });
+
+    if (recipients.length === 0) {
       // Check if there are any pending or sending recipients left in the entire campaign
       const totalPending = await prisma.campaignRecipient.count({
         where: { campaignId, status: 'PENDING' }
@@ -179,11 +192,11 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
       data: {
         campaignId,
         level: 'INFO',
-        message: `Processing batch of ${campaign.recipients.length} recipients.`
+        message: `Processing batch of ${recipients.length} recipients.`
       }
     });
 
-    // 2. Fetch Settings
+    // 3. Fetch Settings
     let settings = await prisma.campaignSettings.findUnique({
       where: { id: 'global' }
     });
@@ -205,19 +218,8 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
 
     let processedCount = 0;
 
-    // 3. Loop recipients and dispatch
-    for (const recipient of campaign.recipients) {
-      // Double check status to prevent duplicate sends
-      const freshRecipient = await prisma.campaignRecipient.findUnique({
-        where: { id: recipient.id },
-        select: { status: true }
-      });
-
-      if (freshRecipient?.status !== 'PENDING') {
-        console.log(`[Campaign Processor] Recipient ${recipient.id} already processed. Skipping.`);
-        continue;
-      }
-
+    // 4. Loop recipients and dispatch
+    for (const recipient of recipients) {
       // Check safety limits
       const startOfDay = new Date();
       startOfDay.setHours(0, 0, 0, 0);
@@ -276,12 +278,6 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
 
       // Map variables (including button parameters from template schema)
       const components = mapTemplateVariables(campaign.templateVariables, recipient.customer, template);
-
-      // Mark recipient status as SENDING
-      await prisma.campaignRecipient.update({
-        where: { id: recipient.id },
-        data: { status: 'SENDING' }
-      });
 
       try {
         // Send WhatsApp template message
@@ -344,7 +340,7 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
       processedCount++;
 
       // Apply rate limiting delay (only if not the last item in the batch)
-      if (processedCount < campaign.recipients.length) {
+      if (processedCount < recipients.length) {
         await new Promise(resolve => setTimeout(resolve, delayMs));
       }
     }
