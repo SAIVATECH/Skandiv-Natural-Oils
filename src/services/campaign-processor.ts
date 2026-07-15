@@ -141,15 +141,22 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
       // Only inject if no header parameters were populated yet
       if (headerParams.length === 0) {
         let mediaUrl = '';
+        let rawUrl = '';
         
         // Extract example media link from template schema if available
         if (headerComp.example && Array.isArray(headerComp.example.header_handle) && headerComp.example.header_handle[0]) {
-          mediaUrl = headerComp.example.header_handle[0];
+          rawUrl = headerComp.example.header_handle[0];
         } else if (headerComp.example && Array.isArray(headerComp.example.header_url) && headerComp.example.header_url[0]) {
-          mediaUrl = headerComp.example.header_url[0];
+          rawUrl = headerComp.example.header_url[0];
+        }
+
+        // Facebook CDN links expire and return 403 Forbidden.
+        // If the link is empty or is a Facebook temporary attachment link, use your store logo from NEXT_PUBLIC_APP_URL.
+        if (rawUrl && !rawUrl.includes('fbcdn.net') && !rawUrl.includes('facebook') && !rawUrl.includes('attachment')) {
+          mediaUrl = rawUrl;
         } else {
-          // Default fallback to store icon
-          mediaUrl = 'https://www.skandivnaturaloils.in/icon.jpg';
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://skandiv-natural-oils.vercel.app';
+          mediaUrl = `${appUrl}/logo.jpg`;
         }
 
         const fmt = headerComp.format.toUpperCase();
