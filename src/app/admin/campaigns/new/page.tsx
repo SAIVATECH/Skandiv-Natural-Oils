@@ -50,6 +50,7 @@ export default function NewCampaignPage() {
   const [description, setDescription] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
   const [bodyVars, setBodyVars] = useState<VariableMapping[]>([]);
+  const [headerImageUrl, setHeaderImageUrl] = useState('');
   const [selectedRecipientIds, setSelectedRecipientIds] = useState<string[]>([]);
   const [scheduled, setScheduled] = useState(false);
   const [scheduleTime, setScheduleTime] = useState('');
@@ -199,7 +200,8 @@ export default function NewCampaignPage() {
       templateName: selectedTemplate.name,
       templateLanguage: selectedTemplate.language,
       templateVariables: {
-        body: bodyVars
+        body: bodyVars,
+        header: headerImageUrl ? [{ type: 'custom_text', value: headerImageUrl }] : []
       },
       recipientIds: selectedRecipientIds,
       scheduledAt: scheduled && scheduleTime ? new Date(scheduleTime).toISOString() : null
@@ -370,6 +372,25 @@ export default function NewCampaignPage() {
                         ))}
                       </select>
                     </div>
+
+                    {selectedTemplate && selectedTemplate.components?.some((c: any) => (c.type === 'HEADER' || c.type === 'header') && ['IMAGE', 'VIDEO', 'DOCUMENT'].includes(c.format?.toUpperCase())) && (
+                      <div className="space-y-2 bg-slate-950/40 border border-slate-900 p-4 rounded-2xl">
+                        <label className="text-slate-300 text-xs font-bold block flex items-center gap-1.5">
+                          <Layers className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Header Media URL (Optional)</span>
+                        </label>
+                        <input
+                          type="url"
+                          placeholder="https://example.com/your-image.jpg"
+                          value={headerImageUrl}
+                          onChange={e => setHeaderImageUrl(e.target.value)}
+                          className="w-full bg-slate-950 border border-slate-900 focus:border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:outline-none"
+                        />
+                        <span className="text-[10px] text-slate-500 block italic leading-normal">
+                          Provide a direct public image/video link (ending in .jpg, .png, or .mp4) to replace the template header. Leave blank to use the default fallback.
+                        </span>
+                      </div>
+                    )}
 
                     {selectedTemplate && bodyVars.length > 0 && (
                       <div className="space-y-4 pt-2 border-t border-slate-900">
