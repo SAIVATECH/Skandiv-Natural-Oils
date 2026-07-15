@@ -133,6 +133,51 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
         }
       });
     }
+
+    // Automatically inject media header parameters if the template requires an IMAGE, VIDEO, or DOCUMENT header
+    // but the campaign UI configuration did not provide one (which is the case since the UI only maps body vars)
+    const headerComp = template.components.find((c: any) => c.type === 'HEADER' || c.type === 'header');
+    if (headerComp && ['IMAGE', 'VIDEO', 'DOCUMENT'].includes(headerComp.format?.toUpperCase())) {
+      // Only inject if no header parameters were populated yet
+      if (headerParams.length === 0) {
+        let mediaUrl = '';
+        
+        // Extract example media link from template schema if available
+        if (headerComp.example && Array.isArray(headerComp.example.header_handle) && headerComp.example.header_handle[0]) {
+          mediaUrl = headerComp.example.header_handle[0];
+        } else if (headerComp.example && Array.isArray(headerComp.example.header_url) && headerComp.example.header_url[0]) {
+          mediaUrl = headerComp.example.header_url[0];
+        } else {
+          // Default fallback to store icon
+          mediaUrl = 'https://www.skandivnaturaloils.in/icon.jpg';
+        }
+
+        const fmt = headerComp.format.toUpperCase();
+        if (fmt === 'IMAGE') {
+          headerParams.push({
+            type: 'image',
+            image: { link: mediaUrl }
+          });
+        } else if (fmt === 'VIDEO') {
+          headerParams.push({
+            type: 'video',
+            video: { link: mediaUrl }
+          });
+        } else if (fmt === 'DOCUMENT') {
+          headerParams.push({
+            type: 'document',
+            document: { link: mediaUrl, filename: 'Document' }
+          });
+        }
+        
+        // Re-push header component to structure the final API components payload
+        // (if it wasn't added before)
+        const hasHeader = components.some((c: any) => c.type === 'header');
+        if (!hasHeader) {
+          components.push({ type: 'header', parameters: headerParams });
+        }
+      }
+    }
   }
 
   return components;
