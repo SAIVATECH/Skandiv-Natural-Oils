@@ -157,7 +157,8 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
         if (rawUrl && !rawUrl.includes('fbcdn.net') && !rawUrl.includes('facebook') && !rawUrl.includes('attachment')) {
           mediaUrl = rawUrl;
         } else {
-          mediaUrl = 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=80&w=600&auto=format&fit=crop';
+          // Use the raw GitHub CDN URL of the store logo (guaranteed public, no query strings, direct .jpg extension)
+          mediaUrl = 'https://raw.githubusercontent.com/SAIVATECH/Skandiv-Natural-Oils/main/public/logo.jpg';
         }
 
         const fmt = headerComp.format.toUpperCase();
