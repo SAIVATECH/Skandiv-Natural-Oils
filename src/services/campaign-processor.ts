@@ -53,13 +53,43 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
 
   if (varsConfig && Array.isArray(varsConfig.header)) {
     varsConfig.header.forEach((v: any) => {
-      let text = '';
+      let val = '';
       if (v.type === 'customer_name') {
-        text = customer.name || 'Valued Customer';
+        val = customer.name || 'Valued Customer';
       } else {
-        text = v.value || '';
+        val = v.value || '';
       }
-      headerParams.push({ type: 'text', text: sanitizeParam(text, false) });
+      
+      // Determine the header format from the template schema
+      let headerFormat = 'TEXT';
+      if (template && Array.isArray(template.components)) {
+        const headerComp = template.components.find((c: any) => c.type === 'HEADER' || c.type === 'header');
+        if (headerComp && headerComp.format) {
+          headerFormat = headerComp.format.toUpperCase();
+        }
+      }
+
+      if (headerFormat === 'IMAGE') {
+        headerParams.push({
+          type: 'image',
+          image: { link: val }
+        });
+      } else if (headerFormat === 'VIDEO') {
+        headerParams.push({
+          type: 'video',
+          video: { link: val }
+        });
+      } else if (headerFormat === 'DOCUMENT') {
+        headerParams.push({
+          type: 'document',
+          document: { link: val, filename: 'Document' }
+        });
+      } else {
+        headerParams.push({
+          type: 'text',
+          text: sanitizeParam(val, false)
+        });
+      }
     });
   }
 
