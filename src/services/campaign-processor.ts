@@ -151,12 +151,13 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
         }
 
         // Facebook CDN links expire and return 403 Forbidden.
-        // If the link is empty or is a Facebook temporary attachment link, use your store logo from NEXT_PUBLIC_APP_URL.
+        // If the link is empty or is a Facebook temporary attachment link, use a guaranteed public CDN product image.
+        // We use a high-quality Unsplash image of a natural essential oil bottle to bypass Vercel's WAF / Bot Protection
+        // which blocks Meta's automated servers from downloading the local logo.jpg asset.
         if (rawUrl && !rawUrl.includes('fbcdn.net') && !rawUrl.includes('facebook') && !rawUrl.includes('attachment')) {
           mediaUrl = rawUrl;
         } else {
-          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://skandiv-natural-oils.vercel.app';
-          mediaUrl = `${appUrl}/logo.jpg`;
+          mediaUrl = 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=80&w=600&auto=format&fit=crop';
         }
 
         const fmt = headerComp.format.toUpperCase();
