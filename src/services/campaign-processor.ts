@@ -150,15 +150,12 @@ function mapTemplateVariables(varsConfig: any, customer: any, template: any = nu
           rawUrl = headerComp.example.header_url[0];
         }
 
-        // Facebook CDN links expire and return 403 Forbidden.
-        // If the link is empty or is a Facebook temporary attachment link, use a guaranteed public CDN product image.
-        // We use a high-quality Unsplash image of a natural essential oil bottle to bypass Vercel's WAF / Bot Protection
-        // which blocks Meta's automated servers from downloading the local logo.jpg asset.
-        if (rawUrl && !rawUrl.includes('fbcdn.net') && !rawUrl.includes('facebook') && !rawUrl.includes('attachment')) {
+        if (rawUrl) {
           mediaUrl = rawUrl;
         } else {
-          // Use the raw GitHub CDN URL of the store logo (guaranteed public, no query strings, direct .jpg extension)
-          mediaUrl = 'https://raw.githubusercontent.com/SAIVATECH/Skandiv-Natural-Oils/main/public/logo.jpg';
+          // Use an open-access Wikimedia Commons image (completely public, no bot blocks or hotlink limits, direct .jpg)
+          // Matches the "Skandiv Natural Oils" coconut branding perfectly.
+          mediaUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Coconut_oil_in_a_jar_with_coconuts.jpg';
         }
 
         const fmt = headerComp.format.toUpperCase();
