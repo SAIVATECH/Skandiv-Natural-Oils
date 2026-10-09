@@ -80,14 +80,19 @@ export async function POST(req: Request) {
         },
       });
 
-      // Decrement Inventory Stock
+      // Decrement Inventory Stock safely (never below 0)
       for (const item of order.items) {
+        const prod = await tx.product.findUnique({
+          where: { id: item.productId },
+          select: { stock: true },
+        });
+        const currentStock = prod?.stock ?? 0;
+        const newStock = Math.max(0, currentStock - item.quantity);
+
         await tx.product.update({
           where: { id: item.productId },
           data: {
-            stock: {
-              decrement: item.quantity,
-            },
+            stock: newStock,
           },
         });
       }

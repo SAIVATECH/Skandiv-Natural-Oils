@@ -3,6 +3,37 @@ import { prisma } from '@/lib/prisma';
 import { productSchema } from '@/validations/schemas';
 
 /**
+ * GET Single Product by ID or Slug
+ * Path: GET /api/products/[id]
+ */
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+
+    const product = await prisma.product.findFirst({
+      where: {
+        OR: [
+          { id },
+          { slug: id }
+        ]
+      },
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(product);
+  } catch (error: any) {
+    console.error('[API Product GET Error]:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to fetch product' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * PUT Update product
  * Path: PUT /api/products/[id]
  */

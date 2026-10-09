@@ -4,6 +4,57 @@ import { orderStatusSchema } from '@/validations/schemas';
 import { sendWhatsAppMessage } from '@/lib/whatsapp';
 
 /**
+ * GET Single Order by ID
+ * Path: GET /api/orders/[id]
+ */
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+
+    const order = await prisma.order.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            whatsappNumber: true,
+            email: true,
+          },
+        },
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                imageUrl: true,
+                price: true,
+                category: true,
+              },
+            },
+          },
+        },
+        payments: true,
+      },
+    });
+
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(order);
+  } catch (error: any) {
+    console.error('[API Order GET Error]:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to fetch order' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * PUT Update Order Status (and notify user on WhatsApp)
  * Path: PUT /api/orders/[id]
  */

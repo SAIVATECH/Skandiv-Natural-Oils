@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { sendWhatsAppTemplateMessage } from '@/lib/whatsapp';
+import { sendWhatsAppTemplateMessage, handleWhatsAppDeliveryError } from '@/lib/whatsapp';
 
 /**
  * Helper to map template variables configuration to Meta Cloud API components format.
@@ -369,23 +369,51 @@ export async function processCampaignBatch(campaignId: string, batchSize: number
           components
         );
 
-        if (response.error) {
-          // Failed transmission
-          await prisma.campaignRecipient.update({
-            where: { id: recipient.id },
-            data: {
-              status: 'FAILED',
-              failedAt: new Date(),
-              errorMessage: response.error
-            }
-          });
-          await prisma.campaignLog.create({
-            data: {
-              campaignId,
-              level: 'ERROR',
-              message: `Failed to send to +${recipient.customer.whatsappNumber}: ${response.error}`
-            }
-          });
+        const respAny = response as any;
+        if (respAny.error) {
+          // Check if error is transient and retryable (max 3 retries)
+          const isRetryable = typeof respAny.error === 'string' && (
+            respAny.error.toLowerCase().includes('rate limit') ||
+            respAny.error.toLowerCase().includes('timeout') ||
+            respAny.error.toLowerCase().includes('connection') ||
+            respAny.error.toLowerCase().includes('131026')
+          );
+          const canRetry = isRetryable && (recipient.retryCount || 0) < 3;
+
+          if (canRetry) {
+            await prisma.campaignRecipient.update({
+              where: { id: recipient.id },
+              data: {
+                status: 'PENDING',
+                retryCount: { increment: 1 },
+                errorMessage: `Transient retryable failure (attempt ${recipient.retryCount + 1}/3): ${respAny.error}`
+              }
+            });
+            await prisma.campaignLog.create({
+              data: {
+                campaignId,
+                level: 'WARN',
+                message: `Transient error for +${recipient.customer.whatsappNumber} (attempt ${recipient.retryCount + 1}/3). Queued for retry.`
+              }
+            });
+          } else {
+            // Permanent failure or max retries exceeded
+            await prisma.campaignRecipient.update({
+              where: { id: recipient.id },
+              data: {
+                status: 'FAILED',
+                failedAt: new Date(),
+                errorMessage: respAny.error
+              }
+            });
+            await prisma.campaignLog.create({
+              data: {
+                campaignId,
+                level: 'ERROR',
+                message: `Failed to send to +${recipient.customer.whatsappNumber}: ${respAny.error}`
+              }
+            });
+          }
         } else {
           // Successful transmission
           await prisma.campaignRecipient.update({

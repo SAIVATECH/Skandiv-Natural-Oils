@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
       // 2. Begin transaction update
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const trackingUrl = `${appUrl}/orders/${order.id}/track`;
+      const trackingUrl = `${appUrl}/track/${order.id}`;
 
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         // Update Order Details
@@ -86,14 +86,19 @@ export async function POST(req: Request) {
           },
         });
 
-        // Deduct inventory stock for purchased products
+        // Deduct inventory stock for purchased products safely (never below 0)
         for (const item of order.items) {
+          const prod = await tx.product.findUnique({
+            where: { id: item.productId },
+            select: { stock: true },
+          });
+          const currentStock = prod?.stock ?? 0;
+          const newStock = Math.max(0, currentStock - item.quantity);
+
           await tx.product.update({
             where: { id: item.productId },
             data: {
-              stock: {
-                decrement: item.quantity,
-              },
+              stock: newStock,
             },
           });
         }
@@ -101,21 +106,29 @@ export async function POST(req: Request) {
 
       console.log(`[Razorpay Webhook] Database updated. Order ${order.id} paid. Stock decremented.`);
 
-      // 3. Reset customer conversation state back to START
+      // 3. Reset customer conversation state safely
       const user = await prisma.user.findUnique({
         where: { id: order.userId },
       });
 
       if (user) {
-        await prisma.conversationState.update({
-          where: { userId: user.id },
-          data: {
-            currentStep: 'START',
-            selectedProductId: null,
-            quantity: null,
-            pendingOrderId: null,
-          },
-        });
+        try {
+          await prisma.conversationState.upsert({
+            where: { userId: user.id },
+            update: {
+              currentStep: 'START',
+              selectedProductId: null,
+              quantity: null,
+              pendingOrderId: null,
+            },
+            create: {
+              userId: user.id,
+              currentStep: 'START',
+            },
+          });
+        } catch (convErr) {
+          console.warn('[Razorpay Webhook] Note: ConversationState upsert notice:', convErr);
+        }
 
         // 4. Send successful WhatsApp notification to customer
         const confirmationMsg = `💳 *Payment Verified!*\n` +
@@ -126,7 +139,7 @@ export async function POST(req: Request) {
           `You can monitor your package live at any time using this tracking link:\n` +
           `🔗 ${trackingUrl}\n` +
           `----------------------------------\n` +
-          `Thank you for shopping with us! 🛍️`;
+          `Thank you for shopping with Skandiv Natural Oils! 🌿`;
 
         await sendWhatsAppMessage(user.whatsappNumber, confirmationMsg);
       }

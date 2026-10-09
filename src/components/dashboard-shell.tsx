@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useAuthStore } from '@/store/authStore';
 import { AdminSidebar } from './admin-sidebar';
 import { Menu, X, User, Bell, Activity, RefreshCw } from 'lucide-react';
 
@@ -12,20 +13,26 @@ interface DashboardShellProps {
 export function DashboardShell({ children }: DashboardShellProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { user, isAuthenticated: isUserAuth } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authorized, setAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Client-side authentication check
-    const isAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      router.push('/login');
+    // Check both local admin flag and zustand auth store
+    const isAdminLocal = typeof window !== 'undefined' && localStorage.getItem('isAdminAuthenticated') === 'true';
+    const isAdminStore = isUserAuth && user?.role === 'ADMIN';
+
+    if (!isAdminLocal && !isAdminStore) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
     } else {
+      if (isAdminStore && !isAdminLocal && typeof window !== 'undefined') {
+        localStorage.setItem('isAdminAuthenticated', 'true');
+      }
       setAuthorized(true);
     }
     setLoading(false);
-  }, [router]);
+  }, [router, isUserAuth, user, pathname]);
 
   // Translate pathname to clean human readable titles
   const getPageTitle = () => {
