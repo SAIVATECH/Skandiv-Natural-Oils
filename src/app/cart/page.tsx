@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import {
   ShoppingBag,
   Plus,
@@ -22,6 +23,7 @@ import {
 
 export default function CartPage() {
   const router = useRouter();
+  const { isAuthenticated } = useAuthStore();
   const {
     items,
     removeItem,
@@ -331,7 +333,7 @@ export default function CartPage() {
           {/* Action CTAs */}
           <div className="space-y-3 pt-2">
             <Link
-              href="/checkout"
+              href={isAuthenticated ? '/checkout' : '/login?redirect=/checkout'}
               className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95"
             >
               <span>Proceed to Checkout</span>

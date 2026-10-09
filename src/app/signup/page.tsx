@@ -17,7 +17,8 @@ import {
   CheckCircle2,
   Sparkles,
   Droplet,
-  Truck
+  Truck,
+  ShoppingBag
 } from 'lucide-react';
 
 function SignupForm() {
@@ -138,6 +139,13 @@ function SignupForm() {
         {/* Form Container */}
         <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
           
+          {redirectUrl && (redirectUrl.includes('checkout') || redirectUrl.includes('cart')) && (
+            <div className="bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold px-4 py-3 rounded-2xl flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 text-amber-400 flex-shrink-0" />
+              <span>Create an account to complete your checkout and save your address.</span>
+            </div>
+          )}
+
           {error && (
             <div className="bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-semibold px-4 py-3 rounded-2xl">
               {error}

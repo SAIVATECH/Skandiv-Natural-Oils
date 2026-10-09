@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import { ProductCard, ProductItemData } from './product-card';
 import {
   ShoppingBag,
@@ -38,6 +39,7 @@ export function ProductDetailView({
 }: ProductDetailViewProps) {
   const router = useRouter();
   const { addItem } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
 
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(product.imageUrl || '/logo.jpg');
@@ -55,6 +57,12 @@ export function ProductDetailView({
   const handleAddToCart = () => {
     if (isOutOfStock) return;
     addItem(product, quantity);
+
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent('/cart')}`);
+      return;
+    }
+
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };
@@ -62,6 +70,12 @@ export function ProductDetailView({
   const handleBuyNow = () => {
     if (isOutOfStock) return;
     addItem(product, quantity);
+
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent('/checkout')}`);
+      return;
+    }
+
     router.push('/checkout');
   };
 

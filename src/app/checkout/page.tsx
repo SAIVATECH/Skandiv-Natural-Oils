@@ -61,6 +61,19 @@ export default function CheckoutPage() {
   const grandTotal = getGrandTotal();
   const totalSavings = getTotalSavings();
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Mandatory Login Redirect (Amazon/Flipkart flow)
+  useEffect(() => {
+    if (mounted && !isAuthenticated) {
+      router.push('/login?redirect=/checkout');
+    }
+  }, [mounted, isAuthenticated, router]);
+
   // Pre-fill fields if user is authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -85,6 +98,14 @@ export default function CheckoutPage() {
       }
     };
   }, []);
+
+  if (!mounted || (!isAuthenticated && mounted)) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-400" />
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (

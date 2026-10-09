@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import {
   X,
   ShoppingBag,
@@ -24,6 +25,7 @@ interface CartDrawerProps {
 
 export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) {
   const router = useRouter();
+  const { isAuthenticated } = useAuthStore();
   const {
     items,
     isCartOpen,
@@ -298,7 +300,7 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Link
-                  href="/checkout"
+                  href={isAuthenticated ? '/checkout' : '/login?redirect=/checkout'}
                   onClick={() => setCartOpen(false)}
                   className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-[0.99]"
                 >

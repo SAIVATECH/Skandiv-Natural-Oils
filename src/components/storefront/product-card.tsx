@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import {
   ShoppingBag,
   Zap,
@@ -41,6 +42,7 @@ export function ProductCard({
 }: ProductCardProps) {
   const router = useRouter();
   const { addItem } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
   const [added, setAdded] = useState(false);
 
   const priceNum = typeof product.price === 'string' ? parseFloat(product.price) : Number(product.price);
@@ -57,6 +59,12 @@ export function ProductCard({
     e.stopPropagation();
     if (isOutOfStock) return;
     addItem(product, 1);
+
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent('/cart')}`);
+      return;
+    }
+
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
   };
@@ -66,6 +74,12 @@ export function ProductCard({
     e.stopPropagation();
     if (isOutOfStock) return;
     addItem(product, 1);
+
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent('/checkout')}`);
+      return;
+    }
+
     router.push('/checkout');
   };
 
