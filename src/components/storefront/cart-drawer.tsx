@@ -43,6 +43,7 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
   } = useCartStore();
 
   const [couponInput, setCouponInput] = useState('');
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [couponMessage, setCouponMessage] = useState<{ success: boolean; message: string } | null>(null);
 
   if (!isCartOpen) return null;
@@ -53,15 +54,19 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
   const grandTotal = getGrandTotal();
   const totalSavings = getTotalSavings();
 
-  const freeShippingThreshold = 499;
-  const progressToFreeShipping = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
-  const amountNeededForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
-
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!couponInput.trim()) return;
-    const res = applyCoupon(couponInput.trim());
-    setCouponMessage(res);
+    setIsApplyingCoupon(true);
+    setCouponMessage(null);
+    try {
+      const res = await applyCoupon(couponInput.trim());
+      setCouponMessage(res);
+    } catch {
+      setCouponMessage({ success: false, message: 'Failed to apply coupon' });
+    } finally {
+      setIsApplyingCoupon(false);
+    }
   };
 
   // Construct WhatsApp checkout prefilled message
@@ -70,7 +75,7 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
       .map((item, idx) => `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`)
       .join('\n');
 
-    return `Hi Skandiv Natural Oils! 🌿 I would like to place an order for the following items:\n\n${itemList}\n\n*Subtotal:* ₹${subtotal}\n*Shipping:* ${shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}\n*Total Amount:* ₹${grandTotal}\n\nPlease share payment & delivery confirmation details.`;
+    return `Hi Skandiv Natural Oils! 🌿 I would like to place an order for the following items:\n\n${itemList}\n\n*Subtotal:* ₹${subtotal}\n*Shipping:* ₹${shippingFee}\n*Total Amount:* ₹${grandTotal}\n\nPlease share payment & delivery confirmation details.`;
   };
 
   const whatsappCheckoutUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(generateWhatsAppOrderText())}`;
@@ -108,23 +113,14 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
             </button>
           </div>
 
-          {/* Free Shipping Progress Bar */}
-          <div className="px-4 sm:px-6 py-3 bg-emerald-950/30 border-b border-emerald-900/40">
-            <div className="flex items-center justify-between text-xs font-bold mb-1.5">
-              <span className="flex items-center gap-1.5 text-emerald-300">
-                <Truck className="w-4 h-4 text-emerald-400" />
-                {amountNeededForFreeShipping === 0 ? (
-                  <span>🎉 Congratulations! You have unlocked <strong>FREE Express Delivery</strong></span>
-                ) : (
-                  <span>Add <strong className="text-amber-400">₹{amountNeededForFreeShipping}</strong> more for <strong>FREE Delivery</strong></span>
-                )}
+          {/* Delivery Notice */}
+          <div className="px-4 sm:px-6 py-2.5 bg-slate-900/60 border-b border-slate-800">
+            <div className="flex items-center justify-between text-xs font-bold">
+              <span className="flex items-center gap-1.5 text-slate-300">
+                <Truck className="w-4 h-4 text-amber-400" />
+                <span>Standard Delivery: <strong className="text-amber-400">₹49</strong> (Pan-India)</span>
               </span>
-            </div>
-            <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-emerald-500 to-amber-400 transition-all duration-500 rounded-full"
-                style={{ width: `${progressToFreeShipping}%` }}
-              />
+              <span className="text-[10px] text-slate-400 font-normal">Dispatched in 24-48 hrs</span>
             </div>
           </div>
 
@@ -240,9 +236,10 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-amber-400 border border-slate-800 font-bold text-xs rounded-xl transition-colors"
+                    disabled={isApplyingCoupon}
+                    className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-amber-400 border border-slate-800 font-bold text-xs rounded-xl transition-colors disabled:opacity-50"
                   >
-                    Apply
+                    {isApplyingCoupon ? '...' : 'Apply'}
                   </button>
                 </div>
                 {couponMessage && (
@@ -282,8 +279,8 @@ export function CartDrawer({ whatsappPhone = '919342365917' }: CartDrawerProps) 
                 )}
                 <div className="flex justify-between">
                   <span>Estimated Delivery</span>
-                  <span className={shippingFee === 0 ? 'text-emerald-400 font-bold' : 'text-slate-200 font-bold'}>
-                    {shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}
+                  <span className="text-slate-200 font-bold">
+                    ₹{shippingFee}
                   </span>
                 </div>
                 <div className="flex justify-between text-base font-black text-slate-100 pt-2 border-t border-slate-900">

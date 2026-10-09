@@ -41,6 +41,7 @@ export default function CartPage() {
 
   const [couponInput, setCouponInput] = useState('');
   const [couponMsg, setCouponMsg] = useState<{ success: boolean; message: string } | null>(null);
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
 
   const subtotal = getSubtotal();
   const discount = getDiscount();
@@ -48,15 +49,16 @@ export default function CartPage() {
   const grandTotal = getGrandTotal();
   const totalSavings = getTotalSavings();
 
-  const freeShippingThreshold = 499;
-  const progressToFreeShipping = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
-  const amountNeeded = Math.max(0, freeShippingThreshold - subtotal);
-
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!couponInput.trim()) return;
-    const res = applyCoupon(couponInput.trim());
-    setCouponMsg(res);
+    setApplyingCoupon(true);
+    try {
+      const res = await applyCoupon(couponInput.trim());
+      setCouponMsg(res);
+    } finally {
+      setApplyingCoupon(false);
+    }
   };
 
   const whatsappPhone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '919342365917';
@@ -131,25 +133,13 @@ export default function CartPage() {
         </button>
       </div>
 
-      {/* Free Shipping Banner */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-2">
-        <div className="flex items-center justify-between text-xs font-bold">
-          <span className="flex items-center gap-2 text-emerald-400">
-            <Truck className="w-4 h-4" />
-            {amountNeeded === 0 ? (
-              <span>🎉 You have unlocked <strong>FREE Express Delivery</strong></span>
-            ) : (
-              <span>Add <strong className="text-amber-400">₹{amountNeeded}</strong> more to qualify for <strong>FREE Delivery</strong></span>
-            )}
-          </span>
-          <span className="text-slate-400">{progressToFreeShipping}%</span>
-        </div>
-        <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-gradient-to-r from-emerald-500 to-amber-400 transition-all duration-500 rounded-full"
-            style={{ width: `${progressToFreeShipping}%` }}
-          />
-        </div>
+      {/* Express Delivery Notice Banner */}
+      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 sm:p-5 flex items-center justify-between text-xs font-bold">
+        <span className="flex items-center gap-2 text-amber-400">
+          <Truck className="w-4 h-4 text-amber-400" />
+          <span>⚡ <strong>Express Safe Delivery:</strong> ₹49 flat courier fee per order across India.</span>
+        </span>
+        <span className="text-slate-400 font-mono">Standard ₹49</span>
       </div>
 
       {/* Main Grid: Items List (7 cols) + Summary (5 cols) */}

@@ -177,7 +177,7 @@ export function ProductDetailView({
               )}
             </div>
             <p className="text-[11px] text-slate-400">
-              MRP Inclusive of all taxes &bull; <strong>Free Express Shipping</strong> on orders above ₹499
+              MRP Inclusive of all taxes &bull; <strong>Standard Express Shipping (₹49)</strong> Pan-India
             </p>
           </div>
 

@@ -89,7 +89,7 @@ export function StoreNavbar({
           <div className="flex items-center space-x-2 mx-auto sm:mx-0">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block" />
             <span>
-              🌱 <strong className="text-amber-300">100% Mara Chekku Cold Pressed</strong> &bull; Free Express Delivery on orders above ₹499 &bull; Instant WhatsApp Order
+              🌱 <strong className="text-amber-300">100% Mara Chekku Cold Pressed</strong> &bull; Express Delivery Across India &bull; Instant WhatsApp Order
             </span>
           </div>
           <div className="hidden sm:flex items-center space-x-4 text-[11px] text-emerald-200">

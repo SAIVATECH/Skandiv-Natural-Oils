@@ -97,17 +97,47 @@ export async function POST(req: Request) {
       });
     }
 
-    // Apply valid coupon discount
+    // Apply valid coupon discount dynamically from database
     let discount = 0;
     const cleanCoupon = couponCode ? couponCode.trim().toUpperCase() : '';
-    if (cleanCoupon === 'SKANDIV10' || cleanCoupon === 'WELCOME10') {
-      discount = Math.round(calculatedSubtotal * 0.1);
-    } else if (cleanCoupon === 'ORGANIC50' && calculatedSubtotal >= 500) {
-      discount = 50;
+    if (cleanCoupon) {
+      try {
+        const coupon = await (prisma as any).coupon.findUnique({
+          where: { code: cleanCoupon },
+        });
+
+        if (coupon && coupon.isActive) {
+          const now = new Date();
+          if (!coupon.expiresAt || new Date(coupon.expiresAt) > now) {
+            if (!coupon.minOrderAmount || calculatedSubtotal >= Number(coupon.minOrderAmount)) {
+              if (coupon.discountType === 'PERCENTAGE') {
+                const calculatedDiscount = Math.round((calculatedSubtotal * Number(coupon.discountValue)) / 100);
+                discount = coupon.maxDiscount ? Math.min(calculatedDiscount, Number(coupon.maxDiscount)) : calculatedDiscount;
+              } else {
+                discount = Math.min(Number(coupon.discountValue), calculatedSubtotal);
+              }
+            }
+          }
+        } else if (!coupon) {
+          // Fallback static codes if not yet seeded
+          if (cleanCoupon === 'SKANDIV10' || cleanCoupon === 'WELCOME10') {
+            discount = Math.round(calculatedSubtotal * 0.1);
+          } else if (cleanCoupon === 'ORGANIC50' && calculatedSubtotal >= 500) {
+            discount = 50;
+          }
+        }
+      } catch (couponDbErr) {
+        console.warn('Could not query coupon from db, falling back to static codes:', couponDbErr);
+        if (cleanCoupon === 'SKANDIV10' || cleanCoupon === 'WELCOME10') {
+          discount = Math.round(calculatedSubtotal * 0.1);
+        } else if (cleanCoupon === 'ORGANIC50' && calculatedSubtotal >= 500) {
+          discount = 50;
+        }
+      }
     }
 
-    // Calculate shipping fee (Free above ₹499 or with FREESHIP coupon)
-    let shippingFee = calculatedSubtotal >= 499 || cleanCoupon === 'FREESHIP' ? 0 : 49;
+    // Standard flat delivery fee of ₹49 across India (Free shipping removed)
+    const shippingFee = calculatedSubtotal > 0 ? 49 : 0;
     const finalGrandTotal = Math.max(0, calculatedSubtotal - discount + shippingFee);
 
     // 2. Upsert Customer in PostgreSQL

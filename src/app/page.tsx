@@ -111,8 +111,8 @@ export default async function HomeStorefront() {
                 <Truck className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-base sm:text-lg font-black text-slate-100 leading-none">Free Express</p>
-                <p className="text-[11px] text-slate-400 font-semibold mt-1">On orders over ₹499</p>
+                <p className="text-base sm:text-lg font-black text-slate-100 leading-none">Express Delivery</p>
+                <p className="text-[11px] text-slate-400 font-semibold mt-1">Insured Pan-India Shipping</p>
               </div>
             </div>
 

@@ -37,7 +37,7 @@ interface CartStore {
   setCartOpen: (open: boolean) => void;
   toggleCart: () => void;
   setCampaignId: (id: string | null) => void;
-  applyCoupon: (code: string) => { success: boolean; message: string };
+  applyCoupon: (code: string) => Promise<{ success: boolean; message: string }>;
   removeCoupon: () => void;
 
   // Computed Helpers
@@ -130,21 +130,34 @@ export const useCartStore = create<CartStore>()(
         }
       },
 
-      applyCoupon: (code: string) => {
+      applyCoupon: async (code: string) => {
         const cleanCode = code.trim().toUpperCase();
         const subtotal = get().getSubtotal();
 
-        if (cleanCode === 'SKANDIV10' || cleanCode === 'WELCOME10') {
-          const discount = Math.round(subtotal * 0.1);
-          set({ couponCode: cleanCode, discountAmount: discount });
-          return { success: true, message: 'Coupon applied! 10% discount added.' };
-        } else if (cleanCode === 'ORGANIC50' && subtotal >= 500) {
-          set({ couponCode: cleanCode, discountAmount: 50 });
-          return { success: true, message: 'Coupon applied! ₹50 off your order.' };
-        } else if (cleanCode === 'FREESHIP' && subtotal >= 300) {
-          set({ couponCode: cleanCode, discountAmount: 0 });
-          return { success: true, message: 'Free Shipping coupon applied!' };
-        } else {
+        try {
+          const res = await fetch('/api/coupons/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: cleanCode, subtotal }),
+          });
+
+          const data = await res.json();
+          if (res.ok && data.valid) {
+            set({ couponCode: cleanCode, discountAmount: data.discount });
+            return { success: true, message: data.message || `Coupon ${cleanCode} applied!` };
+          } else {
+            return { success: false, message: data.message || 'Invalid or expired coupon code' };
+          }
+        } catch (err) {
+          // Fallback static rules
+          if (cleanCode === 'SKANDIV10' || cleanCode === 'WELCOME10') {
+            const discount = Math.round(subtotal * 0.1);
+            set({ couponCode: cleanCode, discountAmount: discount });
+            return { success: true, message: 'Coupon applied! 10% discount added.' };
+          } else if (cleanCode === 'ORGANIC50' && subtotal >= 500) {
+            set({ couponCode: cleanCode, discountAmount: 50 });
+            return { success: true, message: 'Coupon applied! ₹50 off your order.' };
+          }
           return { success: false, message: 'Invalid or expired coupon code' };
         }
       },
@@ -164,9 +177,8 @@ export const useCartStore = create<CartStore>()(
       getShippingFee: () => {
         const subtotal = get().getSubtotal();
         if (subtotal === 0) return 0;
-        if (get().couponCode === 'FREESHIP') return 0;
-        // Free shipping on orders >= ₹499
-        return subtotal >= 499 ? 0 : 49;
+        // Standard delivery fee (free delivery option removed)
+        return 49;
       },
 
       getGrandTotal: () => {

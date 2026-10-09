@@ -14,6 +14,7 @@ import {
   Smartphone,
   MessageSquare,
   Megaphone,
+  Tag,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -32,6 +33,7 @@ export function AdminSidebar({ onCloseMobile }: SidebarProps) {
     { name: 'Products', href: '/admin/products', icon: ShoppingBag },
     { name: 'Orders', href: '/admin/orders', icon: Receipt },
     { name: 'Customers', href: '/admin/customers', icon: Users },
+    { name: 'Coupons', href: '/admin/coupons', icon: Tag },
     { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Settings', href: '/admin/settings', icon: Settings },
   ];
