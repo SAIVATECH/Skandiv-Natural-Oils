@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import {
   ShoppingBag,
   Search,
@@ -18,7 +19,9 @@ import {
   Sparkles,
   ExternalLink,
   ArrowRight,
-  Package
+  Package,
+  LogOut,
+  UserCheck
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -33,12 +36,14 @@ export function StoreNavbar({
   const pathname = usePathname();
   const router = useRouter();
   const { getItemCount, toggleCart } = useCartStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -249,14 +254,72 @@ export function StoreNavbar({
                 <Search className="w-4 h-4" />
               </button>
 
-              {/* Order Tracking / Account Link */}
-              <Link
-                href="/account/orders"
-                className="w-10 h-10 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white transition-colors hidden sm:flex"
-                title="My Orders & Tracking"
-              >
-                <Package className="w-4 h-4" />
-              </Link>
+              {/* User Account / Auth Dropdown */}
+              {mounted && isAuthenticated && user ? (
+                <div className="relative" onMouseLeave={() => setUserMenuOpen(false)}>
+                  <button
+                    type="button"
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    className="h-10 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-amber-500/30 flex items-center gap-2 text-slate-200 text-xs font-bold transition-colors"
+                  >
+                    <div className="w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] flex items-center justify-center">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <span className="hidden xl:inline max-w-[90px] truncate">{user.name.split(' ')[0]}</span>
+                    <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {userMenuOpen && (
+                    <div className="absolute right-0 mt-1 w-52 bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="px-3 py-2 border-b border-slate-900">
+                        <p className="text-xs font-bold text-slate-200 truncate">{user.name}</p>
+                        <p className="text-[10px] text-slate-500 font-mono">+{user.whatsappNumber}</p>
+                      </div>
+                      <div className="py-1 space-y-0.5">
+                        <Link
+                          href="/account"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-900 transition-colors"
+                        >
+                          <Package className="w-3.5 h-3.5 text-amber-500" />
+                          <span>My Orders &amp; Account</span>
+                        </Link>
+                        {user.role === 'ADMIN' && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setUserMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-emerald-400 hover:bg-slate-900 transition-colors"
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5" />
+                            <span>Admin Portal</span>
+                          </Link>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUserMenuOpen(false);
+                            logout();
+                            router.push('/');
+                          }}
+                          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors text-left"
+                        >
+                          <LogOut className="w-3.5 h-3.5" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="h-10 px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 flex items-center gap-1.5 text-slate-300 hover:text-amber-400 transition-colors text-xs font-bold"
+                  title="Sign In / Register"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">Sign In</span>
+                </Link>
+              )}
 
               {/* Cart Drawer Trigger Button */}
               <button
@@ -341,11 +404,52 @@ export function StoreNavbar({
                   </span>
                 )}
               </Link>
+              {/* Mobile Auth Button */}
+              {mounted && isAuthenticated && user ? (
+                <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-200">{user.name}</p>
+                      <p className="text-[10px] text-slate-500 font-mono">+{user.whatsappNumber}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      router.push('/');
+                    }}
+                    className="p-2 text-rose-400 hover:bg-rose-500/10 rounded-xl"
+                    title="Sign Out"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Link
+                    href="/login"
+                    className="px-4 py-2.5 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs text-center"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="px-4 py-2.5 bg-slate-900 text-slate-200 border border-slate-800 font-bold rounded-xl text-xs text-center"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+
               <Link
-                href="/account/orders"
+                href="/account"
                 className="block px-4 py-3 rounded-xl text-sm font-bold text-slate-200 hover:bg-slate-900 hover:text-amber-400"
               >
-                Track Orders & History
+                My Account &amp; Orders
               </Link>
               <Link
                 href="/about"

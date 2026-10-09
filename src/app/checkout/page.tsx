@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import {
   ShieldCheck,
   Lock,
@@ -41,6 +42,8 @@ export default function CheckoutPage() {
     clearCart
   } = useCartStore();
 
+  const { user, isAuthenticated } = useAuthStore();
+
   const [fullName, setFullName] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -57,6 +60,18 @@ export default function CheckoutPage() {
   const shippingFee = getShippingFee();
   const grandTotal = getGrandTotal();
   const totalSavings = getTotalSavings();
+
+  // Pre-fill fields if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      if (user.name) setFullName(user.name);
+      if (user.whatsappNumber) {
+        const clean = user.whatsappNumber.replace(/\D/g, '').slice(-10);
+        setWhatsappNumber(clean);
+      }
+      if (user.email) setEmail(user.email);
+    }
+  }, [isAuthenticated, user]);
 
   // Load Razorpay script dynamically
   useEffect(() => {
@@ -263,9 +278,24 @@ export default function CheckoutPage() {
           
           {/* Customer Details Box */}
           <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 space-y-4">
-            <div className="flex items-center gap-2 text-sm font-black text-slate-100 uppercase tracking-wider border-b border-slate-800 pb-3">
-              <User className="w-4 h-4 text-amber-500" />
-              <span>1. Customer & WhatsApp Details</span>
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2 text-sm font-black text-slate-100 uppercase tracking-wider">
+                <User className="w-4 h-4 text-amber-500" />
+                <span>1. Customer &amp; WhatsApp Details</span>
+              </div>
+              {isAuthenticated && user ? (
+                <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Logged in as {user.name.split(' ')[0]}</span>
+                </span>
+              ) : (
+                <Link
+                  href="/login?redirect=/checkout"
+                  className="text-[11px] text-amber-400 hover:text-amber-300 font-bold underline transition-colors"
+                >
+                  Sign in for faster checkout
+                </Link>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
