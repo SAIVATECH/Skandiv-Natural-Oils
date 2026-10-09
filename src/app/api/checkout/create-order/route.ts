@@ -136,8 +136,58 @@ export async function POST(req: Request) {
       }
     }
 
-    // Standard flat delivery fee of ₹49 across India (Free shipping removed)
-    const shippingFee = calculatedSubtotal > 0 ? 49 : 0;
+    // Calculate location-based delivery fee dynamically from database
+    let shippingFee = 49;
+    if (calculatedSubtotal > 0) {
+      try {
+        const rates = await (prisma as any).shippingRate.findMany({
+          where: { isActive: true },
+        });
+
+        const cleanState = state.trim().toLowerCase();
+        const pinPrefix3 = pincode.replace(/\D/g, '').slice(0, 3);
+        let matchedRate: any = null;
+
+        // 1. Check pincode prefix
+        if (pinPrefix3 && rates && rates.length > 0) {
+          matchedRate = rates.find((r: any) => {
+            if (!r.pincodePrefixes) return false;
+            const prefixes = r.pincodePrefixes.split(',').map((p: string) => p.trim());
+            return prefixes.includes(pinPrefix3);
+          });
+        }
+
+        // 2. Check state name
+        if (!matchedRate && cleanState && rates && rates.length > 0) {
+          matchedRate = rates.find((r: any) => {
+            if (!r.state) return false;
+            const statesList = r.state.split(',').map((s: string) => s.trim().toLowerCase());
+            return statesList.some((s: string) => s.includes(cleanState) || cleanState.includes(s));
+          });
+        }
+
+        // 3. Fallback to default
+        if (!matchedRate && rates && rates.length > 0) {
+          matchedRate = rates.find((r: any) => r.isDefault);
+        }
+
+        if (matchedRate) {
+          shippingFee = Number(matchedRate.deliveryFee);
+        } else if (cleanState.includes('tamil') || cleanState === 'tn') {
+          shippingFee = 30;
+        }
+      } catch (rateErr) {
+        console.warn('Could not query dynamic shipping rates, using fallback:', rateErr);
+        if (state.toLowerCase().includes('tamil') || state.toLowerCase() === 'tn') {
+          shippingFee = 30;
+        } else {
+          shippingFee = 49;
+        }
+      }
+    } else {
+      shippingFee = 0;
+    }
+
     const finalGrandTotal = Math.max(0, calculatedSubtotal - discount + shippingFee);
 
     // 2. Upsert Customer in PostgreSQL

@@ -19,6 +19,8 @@ interface CartStore {
   campaignId: string | null;
   couponCode: string | null;
   discountAmount: number;
+  shippingFee: number;
+  deliveryZoneName: string;
 
   // Actions
   addItem: (product: {
@@ -39,6 +41,7 @@ interface CartStore {
   setCampaignId: (id: string | null) => void;
   applyCoupon: (code: string) => Promise<{ success: boolean; message: string }>;
   removeCoupon: () => void;
+  updateLocationShipping: (state: string, pincode?: string) => Promise<number>;
 
   // Computed Helpers
   getSubtotal: () => number;
@@ -57,6 +60,8 @@ export const useCartStore = create<CartStore>()(
       campaignId: null,
       couponCode: null,
       discountAmount: 0,
+      shippingFee: 49,
+      deliveryZoneName: 'Standard Delivery',
 
       addItem: (product, quantity = 1) => {
         const currentItems = get().items;
@@ -166,6 +171,27 @@ export const useCartStore = create<CartStore>()(
         set({ couponCode: null, discountAmount: 0 });
       },
 
+      updateLocationShipping: async (state: string, pincode?: string) => {
+        try {
+          const res = await fetch('/api/shipping-rates/calculate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ state, pincode }),
+          });
+          const data = await res.json();
+          if (data && typeof data.deliveryFee === 'number') {
+            set({
+              shippingFee: data.deliveryFee,
+              deliveryZoneName: data.zoneName || 'Standard Delivery',
+            });
+            return data.deliveryFee;
+          }
+        } catch (err) {
+          console.warn('Could not calculate dynamic location shipping fee:', err);
+        }
+        return get().shippingFee || 49;
+      },
+
       getSubtotal: () => {
         return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0);
       },
@@ -177,8 +203,7 @@ export const useCartStore = create<CartStore>()(
       getShippingFee: () => {
         const subtotal = get().getSubtotal();
         if (subtotal === 0) return 0;
-        // Standard delivery fee (free delivery option removed)
-        return 49;
+        return get().shippingFee !== undefined ? get().shippingFee : 49;
       },
 
       getGrandTotal: () => {
@@ -211,6 +236,8 @@ export const useCartStore = create<CartStore>()(
         campaignId: state.campaignId,
         couponCode: state.couponCode,
         discountAmount: state.discountAmount,
+        shippingFee: state.shippingFee,
+        deliveryZoneName: state.deliveryZoneName,
       }),
     }
   )

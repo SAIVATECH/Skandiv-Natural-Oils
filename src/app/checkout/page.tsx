@@ -39,6 +39,8 @@ export default function CheckoutPage() {
     getTotalSavings,
     couponCode,
     campaignId,
+    deliveryZoneName,
+    updateLocationShipping,
     clearCart
   } = useCartStore();
 
@@ -66,6 +68,13 @@ export default function CheckoutPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Live recalculation of location-based delivery fee
+  useEffect(() => {
+    if (state || pincode) {
+      updateLocationShipping(state, pincode);
+    }
+  }, [state, pincode, updateLocationShipping]);
 
   // Mandatory Login Redirect (Amazon/Flipkart flow)
   useEffect(() => {
@@ -467,9 +476,16 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            <div className="flex justify-between">
-              <span>Standard Shipping</span>
-              <span className="text-slate-100 font-bold">
+            <div className="flex justify-between items-center">
+              <div>
+                <span>Delivery Fee</span>
+                {deliveryZoneName && (
+                  <span className="block text-[10px] text-slate-400 font-normal">
+                    {deliveryZoneName}
+                  </span>
+                )}
+              </div>
+              <span className="text-slate-100 font-bold font-mono">
                 ₹{shippingFee}
               </span>
             </div>

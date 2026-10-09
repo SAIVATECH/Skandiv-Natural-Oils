@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { DashboardShell } from '@/components/dashboard-shell';
 import {
   Tag,
@@ -208,10 +209,24 @@ export default function AdminCouponsPage() {
               {coupons.filter(c => c.isActive).length}
             </p>
           </div>
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 space-y-1">
-            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Standard Delivery Fee</span>
-            <p className="text-2xl font-black text-amber-400 font-mono">₹49 (Fixed)</p>
-          </div>
+          <Link
+            href="/admin/shipping"
+            className="group bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-4 space-y-1 transition-all flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                  Location Delivery Fees
+                </span>
+                <span className="text-[10px] text-amber-400 font-bold group-hover:underline flex items-center gap-0.5">
+                  <span>Edit</span>
+                  <ArrowRight className="w-3 h-3" />
+                </span>
+              </div>
+              <p className="text-2xl font-black text-amber-400 font-mono mt-1">₹30 - ₹80</p>
+            </div>
+            <p className="text-[10px] text-slate-400">Configured by State &amp; Pincode</p>
+          </Link>
         </div>
 
         {/* Coupons List */}
