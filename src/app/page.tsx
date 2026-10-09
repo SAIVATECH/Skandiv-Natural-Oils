@@ -326,29 +326,26 @@ export default async function HomeStorefront() {
               Get 10% OFF on your First Order
             </h3>
             <p className="text-xs sm:text-sm font-semibold text-slate-900/90 leading-relaxed">
-              Use code <strong className="bg-slate-950 text-white px-2 py-0.5 rounded font-mono">SKANDIV10</strong> at checkout or order directly via WhatsApp for instant dispatch.
+              Use code <strong className="bg-slate-950 text-white px-2 py-0.5 rounded font-mono">SKANDIV10</strong> at checkout for instant 10% discount on Mara Chekku pure oils.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <Link
               href="/shop"
-              className="px-8 py-4 bg-slate-950 hover:bg-slate-900 text-amber-400 hover:text-white font-black text-xs uppercase tracking-wider rounded-2xl transition-all text-center shadow-lg active:scale-95"
+              className="px-8 py-4 bg-slate-950 hover:bg-slate-900 text-amber-400 hover:text-white font-black text-xs uppercase tracking-wider rounded-2xl transition-all text-center shadow-lg active:scale-95 flex items-center justify-center gap-2"
             >
-              Shop Discounted Oils
+              <Zap className="w-4 h-4 fill-current" />
+              <span>Buy Now (10% OFF)</span>
             </Link>
 
-            <a
-              href={whatsappChatUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/shop"
               className="px-8 py-4 bg-white hover:bg-slate-100 text-[#053520] font-black text-xs uppercase tracking-wider rounded-2xl transition-all text-center shadow-lg active:scale-95 flex items-center justify-center gap-2"
             >
-              <svg className="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24">
-                <path d="M12.004 2C6.51 2 2.014 6.5 2.014 12c0 2.16.7 4.21 2.02 5.87L2.01 22l4.25-1.23c1.61.88 3.47 1.34 5.75 1.34 5.49 0 9.99-4.5 9.99-10S17.49 2 12.004 2zm0 16.5c-1.92 0-3.69-.53-5.22-1.46l-.37-.23-2.58.75.76-2.51-.25-.4c-1.02-1.62-1.56-3.48-1.56-5.4 0-4.83 3.96-8.75 8.84-8.75 4.88 0 8.85 3.92 8.85 8.75-.01 4.83-3.97 8.75-8.85 8.75zm4.84-6.62c-.27-.14-1.57-.77-1.81-.86-.24-.09-.42-.14-.59.14-.18.27-.69.86-.85 1.05-.15.18-.31.2-.58.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.15-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.52-.43-.45-.59-.46-.15-.01-.33-.01-.51-.01-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.67 1.13 2.85c.14.18 1.96 2.99 4.74 4.19.66.29 1.18.46 1.58.59.66.21 1.27.18 1.74.11.53-.08 1.57-.64 1.79-1.27.22-.63.22-1.18.16-1.27-.07-.09-.25-.14-.52-.28z"/>
-              </svg>
-              <span>Order on WhatsApp</span>
-            </a>
+              <span>Explore All Oils</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
         </div>

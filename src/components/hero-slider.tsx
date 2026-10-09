@@ -1,9 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import { 
   ArrowRight, 
-  Smartphone, 
+  Zap, 
   Award, 
   Star, 
   ChevronLeft, 
@@ -25,10 +29,40 @@ interface HeroSliderProps {
 }
 
 export function HeroSlider({ products, whatsappPhone }: HeroSliderProps) {
+  const router = useRouter();
+  const { addItem } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const autoplayTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const handleBuyNow = (slide: any) => {
+    const productData = getProductData(slide.slug, slide.defaultPrice, slide.defaultMrp);
+    if (productData.stock <= 0) return;
+
+    const fullProd = products.find(p => p.slug === slide.slug);
+    const itemToAdd = {
+      id: fullProd?.id || slide.slug,
+      name: fullProd?.name || `${slide.titleStart} ${slide.titleMiddle} ${slide.titleColor}`.trim(),
+      slug: slide.slug,
+      price: productData.price,
+      mrp: productData.mrp,
+      stock: productData.stock,
+      imageUrl: slide.image,
+      category: 'Mara Chekku Oils',
+    };
+
+    addItem(itemToAdd, 1);
+
+    if (!isAuthenticated) {
+      router.push(`/login?redirect=${encodeURIComponent('/checkout')}`);
+      return;
+    }
+
+    router.push('/checkout');
+  };
 
   const slides = [
     {
@@ -225,29 +259,28 @@ export function HeroSlider({ products, whatsappPhone }: HeroSliderProps) {
                   {isOutOfStock ? (
                     <button
                       disabled
-                      className="inline-flex items-center justify-center space-x-2 bg-slate-850 text-slate-500 font-black px-8 py-4 rounded-2xl border border-slate-800 text-sm tracking-wide cursor-not-allowed"
+                      className="inline-flex items-center justify-center space-x-2 bg-slate-800 text-slate-500 font-black px-8 py-4 rounded-2xl border border-slate-700 text-sm tracking-wide cursor-not-allowed"
                     >
                       <span>Out of Stock</span>
                     </button>
                   ) : (
-                    <a
-                      href={clickToBuyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center space-x-2 bg-[#053520] hover:bg-[#032013] text-white font-black px-8 py-4 rounded-2xl shadow-xl shadow-[#053520]/10 hover:shadow-[#053520]/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                    <button
+                      type="button"
+                      onClick={() => handleBuyNow(slide)}
+                      className="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-8 py-4 rounded-2xl shadow-xl shadow-amber-500/20 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                     >
-                      <Smartphone className="w-4 h-4 stroke-[2.5]" />
-                      <span>Order on WhatsApp</span>
-                    </a>
+                      <Zap className="w-4 h-4 fill-current" />
+                      <span>Buy Now</span>
+                    </button>
                   )}
                   
-                  <a
-                    href="#catalog"
-                    className="inline-flex items-center justify-center space-x-2 bg-white hover:bg-slate-50 text-[#053520] font-black px-8 py-4 rounded-2xl border-2 border-amber-500/40 hover:border-amber-500/70 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-amber-500/5"
+                  <Link
+                    href="/shop"
+                    className="inline-flex items-center justify-center space-x-2 bg-slate-900/90 hover:bg-slate-850 text-slate-200 hover:text-white font-black px-8 py-4 rounded-2xl border border-slate-800 hover:border-slate-700 text-sm tracking-wide transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg"
                   >
                     <span>Browse All Oils</span>
-                    <ArrowRight className="w-4 h-4 stroke-[3]" />
-                  </a>
+                    <ArrowRight className="w-4 h-4 text-amber-400" />
+                  </Link>
                 </div>
               </div>
 
